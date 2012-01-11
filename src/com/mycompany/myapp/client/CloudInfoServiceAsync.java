@@ -1,0 +1,9 @@
+package com.mycompany.myapp.client;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
+public interface CloudInfoServiceAsync {
+
+	void myMethod(String s, AsyncCallback<String> callback);
+
+}
