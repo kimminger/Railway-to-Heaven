@@ -125,8 +125,8 @@ public class Vcapsmartgwt implements EntryPoint {
          */
 		
 		final Button sendButton = new Button("Send");
-		final TextBox nameField = new TextBox();
-		nameField.setText("GoogleWebToolkitTest");
+//		final TextBox nameField = new TextBox();
+//		nameField.setText("GoogleWebToolkitTest");
 		
 		
 		// Create the popup dialog box
@@ -136,12 +136,12 @@ public class Vcapsmartgwt implements EntryPoint {
 				final Button closeButton = new Button("Close");
 				// We can set the id of a widget by accessing its Element
 				closeButton.getElement().setId("closeButton");
-				final Label textToServerLabel = new Label();
+//				final Label textToServerLabel = new Label();
 				final HTML serverResponseLabel = new HTML();
 				VerticalPanel dialogVPanel = new VerticalPanel();
 				dialogVPanel.addStyleName("dialogVPanel");
-				dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
-				dialogVPanel.add(textToServerLabel);
+//				dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
+//				dialogVPanel.add(textToServerLabel);
 				dialogVPanel.add(new HTML("<br><b>Server replies:</b>"));
 				dialogVPanel.add(serverResponseLabel);
 				dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
@@ -168,7 +168,8 @@ public class Vcapsmartgwt implements EntryPoint {
 					 */
 					public void onClick(ClickEvent event) {
 						dialogBox.show();
-						sendNameToServer();
+//						sendNameToServer();
+						getInfo();
 					}
 
 					/**
@@ -176,7 +177,8 @@ public class Vcapsmartgwt implements EntryPoint {
 					 */
 					public void onKeyUp(KeyUpEvent event) {
 						if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-							sendNameToServer();
+//							sendNameToServer();
+							getInfo();
 						}
 					}
 
@@ -186,16 +188,16 @@ public class Vcapsmartgwt implements EntryPoint {
 					private void sendNameToServer() {
 						
 						//Übergibt Wert aus Textfeld
-						String textToServer = nameField.getText();
+//						String textToServer = nameField.getText();
 						
 
 						// Then, we send the input to the server.
 //						sendButton.setEnabled(false);
-						textToServerLabel.setText(textToServer);
+//						textToServerLabel.setText(textToServer);
 						serverResponseLabel.setText("Break");
 						
 						//RPC-Call
-						cloudinfoSvc.myMethod(textToServer, 
+						/*cloudinfoSvc.myMethod(textToServer, 
 								new AsyncCallback<String>() {
 
 									public void onFailure(Throwable caught) {
@@ -208,6 +210,24 @@ public class Vcapsmartgwt implements EntryPoint {
 										serverResponseLabel.setText(result);
 									}
 								
+								});*/
+					}
+					
+					private void getInfo(){
+						cloudinfoSvc.getInfo(
+								null, new AsyncCallback<String>() {
+
+									public void onFailure(Throwable caught) {
+										// TODO Auto-generated method stub
+										dialogBox.setText("Failure");
+										serverResponseLabel.setHTML(SERVER_ERROR);
+									}
+
+									public void onSuccess(String result) {
+										// TODO Auto-generated method stub
+										dialogBox.setText("RPC war erfolgreich");
+										serverResponseLabel.setText(result);
+									}
 								});
 					}
 				}
@@ -248,7 +268,7 @@ public class Vcapsmartgwt implements EntryPoint {
         
 //        TODO: Löschen, wenn TestButton erfolgreich
                     vPanel1.add(sendButton);
-                    vPanel1.add(nameField);
+//                    vPanel1.add(nameField);
         vPanel1.add(cloudControllerText);
         vPanel1.add(cloudControllerURIForm);
         vPanel1.add(cloudcontrollerSubmitButton); 

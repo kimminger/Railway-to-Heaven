@@ -6,4 +6,6 @@ public interface CloudInfoServiceAsync {
 
 	void myMethod(String s, AsyncCallback<String> callback);
 
+	void getInfo(String i, AsyncCallback<String> asyncCallback);
+
 }

@@ -7,5 +7,6 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface CloudInfoService extends RemoteService {
 	
 	public String myMethod(String s);
+	public String getInfo(String i);
 
 }
