@@ -7,7 +7,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements CloudI
 
 	public String myMethod(String s) {
 		// TODO Auto-generated method stub
-		return s;
+		
+		
+		return "Hello, "+ s +" !<br/>Dein Test war erfolgreich! <br/> Phase 1 abgeschlossen!";
 	}
 
 }

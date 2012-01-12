@@ -6,6 +6,16 @@
 <web-app>
   
   <!-- Servlets -->
+  <servlet>
+  	<servlet-name>cloudInfoServiceImpl</servlet-name>
+  	<servlet-class>
+  		com.mycompany.myapp.server.CloudInfoServiceImpl
+  	</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  		<servlet-name>cloudInfoServiceImpl</servlet-name>
+  		<url-pattern>/gwt_test/info</url-pattern>
+  </servlet-mapping>
   
   <!-- Default page to serve -->
   <welcome-file-list>

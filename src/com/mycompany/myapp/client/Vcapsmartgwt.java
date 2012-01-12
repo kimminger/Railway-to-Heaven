@@ -1,13 +1,23 @@
 package com.mycompany.myapp.client;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DecoratedTabPanel;
+import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -23,6 +33,13 @@ import com.smartgwt.client.widgets.tab.TabSet;
  * Entry point classes define <code>onModuleLoad()</code>.
  */
 public class Vcapsmartgwt implements EntryPoint {
+	
+	private final CloudInfoServiceAsync cloudinfoSvc =
+			GWT.create(CloudInfoService.class);
+	
+	private static final String SERVER_ERROR = "An error occurred while "
+			+ "attempting to contact the server. Please check your network "
+			+ "connection and try again.";
 	
 	public void onModuleLoad() {
 		
@@ -52,6 +69,13 @@ public class Vcapsmartgwt implements EntryPoint {
 		Tab tTab1 = new Tab("Overview");
 		tTab1.setPane(appsGrid);
 		
+		/*
+		 * Vorlage für appgrid mit JSON Daten:
+		 * http://www.smartclient.com/smartgwt/showcase/#json_integration_category_simple
+		 */
+		
+		
+		
 		//Choose Provider Tab
 		Tab tTab2 = new Tab("Choose Provider");
 		Canvas tabPane2 = new Canvas();  
@@ -80,8 +104,7 @@ public class Vcapsmartgwt implements EntryPoint {
 	}
 	
 	
-    @SuppressWarnings("deprecation")
-	private Widget getProviderTab() {  
+    private Widget getProviderTab() {  
         DecoratedTabPanel tabPanel = new DecoratedTabPanel();  
         tabPanel.setWidth("550px");  
         tabPanel.setAnimationEnabled(true);  
@@ -95,6 +118,104 @@ public class Vcapsmartgwt implements EntryPoint {
         Button cloudcontrollerSubmitButton = new Button("Cloud Controller submit");
         cloudcontrollerSubmitButton.setAutoFit(true);
         cloudcontrollerSubmitButton.setLeft(50);
+        
+//		Start-TESTButton
+        /*
+         * Mindestens 4 Zeichen
+         */
+		
+		final Button sendButton = new Button("Send");
+		final TextBox nameField = new TextBox();
+		nameField.setText("GoogleWebToolkitTest");
+		
+		
+		// Create the popup dialog box
+				final DialogBox dialogBox = new DialogBox();
+				dialogBox.setText("Remote Procedure Call");
+				dialogBox.setAnimationEnabled(true);
+				final Button closeButton = new Button("Close");
+				// We can set the id of a widget by accessing its Element
+				closeButton.getElement().setId("closeButton");
+				final Label textToServerLabel = new Label();
+				final HTML serverResponseLabel = new HTML();
+				VerticalPanel dialogVPanel = new VerticalPanel();
+				dialogVPanel.addStyleName("dialogVPanel");
+				dialogVPanel.add(new HTML("<b>Sending name to the server:</b>"));
+				dialogVPanel.add(textToServerLabel);
+				dialogVPanel.add(new HTML("<br><b>Server replies:</b>"));
+				dialogVPanel.add(serverResponseLabel);
+				dialogVPanel.setHorizontalAlignment(VerticalPanel.ALIGN_RIGHT);
+				dialogVPanel.add(closeButton);
+				dialogBox.setWidget(dialogVPanel);
+				dialogBox.setVisible(true);
+				dialogBox.setPopupPosition(700, 30);
+
+				// Add a handler to close the DialogBox
+				closeButton.addClickHandler(new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						dialogBox.hide();
+						/*
+						sendButton.setEnabled(true);
+						sendButton.setFocus(true);
+						*/
+					}
+				});
+
+				// Create a handler for the sendButton and nameField
+				class MyHandler implements ClickHandler, KeyUpHandler {
+					/**
+					 * Fired when the user clicks on the sendButton.
+					 */
+					public void onClick(ClickEvent event) {
+						dialogBox.show();
+						sendNameToServer();
+					}
+
+					/**
+					 * Fired when the user types in the nameField.
+					 */
+					public void onKeyUp(KeyUpEvent event) {
+						if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+							sendNameToServer();
+						}
+					}
+
+					/**
+					 * Send the name from the nameField to the server and wait for a response.
+					 */
+					private void sendNameToServer() {
+						
+						//Übergibt Wert aus Textfeld
+						String textToServer = nameField.getText();
+						
+
+						// Then, we send the input to the server.
+//						sendButton.setEnabled(false);
+						textToServerLabel.setText(textToServer);
+						serverResponseLabel.setText("Break");
+						
+						//RPC-Call
+						cloudinfoSvc.myMethod(textToServer, 
+								new AsyncCallback<String>() {
+
+									public void onFailure(Throwable caught) {
+										dialogBox.setText("Failure");
+										serverResponseLabel.setHTML(SERVER_ERROR);
+									}
+
+									public void onSuccess(String result) {
+										dialogBox.setText("RPC war erfolgreich");
+										serverResponseLabel.setText(result);
+									}
+								
+								});
+					}
+				}
+
+				// Add a handler to send the name to the server
+				MyHandler handler = new MyHandler();
+				sendButton.addClickHandler(handler);
+//				END TESTbutton
         
        
         Button deaSubmitButton = new Button("DEA Submit");
@@ -125,8 +246,9 @@ public class Vcapsmartgwt implements EntryPoint {
             }  
         });  */
         
-        
-                    
+//        TODO: Löschen, wenn TestButton erfolgreich
+                    vPanel1.add(sendButton);
+                    vPanel1.add(nameField);
         vPanel1.add(cloudControllerText);
         vPanel1.add(cloudControllerURIForm);
         vPanel1.add(cloudcontrollerSubmitButton); 
@@ -164,8 +286,7 @@ public class Vcapsmartgwt implements EntryPoint {
         return tabPanel;  
     } 
                            
-    @SuppressWarnings("deprecation")
-	private Widget getBenchmarkTab() {  
+    private Widget getBenchmarkTab() {  
         DecoratedTabPanel tabPanel = new DecoratedTabPanel();  
         tabPanel.setWidth("550px");  
         tabPanel.setAnimationEnabled(true);  
