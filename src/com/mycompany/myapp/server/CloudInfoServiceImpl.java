@@ -31,7 +31,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements CloudI
 		
 		
 //		CloudInfo info = client.getCloudInfo();
-
+		
 		
 		client.login();
 		
