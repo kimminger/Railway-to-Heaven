@@ -19,6 +19,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements CloudI
 	}
 	
 	public String getInfo(String i) {
+		//VCAP Client auf Amazon Instanzen
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient("moritz-behr@web.de", "moritz", "http://api.railwaytoheaven.de");
@@ -28,21 +29,21 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements CloudI
 			e.printStackTrace();
 		}
 		
+		
 //		CloudInfo info = client.getCloudInfo();
-//		String name = info.getName();
+
 		
 		client.login();
 		
 		List<CloudApplication> apps = client.getApplications();
-		String text = "";
-		for(CloudApplication app : apps)
-			text += "Application : "+app.getName()+" | State : "+app.getState() + " | Instances: "+app.getInstances();
-			text += "/n";	
+		String appInfo = "";
+		for(CloudApplication app : apps){
+			appInfo += "Application : "+app.getName()+" | State : "+app.getState() + " | Instances: "+app.getInstances();
+		}
+			
+			
 		
-		
-		
-		
-		return text;
+		return appInfo;
 	}
 
 }

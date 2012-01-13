@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.smartgwt.client.data.DataSource;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
@@ -51,10 +52,14 @@ public class Vcapsmartgwt implements EntryPoint {
   
         ListGridField appsField = new ListGridField("name", "Apps", 120);  
         appsField.setCanEdit(false);  
-  
+        
+        //Erstellen der einzelnen Spalten zur Anzeige
         ListGridField deploymentField = new ListGridField("time", "Deployment Time", 170);  
         ListGridField statusField = new ListGridField("status", "Status", 170); 
         ListGridField versionField = new ListGridField("version", "Version", 100); 
+        
+//        DataSource dataSource = new DataSource();
+        
         
         appsGrid.setFields(appsField, deploymentField, versionField, statusField); 
         appsGrid.draw();
@@ -148,7 +153,7 @@ public class Vcapsmartgwt implements EntryPoint {
 				dialogVPanel.add(closeButton);
 				dialogBox.setWidget(dialogVPanel);
 				dialogBox.setVisible(true);
-				dialogBox.setPopupPosition(700, 30);
+				dialogBox.setPopupPosition(605, 30);
 
 				// Add a handler to close the DialogBox
 				closeButton.addClickHandler(new ClickHandler() {
