@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+  
+  <!-- Servlets -->
+  <servlet>
+  	<servlet-name>cloudInfoServiceImpl</servlet-name>
+  	<servlet-class>
+  		com.mycompany.myapp.server.CloudInfoServiceImpl
+  	</servlet-class>
+  </servlet>
+  <servlet-mapping>
+  		<servlet-name>cloudInfoServiceImpl</servlet-name>
+  		<url-pattern>/gwt_test/info</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Default page to serve -->
+  <welcome-file-list>
+    <welcome-file>GWT_Test.html</welcome-file>
+  </welcome-file-list>
+
+</web-app>
