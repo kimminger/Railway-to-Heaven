@@ -3,6 +3,7 @@ gwt-unitCache/
 
 #java specific
 *.class/ 
+AwsCredentials.properties
 
 #netbeans ignore personal stuff
 nbproject/private/
@@ -19,3 +20,4 @@ nbproject/private/
 *.jar
 *.war
 *.ear
+*.class
