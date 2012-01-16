@@ -1,5 +1,5 @@
 # Ignore this
-/gwt-unitCache/
+gwt-unitCache/
 
 #java specific
 *.class/ 
