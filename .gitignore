@@ -21,5 +21,7 @@ nbproject/private/
 *.war
 *.ear
 *.class
-war/*
-war
+war/gwt_test/*
+war/gwt_test/
+war/WEB_INF/deploy/*
+war/WEB_INF/deploy/
