@@ -21,6 +21,7 @@ import com.smartgwt.client.types.ListGridFieldType;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.HTMLFlow;
 import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
@@ -136,11 +137,15 @@ public class Vcapsmartgwt implements EntryPoint {
         htmlPane.setShowEdges(true);  
         
         htmlPane.setContentsType(ContentsType.valueOf(null));*/  
-  
+        /*String i = "";
+        final HTMLFlow htmlFlow = new HTMLFlow(); 
+        htmlFlow.setContents(i);
+        htmlFlow.setContentsType(ContentsType.PAGE);*/
         
-        final HTML serverResponseLabel = new HTML();
-		serverResponseLabel.setWordWrap(true);
-		serverResponseLabel.setAutoHorizontalAlignment(null);
+        final HTMLFlow serverResponseLabel = new HTMLFlow();
+		serverResponseLabel.setWidth("550px");
+		serverResponseLabel.setHeight("450px");
+		//serverResponseLabel.setAutoHorizontalAlignment(null);
 		//serverResponseLabel.setHTML(null);
 		
 		
@@ -149,7 +154,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			 * Fired when the user clicks on the refreshButton.
 			 */
 			public void onClick(ClickEvent event) {
+				
 				getInfo();
+				
 			}
 
 			/**
@@ -172,13 +179,14 @@ public class Vcapsmartgwt implements EntryPoint {
 							public void onFailure(Throwable caught) {
 								// TODO Auto-generated method stub
 
-								serverResponseLabel.setHTML(SERVER_ERROR);
+								//serverResponseLabel.setHTML(SERVER_ERROR);
+								serverResponseLabel.setContents(SERVER_ERROR);
 							}
 
 							public void onSuccess(String result) {
 								// TODO Auto-generated method stub
 								
-								serverResponseLabel.setText(result);
+								serverResponseLabel.setContents(result);
 							}
 						});
 			}

@@ -40,11 +40,12 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements CloudI
 		
 		List<CloudApplication> apps = client.getApplications();
 		String appInfo = "";
-		
+		int n = 1;
 		for(CloudApplication app : apps){
 			
-			appInfo += "Application: "+app.getName() + " | State : <\br>"+app.getState() + " | Instances: "+app.getInstances() + "| Memory:" +app.getMemory() + "| RunningInstance:"+app.getRunningInstances()+ "| Meta"+ app.getMeta()+"| Uris"+app.getUris()+ "Resource" + app.getResources();
-			
+			//appInfo += "<table border = 1 > <td>Application: "+app.getName() + "</td> <td><span style= padding-left:20px> State : </span>"+app.getState() + "</td><td> <span style= padding-left:20px> Instances:</span> "+app.getInstances() + "</td><td><span style= padding-left:20px> Memory: </span>" +app.getMemory() + "</td><td> <span style= padding-left:20px> Uris: </span>"+app.getUris()+ "</td></table>";
+			appInfo += "<table><tr><th>"+n+"</th><th>Application</th><th>State</th><th>Instance</th><th>Memory</th><th>URI</th></tr><tr><td></td><td>"+app.getName()+"</td><td>"+app.getState()+"</td><td>"+app.getInstances()+"</td><td>"+app.getMemory()+"</td><td>"+app.getUris()+"</td></tr></table>";
+			n++;
 		}
 			
 			
