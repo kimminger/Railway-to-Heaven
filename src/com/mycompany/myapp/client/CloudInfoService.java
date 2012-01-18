@@ -8,5 +8,5 @@ public interface CloudInfoService extends RemoteService {
 	
 	public String myMethod(String s);
 	public String getInfo(String i);
-
+	public String setAmazonCloudController(String c);
 }

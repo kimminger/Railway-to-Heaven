@@ -8,4 +8,5 @@ public interface CloudInfoServiceAsync {
 
 	void getInfo(String i, AsyncCallback<String> asyncCallback);
 
+	void setAmazonCloudController(String c, AsyncCallback<String> callback);
 }
