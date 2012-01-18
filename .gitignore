@@ -21,3 +21,5 @@ nbproject/private/
 *.war
 *.ear
 *.class
+war/*
+war

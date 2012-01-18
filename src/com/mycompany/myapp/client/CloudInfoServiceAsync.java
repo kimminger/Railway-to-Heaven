@@ -1,12 +1,18 @@
 package com.mycompany.myapp.client;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
 
 public interface CloudInfoServiceAsync {
 
-	void myMethod(String s, AsyncCallback<String> callback);
+	//void createListGridRecords(CloudRecord[] result,
+	//		AsyncCallback<CloudRecord[]> callback);
 
-	void getInfo(String i, AsyncCallback<String> asyncCallback);
+	//void myMethod(String s, AsyncCallback<String> callback);
+
+	void getInfo(String i, AsyncCallback<String> callback);
+
+		
 
 	void setAmazonCloudController(String c, AsyncCallback<String> callback);
 }

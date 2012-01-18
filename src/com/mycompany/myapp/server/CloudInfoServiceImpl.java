@@ -2,9 +2,7 @@ package com.mycompany.myapp.server;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.cloudfoundry.client.lib.CloudApplication;
 import org.cloudfoundry.client.lib.CloudFoundryClient;
@@ -13,27 +11,29 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.PropertiesCredentials;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
-import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.Reservation;
-import com.amazonaws.services.ec2.model.RunInstancesRequest;
-import com.amazonaws.services.ec2.model.StartInstancesRequest;
-import com.amazonaws.services.ec2.model.StopInstancesRequest;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mycompany.myapp.client.CloudInfoService;
 
 public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudInfoService {
 
-	public String myMethod(String s) {
+	/*public String myMethod(String s) {
 		// TODO Auto-generated method stub
+
 
 		return "Hello, "
 				+ s
 				+ " !<br/>Dein Test war erfolgreich! <br/> Phase 1 abgeschlossen!";
 	}
 
+
+		
+		return "Hello, "+ s +" !<br/>Dein Test war erfolgreich! <br/> Phase 1 abgeschlossen!";
+	}*/
+	
 	public String getInfo(String i) {
 		// VCAP Client auf Amazon Instanzen
 		CloudFoundryClient client = null;
@@ -46,19 +46,26 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
+
 		// CloudInfo info = client.getCloudInfo();
 
 		client.login();
 
 		List<CloudApplication> apps = client.getApplications();
 		String appInfo = "";
-		for (CloudApplication app : apps) {
-			appInfo += "Application : " + app.getName() + " | State : "
-					+ app.getState() + " | Instances: " + app.getInstances();
+
+		int n = 1;
+		for(CloudApplication app : apps){
+			
+			//appInfo += "<table border = 1 > <td>Application: "+app.getName() + "</td> <td><span style= padding-left:20px> State : </span>"+app.getState() + "</td><td> <span style= padding-left:20px> Instances:</span> "+app.getInstances() + "</td><td><span style= padding-left:20px> Memory: </span>" +app.getMemory() + "</td><td> <span style= padding-left:20px> Uris: </span>"+app.getUris()+ "</td></table>";
+			appInfo += "<table><tr><th>"+n+"</th><th>Application</th><th>State</th><th>Instance</th><th>Memory</th><th>URI</th></tr><tr><td></td><td>"+app.getName()+"</td><td>"+app.getState()+"</td><td>"+app.getInstances()+"</td><td>"+app.getMemory()+"</td><td>"+app.getUris()+"</td></tr></table>";
+			n++;
+
 		}
 
 		return appInfo;
 	}
+	
 
 	public String setAmazonCloudController(String c) {
 		String text = "test";
@@ -107,6 +114,4 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
          return text;
          
 	}
-	
-	
 }
