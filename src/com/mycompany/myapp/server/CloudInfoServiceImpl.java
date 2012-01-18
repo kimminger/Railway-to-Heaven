@@ -43,7 +43,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements CloudI
 		
 		for(CloudApplication app : apps){
 			
-			appInfo += "Application: "+app.getName() + " | State : "+app.getState() + " | Instances: "+app.getInstances() + "| Memory:" +app.getMemory() + "| RunningInstance:"+app.getRunningInstances()+ "| Meta"+ app.getMeta()+"| Uris"+app.getUris()+ "Resource" + app.getResources();
+			appInfo += "Application: "+app.getName() + " | State : <\br>"+app.getState() + " | Instances: "+app.getInstances() + "| Memory:" +app.getMemory() + "| RunningInstance:"+app.getRunningInstances()+ "| Meta"+ app.getMeta()+"| Uris"+app.getUris()+ "Resource" + app.getResources();
 			
 		}
 			
