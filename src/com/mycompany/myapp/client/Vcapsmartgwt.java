@@ -276,26 +276,43 @@ public class Vcapsmartgwt implements EntryPoint {
           //Amazon Web Service
         VerticalPanel vPanel2 = new VerticalPanel();  
         vPanel2.setSpacing(15);  
-        vPanel2.setHeight("500px");  
+        vPanel2.setHeight("500px");
+        Button refreshButton = new Button("Refresh");
+        final HTML awsOverviewLabel = new HTML();
+        awsOverviewLabel.setWidth("400");
+        awsOverviewLabel.setHeight("450");
         Button cloudcontroller2Button = new Button("Cloud Controller");
         final HTML awsResponseLabel = new HTML();
         awsResponseLabel.setWidth("400");
         awsResponseLabel.setHeight("450");
         Button dea2Button = new Button("DEA");
-        Button database2Button = new Button("Database"); 
-               
-        vPanel2.add(cloudcontroller2Button);
-        vPanel2.add(awsResponseLabel);
-        vPanel2.add(dea2Button);
-        vPanel2.add(database2Button);
-        tabPanel.add(vPanel2, "Amazon Web Service");
+        Button database2Button = new Button("Database");
         
+      //AWS Refresh Button - ClickHandler mit RPC 
+        refreshButton.addClickHandler(new ClickHandler() {
+			
+     			public void onClick(ClickEvent event) {
+     				
+     				cloudinfoSvc.setAmazonCloudController(null, new AsyncCallback<String>() {
+     					public void onFailure(Throwable caught) {
+     						awsResponseLabel.setText(SERVER_ERROR);
+     					}
+
+     					public void onSuccess(String result) {
+     						awsResponseLabel.setText(result);
+     					}
+     				});
+     			}
+     		});
+        
+        
+        
+        //Cloud Controller Button- ClickHandler mit RPC
         cloudcontroller2Button.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
 				
 				cloudinfoSvc.setAmazonCloudController(null, new AsyncCallback<String>() {
-
 					public void onFailure(Throwable caught) {
 						awsResponseLabel.setText(SERVER_ERROR);
 					}
@@ -307,6 +324,14 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
         
+               
+        vPanel2.add(refreshButton);
+        vPanel2.add(awsOverviewLabel);
+        vPanel2.add(cloudcontroller2Button);
+        vPanel2.add(awsResponseLabel);
+        vPanel2.add(dea2Button);
+        vPanel2.add(database2Button);
+        tabPanel.add(vPanel2, "Amazon Web Service");
         
         // Return the content  
         tabPanel.selectTab(0);  

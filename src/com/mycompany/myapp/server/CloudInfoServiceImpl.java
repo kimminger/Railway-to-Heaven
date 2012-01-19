@@ -14,6 +14,7 @@ import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.Reservation;
+import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mycompany.myapp.client.CloudInfoService;
 
@@ -39,7 +40,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
+					"http://api.railwaytoheaven.com");
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -69,6 +70,8 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	public String setAmazonCloudController(String c) {
 		String text = "test";
+		
+		//AWS Client Initialisierung
 		AWSCredentials credentials = null;
 		try {
 			credentials = new PropertiesCredentials(
@@ -89,18 +92,25 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			for (Instance instance : reservation.getInstances()) {
 				text += "Instanzen: " + instance.getInstanceId(); 
 				text += "Typ: " + instance.getInstanceType();
+				text += "Lifecycle: " + instance.getInstanceLifecycle();
 				
-//				 += "Lifecycle: " + instance.getInstanceLifecycle();
 			}
 		}
-
+		
+		/* VORÜBERLEGUNGEN automatischer Instanzenstart
+		RunInstancesRequest req = new RunInstancesRequest();
+		req.setImageId("AMI mit cloudcontroller oder was anderem");
+		req.setInstanceType("t1.small");
+		req.setUserData("");
+		*/
 
 		/* 
 		StartInstancesRequest start = new StartInstancesRequest().withInstanceIds("i-acd85be5");
 		ec2.startInstances(start);
 		*/
 		
-		 /*DescribeInstancesResult describeInstancesRequest = ec2.describeInstances();
+		 /*
+		 DescribeInstancesResult describeInstancesRequest = ec2.describeInstances();
          List<Reservation> reservations = describeInstancesRequest.getReservations();
          Set<Instance> instances = new HashSet<Instance>();
 
@@ -108,7 +118,8 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
              instances.addAll(reservation.getInstances());
          }
          
-         text = "You have " + instances.size() + " Amazon EC2 instance(s) running.";*/
+         text = "You have " + instances.size() + " Amazon EC2 instance(s) running.";
+         */
         
          
          return text;
