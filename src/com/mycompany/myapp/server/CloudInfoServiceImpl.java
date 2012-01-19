@@ -10,6 +10,7 @@ import org.cloudfoundry.client.lib.CloudApplication;
 import org.cloudfoundry.client.lib.CloudFoundryClient;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.PropertiesCredentials;
@@ -137,7 +138,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	}
 
 
-	public String start1und1(String i) {
+	public String start1und1() {
 		// TODO Auto-generated method stub
 		String text = "";
 		
@@ -146,35 +147,58 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		String username = "158341849";
 		String password= "emergent";
 		
+		
 		Client client = null;
 		try {
 			client = new Client(host, 443, username, password);
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		//Alle verfügbaren Informationen über 1und1 Server
 		JSONArray ja = null;
 		try {
 			ja = client.doGetServers();
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		text = ja.toString();
 		
+//		String[] vmIDs = new String[4];
+		
+		//Schleife über alle JSON Objekte
+		for (int i = 0; i < ja.length();i++){
+			try {
+				JSONObject j = ja.getJSONObject(i);
+				EinsundEinsServer server = new EinsundEinsServer(j);
+//				server.getIp()
+				//Befüllt Array 
+				String ip = (String) j.get("ip");
+//				int index = 0;
+				if(ip.equals("217.160.94.112") || ip.equals("217.160.94.107") || ip.equals("217.160.94.108") || ip.equals("217.160.94.109")){
+					String vmID = (String) j.get("vmid").toString();
+					text += vmID + "<br/>";
+//					vmIDs[index] = vmID;
+//					index++;
+				}	
+				
+				
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		
+	
+		
+//		return vmIDs.toString();
 		return text;
 	}
 }

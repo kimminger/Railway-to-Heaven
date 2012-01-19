@@ -18,5 +18,5 @@ public interface CloudInfoServiceAsync {
 
 
 
-	void start1und1(String i, AsyncCallback<String> callback);
+	void start1und1(AsyncCallback<String> callback);
 }

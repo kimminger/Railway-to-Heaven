@@ -231,7 +231,7 @@ public class Vcapsmartgwt implements EntryPoint {
         cloudcontrollerSubmitButton.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.start1und1(null, new AsyncCallback<String>() {
+				cloudinfoSvc.start1und1(new AsyncCallback<String>() {
 
 					public void onFailure(Throwable caught) {
 						einsUndeinsResponseLabel.setText(SERVER_ERROR);
