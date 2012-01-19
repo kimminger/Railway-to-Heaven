@@ -2,10 +2,14 @@ package com.mycompany.myapp.server;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.util.List;
 
+import org.apache.http.client.ClientProtocolException;
 import org.cloudfoundry.client.lib.CloudApplication;
 import org.cloudfoundry.client.lib.CloudFoundryClient;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.PropertiesCredentials;
@@ -14,9 +18,10 @@ import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.model.DescribeInstancesResult;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.Reservation;
-import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mycompany.myapp.client.CloudInfoService;
+
+import edu.kit.eorg.client.Client;
 
 public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudInfoService {
@@ -82,6 +87,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			// "Credentials were not properly entered into AwsCredentials.properties.";
 		}
 
+		
+		
+		
 		AmazonEC2 ec2 = new AmazonEC2Client(credentials);
 		 ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
 
@@ -103,6 +111,8 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		req.setInstanceType("t1.small");
 		req.setUserData("");
 		*/
+		
+		//TODO Herausfinden wie man elastische IP festlegt
 
 		/* 
 		StartInstancesRequest start = new StartInstancesRequest().withInstanceIds("i-acd85be5");
@@ -124,5 +134,47 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
          
          return text;
          
+	}
+
+
+	public String start1und1(String i) {
+		// TODO Auto-generated method stub
+		String text = "";
+		
+		//1&1 Cloud Adresse benutzen!!!
+		String host = "servermanagement-api.1und1.de";
+		String username = "158341849";
+		String password= "emergent";
+		
+		Client client = null;
+		try {
+			client = new Client(host, 443, username, password);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		JSONArray ja = null;
+		try {
+			ja = client.doGetServers();
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		text = ja.toString();
+		
+		return text;
 	}
 }

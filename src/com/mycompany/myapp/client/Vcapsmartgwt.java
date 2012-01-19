@@ -220,9 +220,31 @@ public class Vcapsmartgwt implements EntryPoint {
         vPanel1.setSpacing(15);  
         vPanel1.setHeight("500px");
         
+        final HTML einsUndeinsResponseLabel = new HTML();
+        einsUndeinsResponseLabel.setHeight("400");
+        
         Button cloudcontrollerSubmitButton = new Button("Cloud Controller submit");
         cloudcontrollerSubmitButton.setAutoFit(true);
         cloudcontrollerSubmitButton.setLeft(50);
+        
+        //CloudController auf 1&1 - Button - ClickHandler
+        cloudcontrollerSubmitButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				cloudinfoSvc.start1und1(null, new AsyncCallback<String>() {
+
+					public void onFailure(Throwable caught) {
+						einsUndeinsResponseLabel.setText(SERVER_ERROR);
+					}
+
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						einsUndeinsResponseLabel.setText(result);
+					}
+				});
+			}
+		});
+        
                 
                Button deaSubmitButton = new Button("DEA Submit");
         deaSubmitButton.setLeft(50);
@@ -255,6 +277,8 @@ public class Vcapsmartgwt implements EntryPoint {
 //        TODO: Löschen, wenn TestButton erfolgreich
                   
 //                    vPanel1.add(nameField);
+        vPanel1.add(einsUndeinsResponseLabel); 
+        
         vPanel1.add(cloudControllerText);
         vPanel1.add(cloudControllerURIForm);
         vPanel1.add(cloudcontrollerSubmitButton); 
