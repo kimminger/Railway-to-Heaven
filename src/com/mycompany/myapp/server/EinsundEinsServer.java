@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 
 import org.apache.http.client.ClientProtocolException;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -12,15 +13,14 @@ import edu.kit.eorg.client.Client;
 
 public class EinsundEinsServer {
 /*
- * Hier kommen alle Funktionen rein, die man auf 1&1 machen kann
+ * Hier kommen alle Funktionen rein, die die 1&1 API anbietet
  */
 	
-	//1&1 Cloud Adresse benutzen!!!
+			//	1&1 Cloud Daten von Markus
 			final String HOST = "servermanagement-api.1und1.de";
 			final String USERNAME = "158341849";
 			final String PASSWORD= "emergent";
 			final int PORT = 443;
-			
 			
 	
 	public String vmID;
@@ -154,6 +154,24 @@ public class EinsundEinsServer {
 		this.ip = (String) server.get("ip");
 	}
 	
+	//Constructor für leeres Argument
+	//TODO hier weitermachen
+	public EinsundEinsServer() throws JSONException {
+		super();
+		/*
+		this.vmID = "";//String
+		this.configurable = "true";
+		this.ram = "0";
+		this.contract = "0";
+		this.cpu = "1";
+		this.hostname = "host";
+		this.imagetype = (String) server.get("imagetype");
+		this.imageid = (Integer) server.get("imageid");
+		this.imagename = (String) server.get("imagename");
+		this.ip = (String) server.get("ip");
+		*/
+	}
+	
 	public void start(){
 	
 	try {
@@ -264,5 +282,37 @@ public void poweroff(){
 		return null;
 	}
 	
+	//Gibt alle vmIDs zurück, die Team 3 zugeordnet wurden
+	public String getAllvmIDs() throws ClientProtocolException, IOException, JSONException, URISyntaxException{
+		String text = "";
+		Client client;
+		
+			client = new Client(HOST, PORT, USERNAME, PASSWORD);
+			
+			//Befüllt Array mit allen verfügbaren Informationen 
+			JSONArray ja = client.doGetServers();
+			
+			//Schleife über Array
+			for (int i = 0; i < ja.length();i++){
+				
+					
+					JSONObject j = ja.getJSONObject(i);
+					
+//					EinsundEinsServer server = new EinsundEinsServer(j);
+//					server.getVmID();
+					
+					String ip = (String) j.get("ip");
+//					int index = 0;
+					if(ip.equals("217.160.94.112") || ip.equals("217.160.94.107") || ip.equals("217.160.94.108") || ip.equals("217.160.94.109")){
+						String vmID = (String) j.get("vmid").toString();
+						text += vmID + "<br/>";
+						return text.toString();
+					}	
+			
+		
+			}
+			
+			return null;
+	}
 	
 }
