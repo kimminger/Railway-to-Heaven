@@ -17,10 +17,10 @@ public class EinsundEinsServer {
  */
 	
 			//	1&1 Cloud Daten von Markus
-			final String HOST = "servermanagement-api.1und1.de";
-			final String USERNAME = "158341849";
-			final String PASSWORD= "emergent";
-			final int PORT = 443;
+			final static String HOST = "servermanagement-api.1und1.de";
+			final static String USERNAME = "158341849";
+			final static String PASSWORD= "emergent";
+			final static int PORT = 443;
 			
 	
 	public String vmID;
@@ -283,7 +283,7 @@ public void poweroff(){
 	}
 	
 	//Gibt alle vmIDs zurück, die Team 3 zugeordnet wurden
-	public String getAllvmIDs() throws ClientProtocolException, IOException, JSONException, URISyntaxException{
+	public static String getAllvmIDs() throws ClientProtocolException, IOException, JSONException, URISyntaxException{
 		String text = "";
 		Client client;
 		

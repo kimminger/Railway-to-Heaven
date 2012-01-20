@@ -227,6 +227,11 @@ public class Vcapsmartgwt implements EntryPoint {
         cloudcontrollerSubmitButton.setAutoFit(true);
         cloudcontrollerSubmitButton.setLeft(50);
         
+        final DialogBox annahmenEinsundEins = new DialogBox();
+        annahmenEinsundEins.setText("HIER DEIN TEXT JUNGE!");
+        annahmenEinsundEins.setHeight("350");
+        annahmenEinsundEins.setWidth("50");
+        //TODO Dialogbox aufpoppen lassen, die Infos über hardcodierte Annahmen (login-infos) anzeigt
         //CloudController auf 1&1 - Button - ClickHandler
         cloudcontrollerSubmitButton.addClickHandler(new ClickHandler() {
 			
@@ -238,7 +243,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					}
 
 					public void onSuccess(String result) {
-						// TODO Auto-generated method stub
 						einsUndeinsResponseLabel.setText(result);
 					}
 				});
@@ -274,11 +278,10 @@ public class Vcapsmartgwt implements EntryPoint {
             }  
         });  */
         
-//        TODO: Löschen, wenn TestButton erfolgreich
                   
-//                    vPanel1.add(nameField);
+
         vPanel1.add(einsUndeinsResponseLabel); 
-        
+      
         vPanel1.add(cloudControllerText);
         vPanel1.add(cloudControllerURIForm);
         vPanel1.add(cloudcontrollerSubmitButton); 
@@ -314,9 +317,7 @@ public class Vcapsmartgwt implements EntryPoint {
         
       //AWS Refresh Button - ClickHandler mit RPC 
         refreshButton.addClickHandler(new ClickHandler() {
-			
      			public void onClick(ClickEvent event) {
-     				
      				cloudinfoSvc.setAmazonCloudController(null, new AsyncCallback<String>() {
      					public void onFailure(Throwable caught) {
      						awsResponseLabel.setText(SERVER_ERROR);

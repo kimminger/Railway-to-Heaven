@@ -41,6 +41,13 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return "Hello, "+ s +" !<br/>Dein Test war erfolgreich! <br/> Phase 1 abgeschlossen!";
 	}*/
 	
+//	1&1 Cloud Daten von Markus
+	//so lassen
+			final String HOST = "servermanagement-api.1und1.de";
+			final String USERNAME = "158341849";
+			final String PASSWORD= "emergent";
+			final int PORT = 443;
+	
 	public String getInfo(String i) {
 		// VCAP Client auf Amazon Instanzen
 		CloudFoundryClient client = null;
@@ -106,6 +113,8 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			}
 		}
 		
+		
+		
 		/* VORÜBERLEGUNGEN automatischer Instanzenstart
 		RunInstancesRequest req = new RunInstancesRequest();
 		req.setImageId("AMI mit cloudcontroller oder was anderem");
@@ -139,8 +148,25 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	
 	public String start1und1() {
-		// TODO Auto-generated method stub
 		String vmIDs = "";
+//		EinsundEinsServer server = new EinsundEinsServer();
+		try {
+			
+			String ids = EinsundEinsServer.getAllvmIDs();
+			return ids;
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	
 		/*
