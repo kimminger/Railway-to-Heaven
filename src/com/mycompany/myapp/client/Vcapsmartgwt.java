@@ -9,6 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -26,6 +27,7 @@ import com.smartgwt.client.widgets.HTMLPane;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.grid.ListGrid;
 import com.smartgwt.client.widgets.grid.ListGridField;
@@ -50,28 +52,7 @@ public class Vcapsmartgwt implements EntryPoint {
 			+ "connection and try again.";
 	
 	public void onModuleLoad() {
-		
-		//Overview Grid
-		/*final ListGrid appsGrid = new ListGrid();  
-        appsGrid.setWidth(580);  
-        appsGrid.setHeight(400);  
-        appsGrid.setShowAllRecords(true);  
-        		
-      //Erstellen der einzelnen Spalten zur Anzeige
-        ListGridField appsField = new ListGridField("name", "App", 120);  
-        appsField.setCanEdit(false);  
-        
-        ListGridField deploymentField = new ListGridField("time", "Deployment Time", 170);  
-        ListGridField statusField = new ListGridField("status", "Status", 170); 
-        ListGridField versionField = new ListGridField("version", "Version", 100);
-        
-        appsGrid.setFields(appsField, deploymentField, versionField, statusField); 
-        CloudRecord[] result;
-        appsGrid.setData(CloudRecord.createListGridRecords(result));
-        
-        appsGrid.draw();*/
-		
-		
+					
         //Tabset Definition
 		final TabSet topTabset = new TabSet();
 		topTabset.setTabBarPosition(Side.TOP);
@@ -85,15 +66,12 @@ public class Vcapsmartgwt implements EntryPoint {
         tabPane1.setHeight100();  
         tabPane1.addChild(getOverview());  
         tTab1.setPane(tabPane1);
-		//tTab1.setPane(member1);
-		
+
 		/*
 		 * Vorlage für appgrid mit JSON Daten:
 		 * http://www.smartclient.com/smartgwt/showcase/#json_integration_category_simple
 		 */
-		
-		
-		
+						
 		//Choose Provider Tab
 		Tab tTab2 = new Tab("Choose Provider");
 		Canvas tabPane2 = new Canvas();  
@@ -115,41 +93,77 @@ public class Vcapsmartgwt implements EntryPoint {
 	    topTabset.addTab(tTab2);  
 	    topTabset.addTab(tTab3); 
 	    
-	    HLayout buttons = new HLayout();  
-        buttons.setMembersMargin(15);  
+	    /*HLayout buttons = new HLayout();  
+        buttons.setMembersMargin(15);*/  
         
         topTabset.draw(); 
 	}
 	
 	
 	private Widget getOverview(){
+		
+		//Tab Overview: Overview, VCAP
+		
 		DecoratedTabPanel tabPanel = new DecoratedTabPanel();  
         tabPanel.setWidth("550px");  
         tabPanel.setAnimationEnabled(true); 
-      //Overview
+        
+       //Applications: Name, State, Instance, Memory, URI
+        
         VerticalPanel vPanel0 = new VerticalPanel();  
         vPanel0.setSpacing(15);  
         vPanel0.setHeight("500px");
         
-        final Button refreshButton = new Button("Refresh");
+        VerticalPanel vPanel1 = new VerticalPanel();  
+        vPanel1.setSpacing(15);  
+        vPanel1.setHeight("100px");
+      
+        HorizontalPanel hPanel1 = new HorizontalPanel();  
+        hPanel1.setSpacing(15);
+        hPanel1.setWidth("100px");
         
-        /*final HTMLPane htmlPane = new HTMLPane();  
-        htmlPane.setShowEdges(true);  
+        HorizontalPanel hPanel4 = new HorizontalPanel();  
+        hPanel4.setSpacing(15);
+        hPanel4.setWidth("100px");
         
-        htmlPane.setContentsType(ContentsType.valueOf(null));*/  
-        /*String i = "";
-        final HTMLFlow htmlFlow = new HTMLFlow(); 
-        htmlFlow.setContents(i);
-        htmlFlow.setContentsType(ContentsType.PAGE);*/
+        final DynamicForm form = new DynamicForm();  
+        form.setAutoWidth();  
+        form.setNumCols(2); 
+        
+        SelectItem appSelect = new SelectItem();
+        appSelect.setName("appnameselect"); 
+        appSelect.setTitle("Application");
+        appSelect.setValueMap("hello","wardrobe");
+        /*appSelect.addChangedHandler(new ChangedHandler() {  
+            public void onChanged(ChangedEvent event) {  
+                String ds = (String) event.getValue();  
+                if (ds.equalsIgnoreCase("country")) {  
+                    cEditor.setDatasource(countryDS);  
+                } else {  
+                    cEditor.setDatasource(supplyItemDS);  
+                }  
+            }  
+        });*/  
+        
+        form.setItems(appSelect);
+        form.draw();
+        
+        HorizontalPanel hPanel2 = new HorizontalPanel();  
+        hPanel2.setSpacing(15);  
+        hPanel2.setWidth("100px");
+        
+        HorizontalPanel hPanel3 = new HorizontalPanel();  
+        hPanel3.setSpacing(15);  
+        hPanel3.setWidth("100px");
         
         final HTMLFlow serverResponseLabel = new HTMLFlow();
 		serverResponseLabel.setWidth("550px");
 		serverResponseLabel.setHeight("450px");
-		//serverResponseLabel.setAutoHorizontalAlignment(null);
-		//serverResponseLabel.setHTML(null);
 		
-		
-		class MyHandler implements ClickHandler, KeyUpHandler {
+        
+        final Button refreshButton = new Button("Refresh");
+        
+        class MyHandler implements ClickHandler, KeyUpHandler {
 			/**
 			 * Fired when the user clicks on the refreshButton.
 			 */
@@ -196,9 +210,424 @@ public class Vcapsmartgwt implements EntryPoint {
 		MyHandler handler = new MyHandler();
 		refreshButton.addClickHandler(handler);
 		
+		//VCAP: Start, Stop, Add, Delete
+		
+		final Button startButton = new Button("Start App");
+        class MyHandler2 implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the refreshButton.
+			 */
+			public void onClick(ClickEvent event) {
+				
+				startApp();
+				
+			}
+
+			/**
+			 * Fired when the user types in the nameField.
+			 */
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					startApp();
+				}
+			}
+
+			/**
+			 * Send the name from the nameField to the server and wait for a response.
+			 */
+	
+			private void startApp(){
+				cloudinfoSvc.startApp(
+						new AsyncCallback<Void>() {
+
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+
+								//serverResponseLabel.setHTML(SERVER_ERROR);
+								serverResponseLabel.setContents(SERVER_ERROR);
+							}
+
+							
+							public void onSuccess(Void result) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+			}
+		}
+
+		// Add a handler to send the name to the server
+		MyHandler2 handler2 = new MyHandler2();
+		startButton.addClickHandler(handler2);
+		
+		
+		final Button stopButton = new Button("Stop App");
+        class MyHandler1 implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the refreshButton.
+			 */
+			public void onClick(ClickEvent event) {
+				
+				stopApp();
+				
+			}
+
+			/**
+			 * Fired when the user types in the nameField.
+			 */
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					stopApp();
+				}
+			}
+
+			/**
+			 * Send the name from the nameField to the server and wait for a response.
+			 */
+	
+			private void stopApp(){
+				cloudinfoSvc.stopApp(
+						new AsyncCallback<Void>() {
+
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+
+								//serverResponseLabel.setHTML(SERVER_ERROR);
+								serverResponseLabel.setContents(SERVER_ERROR);
+							}
+
+							
+							public void onSuccess(Void result) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+			}
+		}
+
+		// Add a handler to send the name to the server
+		MyHandler1 handler1 = new MyHandler1();
+		stopButton.addClickHandler(handler1);
+		
+		final Button updateMemoryButton = new Button("Update AppMemory");
+		class MyHandler6 implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the refreshButton.
+			 */
+			public void onClick(ClickEvent event) {
+				
+				updateAppmemory();
+				
+			}
+
+			/**
+			 * Fired when the user types in the nameField.
+			 */
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					updateAppmemory();
+				}
+			}
+
+			/**
+			 * Send the name from the nameField to the server and wait for a response.
+			 */
+	
+			private void updateAppmemory(){
+				cloudinfoSvc.updateAppmemory(
+						new AsyncCallback<Void>() {
+
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+
+								//serverResponseLabel.setHTML(SERVER_ERROR);
+								serverResponseLabel.setContents(SERVER_ERROR);
+							}
+
+							
+							public void onSuccess(Void result) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+			}
+		}
+
+		// Add a handler to send the name to the server
+		MyHandler6 handler6 = new MyHandler6();
+		updateMemoryButton.addClickHandler(handler6);
+		
+		final Button updateInstanceButton = new Button("Update Instance");
+	    class MyHandler7 implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the refreshButton.
+			 */
+			public void onClick(ClickEvent event) {
+				
+				updateAppinstance();
+				
+			}
+
+			/**
+			 * Fired when the user types in the nameField.
+			 */
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					updateAppinstance();
+				}
+			}
+
+			/**
+			 * Send the name from the nameField to the server and wait for a response.
+			 */
+	
+			private void updateAppinstance(){
+				cloudinfoSvc.updateAppinstance(
+						new AsyncCallback<Void>() {
+
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+
+								//serverResponseLabel.setHTML(SERVER_ERROR);
+								serverResponseLabel.setContents(SERVER_ERROR);
+							}
+
+							
+							public void onSuccess(Void result) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+			}
+		}
+
+		// Add a handler to send the name to the server
+		MyHandler7 handler7 = new MyHandler7();
+		updateInstanceButton.addClickHandler(handler7);
+		
+        final Button addButton = new Button("Add App");
+        class MyHandler3 implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the refreshButton.
+			 */
+			public void onClick(ClickEvent event) {
+				
+				addApp();
+				
+			}
+
+			/**
+			 * Fired when the user types in the nameField.
+			 */
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					addApp();
+				}
+			}
+
+			/**
+			 * Send the name from the nameField to the server and wait for a response.
+			 */
+	
+			private void addApp(){
+				cloudinfoSvc.addApp(
+						new AsyncCallback<Void>() {
+
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+
+								//serverResponseLabel.setHTML(SERVER_ERROR);
+								serverResponseLabel.setContents(SERVER_ERROR);
+							}
+
+							
+							public void onSuccess(Void result) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+			}
+		}
+
+		// Add a handler to send the name to the server
+		MyHandler3 handler3 = new MyHandler3();
+		addButton.addClickHandler(handler3);
+        
+        
+		
+		final Button deleteButton = new Button("Delete App");
+        class MyHandler4 implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the refreshButton.
+			 */
+			public void onClick(ClickEvent event) {
+				
+				deleteApp();
+				
+			}
+
+			/**
+			 * Fired when the user types in the nameField.
+			 */
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					deleteApp();
+				}
+			}
+
+			/**
+			 * Send the name from the nameField to the server and wait for a response.
+			 */
+	
+			private void deleteApp(){
+				cloudinfoSvc.deleteApp(
+						new AsyncCallback<Void>() {
+
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+
+								//serverResponseLabel.setHTML(SERVER_ERROR);
+								serverResponseLabel.setContents(SERVER_ERROR);
+							}
+
+							
+							public void onSuccess(Void result) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+			}
+		}
+
+		// Add a handler to send the name to the server
+		MyHandler4 handler4 = new MyHandler4();
+		deleteButton.addClickHandler(handler4);
+        
+		final Button restartButton = new Button("Restart App");
+        class MyHandler5 implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the refreshButton.
+			 */
+			public void onClick(ClickEvent event) {
+				
+				restartApp();
+				
+			}
+
+			/**
+			 * Fired when the user types in the nameField.
+			 */
+			public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					restartApp();
+				}
+			}
+
+			/**
+			 * Send the name from the nameField to the server and wait for a response.
+			 */
+	
+			private void restartApp(){
+				cloudinfoSvc.restartApp(
+						new AsyncCallback<Void>() {
+
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+
+								//serverResponseLabel.setHTML(SERVER_ERROR);
+								serverResponseLabel.setContents(SERVER_ERROR);
+							}
+
+							
+							public void onSuccess(Void result) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+			}
+		}
+
+		// Add a handler to send the name to the server
+		MyHandler5 handler5 = new MyHandler5();
+		restartButton.addClickHandler(handler5);
+        	
+		final Button updateFileButton = new Button("Upload File");
+	    class MyHandler8 implements ClickHandler, KeyUpHandler {
+			/**
+			 * Fired when the user clicks on the refreshButton.
+			 */
+	    	public void onClick(ClickEvent event) {
+				
+				updateAppfile();
+				
+			}
+
+			/**
+			 * Fired when the user types in the nameField.
+			 */
+	    	public void onKeyUp(KeyUpEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					updateAppfile();
+				}
+			}
+
+			/**
+			 * Send the name from the nameField to the server and wait for a response.
+			 */
+	
+	    	private void updateAppfile(){
+				cloudinfoSvc.updateAppfile(
+						new AsyncCallback<Void>() {
+
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+
+								//serverResponseLabel.setHTML(SERVER_ERROR);
+								serverResponseLabel.setContents(SERVER_ERROR);
+							}
+
+							
+							public void onSuccess(Void result) {
+								// TODO Auto-generated method stub
+								
+							}
+						});
+			}
+		}
+
+		// Add a handler to send the name to the server
+		MyHandler8 handler8 = new MyHandler8();
+		updateFileButton.addClickHandler(handler8);
+		
+        
+        // Add Buttons into Panel
+		
+		
 		vPanel0.add(refreshButton);
 		vPanel0.add(serverResponseLabel);
+		
+		hPanel4.add(form);
+		
+		hPanel1.add(startButton);
+		hPanel1.add(stopButton);
+		hPanel1.add(restartButton);
+		
+		
+		
+		hPanel2.add(addButton);
+		hPanel2.add(deleteButton);
+		hPanel2.add(updateFileButton);
+		
+		hPanel3.add(updateMemoryButton);
+		hPanel3.add(updateInstanceButton);
+		
+		vPanel1.add(hPanel4);
+		vPanel1.add(hPanel1);
+		vPanel1.add(hPanel3);
+		vPanel1.add(hPanel2);
+		
 		tabPanel.add(vPanel0, "Overview");
+		tabPanel.add(vPanel1, "VCAP");
 		
 		tabPanel.selectTab(0);  
 	    tabPanel.ensureDebugId("cwTabPanel");  
@@ -206,14 +635,12 @@ public class Vcapsmartgwt implements EntryPoint {
 		
 	}
 	
+	
     private Widget getProviderTab() {  
         DecoratedTabPanel tabPanel = new DecoratedTabPanel();  
         tabPanel.setWidth("550px");  
         tabPanel.setAnimationEnabled(true);  
-         
-        
-
-        
+               
         //Provider Button
            //1&1 Cloud Server
         VerticalPanel vPanel1 = new VerticalPanel();  
