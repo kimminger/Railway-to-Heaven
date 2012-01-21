@@ -12,35 +12,34 @@ import org.json.JSONObject;
 import edu.kit.eorg.client.Client;
 
 public class EinsundEinsServer {
-/*
- * Hier kommen alle Funktionen rein, die die 1&1 API anbietet
- */
-	
-			//	1&1 Cloud Daten von Markus
-			final static String HOST = "servermanagement-api.1und1.de";
-			final static String USERNAME = "158341849";
-			final static String PASSWORD= "emergent";
-			final static int PORT = 443;
-			
-	
+	/*
+	 * Hier kommen alle Funktionen rein, die die 1&1 API anbietet
+	 */
+
+	// 1&1 Cloud Daten von Markus
+	final static String HOST = "servermanagement-api.1und1.de";
+	final static String USERNAME = "158341849";
+	final static String PASSWORD = "emergent";
+	final static int PORT = 443;
+
 	public String vmID;
-	
+
 	public boolean configurable;
-	
+
 	public int ram;
-	
+
 	public int contract;
-	
+
 	public int cpu;
-	
+
 	public String hostname;
-	
+
 	public String imagetype;
-	
+
 	public int imageid;
-	
+
 	public String imagename;
-	
+
 	public String ip;
 
 	public String getVmID() {
@@ -138,8 +137,54 @@ public class EinsundEinsServer {
 		this.imagename = imagename;
 		this.ip = ip;
 	}
-	
-	//Constructor für JSONObject
+
+	public EinsundEinsServer(String vmID) {
+		super();
+		Client client;
+		try {
+			client = new Client(HOST, PORT, USERNAME, PASSWORD);
+
+			// Befüllt Array mit allen verfügbaren Informationen
+			JSONArray ja = client.doGetServers();
+			// int index = 0;
+			// Schleife über Array
+			for (int i = 0; i < ja.length(); i++) {
+				JSONObject j = ja.getJSONObject(i);
+
+				// EinsundEinsServer server = new EinsundEinsServer(j);
+				// server.getVmID();
+
+				String vmid = (String) j.get("vmid").toString();
+				if (vmid.equals(vmID)) {
+					this.vmID = (String) j.get("vmid").toString();
+					this.configurable = (Boolean) j.get("configurable");
+					this.ram = (Integer) j.get("ram");
+					this.contract = (Integer) j.get("contract");
+					this.cpu = (Integer) j.get("cpu");
+					this.hostname = (String) j.get("hostname");
+					this.imagetype = (String) j.get("imagetype");
+					this.imageid = (Integer) j.get("imageid");
+					this.imagename = (String) j.get("imagename");
+					this.ip = (String) j.get("ip");
+				}
+			}
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	// Constructor für JSONObject
 	public EinsundEinsServer(JSONObject server) throws JSONException {
 		super();
 		this.vmID = (String) server.get("vmid").toString();
@@ -153,46 +198,28 @@ public class EinsundEinsServer {
 		this.imagename = (String) server.get("imagename");
 		this.ip = (String) server.get("ip");
 	}
-	
-	//Constructor für leeres Argument
-	//TODO hier weitermachen
-	public EinsundEinsServer() throws JSONException {
-		super();
-		/*
-		this.vmID = "";//String
-		this.configurable = "true";
-		this.ram = "0";
-		this.contract = "0";
-		this.cpu = "1";
-		this.hostname = "host";
-		this.imagetype = (String) server.get("imagetype");
-		this.imageid = (Integer) server.get("imageid");
-		this.imagename = (String) server.get("imagename");
-		this.ip = (String) server.get("ip");
-		*/
+
+	public void start() {
+
+		try {
+			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
+			client.doPutServerStateChange(vmID, "CAN_START");
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
 	}
-	
-	public void start(){
-	
-	try {
-		Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
-		client.doPutServerStateChange(vmID, "CAN_START");
-		
-	} catch (ClientProtocolException e) {
-		e.printStackTrace();
-	} catch (IOException e) {
-		e.printStackTrace();
-	} catch (URISyntaxException e) {
-		e.printStackTrace();
-	}
-	}
-	
-	public void stop(){
-		
+
+	public void stop() {
+
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
 			client.doPutServerStateChange(vmID, "CAN_STOP");
-			
+
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -200,14 +227,14 @@ public class EinsundEinsServer {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-		}
-		
-	public void restart(){
-		
+	}
+
+	public void restart() {
+
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
 			client.doPutServerStateChange(vmID, "CAN_RESTART");
-			
+
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -215,14 +242,14 @@ public class EinsundEinsServer {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-		}
-	
-public void suspend(){
-		
+	}
+
+	public void suspend() {
+
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
 			client.doPutServerStateChange(vmID, "CAN_SUSPEND");
-			
+
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -230,31 +257,32 @@ public void suspend(){
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-		}
-	
-public void poweroff(){
-	
-	try {
-		Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
-		client.doPutServerStateChange(vmID, "CAN_POWER_OFF");
-	
-	} catch (ClientProtocolException e) {
-		e.printStackTrace();
-	} catch (IOException e) {
-		e.printStackTrace();
-	} catch (URISyntaxException e) {
-		e.printStackTrace();
-	}
 	}
 
-//nice-to-have, aber für spätere Arbeiten überlassen
-	public void priceInfo(){} 
-	
-	public void configureHardware(String cpu, String hdd, String ram){
+	public void poweroff() {
+
+		try {
+			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
+			client.doPutServerStateChange(vmID, "CAN_POWER_OFF");
+
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// nice-to-have, aber für spätere Arbeiten überlassen
+	public void priceInfo() {
+	}
+
+	public void configureHardware(String cpu, String hdd, String ram) {
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
 			client.doPutHardwareConfiguration(vmID, cpu, hdd, ram);
-		
+
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -263,12 +291,12 @@ public void poweroff(){
 			e.printStackTrace();
 		}
 	}
-	
-	public String getState(){
+
+	public String getState() {
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
 			JSONObject j = client.doGetServerState(vmID);
-//			j.get(key);
+			// j.get(key);
 			return j.toString();
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -281,38 +309,40 @@ public void poweroff(){
 		}
 		return null;
 	}
-	
-	//Gibt alle vmIDs zurück, die Team 3 zugeordnet wurden
-	//Rückgabe als String direkt hintereinander!!! Eine vmID ist 5 Zeichen lang.
-	public static int[] getAllvmIDs() throws ClientProtocolException, IOException, JSONException, URISyntaxException{
-		int[] result = new int[4];
+
+	// Gibt alle vmIDs zurück, die Team 3 zugeordnet wurden
+	// Rückgabe als String direkt hintereinander!!! Eine vmID ist 5 Zeichen
+	// lang.
+	public static String[] getAllvmIDs() throws ClientProtocolException,
+			IOException, JSONException, URISyntaxException {
+		String[] result = new String[4];
 		Client client;
-		
-			client = new Client(HOST, PORT, USERNAME, PASSWORD);
-			
-			//Befüllt Array mit allen verfügbaren Informationen 
-			JSONArray ja = client.doGetServers();
-			int index=0;
-			//Schleife über Array
-			for (int i = 0; i < ja.length();i++){
-					JSONObject j = ja.getJSONObject(i);
-					
-//					EinsundEinsServer server = new EinsundEinsServer(j);
-//					server.getVmID();
-					
-					String ip = (String) j.get("ip");
-					if(ip.equals("217.160.94.112") || ip.equals("217.160.94.107") || ip.equals("217.160.94.108") || ip.equals("217.160.94.109")){
-							result[index] = (Integer) j.get("vmid");
-							index++;
-						}
-						
-						
-					}	
-					
-		
-			
-			
-			return result;
+
+		client = new Client(HOST, PORT, USERNAME, PASSWORD);
+
+		// Befüllt Array mit allen verfügbaren Informationen
+		JSONArray ja = client.doGetServers();
+		int index = 0;
+		// Schleife über Array
+		for (int i = 0; i < ja.length(); i++) {
+			JSONObject j = ja.getJSONObject(i);
+
+			// EinsundEinsServer server = new EinsundEinsServer(j);
+			// server.getVmID();
+
+			String ip = (String) j.get("ip");
+			if (ip.equals("217.160.94.112") || ip.equals("217.160.94.107")
+					|| ip.equals("217.160.94.108")
+					|| ip.equals("217.160.94.109")) {
+				result[index] = (String) j.get("vmid").toString();
+				index++;
+			}
+
+		}
+
+		return result;
 	}
+
 	
+
 }

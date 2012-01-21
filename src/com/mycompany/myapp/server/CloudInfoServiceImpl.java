@@ -29,8 +29,12 @@ import com.mycompany.myapp.client.CloudInfoService;
 public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudInfoService {
 
-		
-
+	//Übergabe Konstanten für Methode handle1und1
+	final String START = "start";
+	final String STOP = "stop";
+	final String RESTART = "restart";
+	final String SUSPEND = "suspend";
+	final String POWEROFF = "poweroff";
 
 
 	
@@ -522,19 +526,32 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 							}
 							text = "You have " + instances.size() + " Amazon EC2 instance(s) running.";
 							*/
-	
-	public String start1und1() {
-//		String text = "";
-	
-		int[] server;
-		
+
+		private void handle1und1(String command){
+			String[] server;
+			//TODO Buttons im Frontend anpassen
 			try {
 				server = EinsundEinsServer.getAllvmIDs();
+				//Startet alle Server
+				for (int i = 0; i < server.length; i++) {
+					EinsundEinsServer kim = new EinsundEinsServer(server[i]);
+					if(command == STOP)
+					kim.stop();
+					else if (command == START){
+						kim.start();
+					}
+					else if(command == RESTART){
+						kim.restart();
+					}
+					else if(command == SUSPEND){
+						kim.suspend();
+					}
+					else if(command == POWEROFF){
+						kim.poweroff();
+					}
+					
+				}
 				
-				System.out.println(server[0]);
-				System.out.println(server[1]);
-				System.out.println(server[2]);
-				System.out.println(server[3]);
 			} catch (ClientProtocolException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -548,13 +565,36 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-//			server = server.substring(0, server.length());
-//			server[0
-			
-			return null;
-	
-        
+
+		}
+		
+		
+	public String start1und1() {
+		handle1und1(START);
+		return "1und1-Instanz gestartet";
 	}
 	
-		}
+	public String stop1und1() {
+		handle1und1(STOP);
+		return "1und1-Instanz gestoppt";
+	}
+	
+	public String restart1und1() {
+		handle1und1(RESTART);
+		return "1und1-Instanz neu gestartet";
+	}
+	
+	public String suspend1und1() {
+		handle1und1(SUSPEND);
+		return "1und1-Instanz schläft jetzt";
+	}
+	
+	public String poweroff1und1() {
+		handle1und1(POWEROFF);
+		return "1und1-Instanz ausgeschaltet";
+	}
+	
+	
+	
+}
 		
