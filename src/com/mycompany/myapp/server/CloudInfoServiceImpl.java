@@ -264,134 +264,83 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		
 		public String setAmazonCloudController(String c) {
 			String text = "test";
-
-			//AWS Client Initialisierung
-			AWSCredentials credentials = null;
-			try {
-			credentials = new PropertiesCredentials(
-			CloudInfoServiceImpl.class
-			.getResourceAsStream("AwsCredentials.properties"));
-			} catch (IOException e1) {
-			// return
-			// "Credentials were not properly entered into AwsCredentials.properties.";
-			}
-
-
-
-
-			AmazonEC2 ec2 = new AmazonEC2Client(credentials);
-			ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
-
-
-
-			DescribeInstancesResult result = ec2.describeInstances();
-			for (Reservation reservation : result.getReservations()) {
-			for (Instance instance : reservation.getInstances()) {
-			text += "Instanzen: " + instance.getInstanceId();
-			text += "Typ: " + instance.getInstanceType();
-			text += "Lifecycle: " + instance.getInstanceLifecycle();
-
-			}
-			}
-
-
-
-			/* VORÜBERLEGUNGEN automatischer Instanzenstart
-			RunInstancesRequest req = new RunInstancesRequest();
-			req.setImageId("AMI mit cloudcontroller oder was anderem");
-			req.setInstanceType("t1.small");
-			req.setUserData("");
-			*/
-
-			//TODO Herausfinden wie man elastische IP festlegt
-
-			/*
-			StartInstancesRequest start = new StartInstancesRequest().withInstanceIds("i-acd85be5");
-			ec2.startInstances(start);
-			*/
-
-			/*
-			DescribeInstancesResult describeInstancesRequest = ec2.describeInstances();
-			List<Reservation> reservations = describeInstancesRequest.getReservations();
-			Set<Instance> instances = new HashSet<Instance>();
-
-			for (Reservation reservation : reservations) {
-			instances.addAll(reservation.getInstances());
-			}
-			text = "You have " + instances.size() + " Amazon EC2 instance(s) running.";
-			*/
-			        
-			         
-			         return text;
-			         
-			}
-
-
-		public String start1und1() {
 			
-			String vmIDs = "";
-			// EinsundEinsServer server = new EinsundEinsServer();
-			try {
-
-			String ids = EinsundEinsServer.getAllvmIDs();
-			return ids;
-			} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			}
+							//AWS Client Initialisierung
+							AWSCredentials credentials = null;
+							
+							try {
+								credentials = new PropertiesCredentials(
+								CloudInfoServiceImpl.class
+								.getResourceAsStream("AwsCredentials.properties"));
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						
+							AmazonEC2 ec2 = new AmazonEC2Client(credentials);
+							ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
 
 
-			/*
-			//Schleife über alle JSON Objekte
-			for (int i = 0; i < ja.length();i++){
-			try {
-			JSONObject j = ja.getJSONObject(i);
-			EinsundEinsServer server = new EinsundEinsServer(j);
-			server.getVmID();
-			//Befüllt Array
-			String ip = (String) j.get("ip");
-			// int index = 0;
-			if(ip.equals("217.160.94.112") || ip.equals("217.160.94.107") || ip.equals("217.160.94.108") || ip.equals("217.160.94.109")){
-			String vmID = (String) j.get("vmid").toString();
-			text += vmID + "<br/>";
-			}
-			*/
+							DescribeInstancesResult result = ec2.describeInstances();
+							for (Reservation reservation : result.getReservations()) {
+							for (Instance instance : reservation.getInstances()) {
+							text += "Instanzen: " + instance.getInstanceId();
+							text += "Typ: " + instance.getInstanceType();
+							text += "Lifecycle: " + instance.getInstanceLifecycle();
 
-
-
-			// return vmIDs.toString();
-			return vmIDs;
+							}
+							}
+						return text;
 		}
+		
+
+							/* VORÜBERLEGUNGEN automatischer Instanzenstart
+							RunInstancesRequest req = new RunInstancesRequest();
+							req.setImageId("AMI mit cloudcontroller oder was anderem");
+							req.setInstanceType("t1.small");
+							req.setUserData("");
+							*/
+
+							//TODO Herausfinden wie man elastische IP festlegt
+
+							/*
+							StartInstancesRequest start = new StartInstancesRequest().withInstanceIds("i-acd85be5");
+							ec2.startInstances(start);
+							*/
+
+							/*
+							DescribeInstancesResult describeInstancesRequest = ec2.describeInstances();
+							List<Reservation> reservations = describeInstancesRequest.getReservations();
+							Set<Instance> instances = new HashSet<Instance>();
+
+							for (Reservation reservation : reservations) {
+							instances.addAll(reservation.getInstances());
+							}
+							text = "You have " + instances.size() + " Amazon EC2 instance(s) running.";
+							*/
+	
+	public String start1und1() {
+		
+		try {
+			String server = EinsundEinsServer.getAllvmIDs();
+			return server;
+		} catch (ClientProtocolException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+        return null;
+        
 	}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+	
+		}
 		

@@ -294,25 +294,21 @@ public void poweroff(){
 			
 			//Schleife über Array
 			for (int i = 0; i < ja.length();i++){
-				
-					
 					JSONObject j = ja.getJSONObject(i);
 					
 //					EinsundEinsServer server = new EinsundEinsServer(j);
 //					server.getVmID();
 					
 					String ip = (String) j.get("ip");
-//					int index = 0;
 					if(ip.equals("217.160.94.112") || ip.equals("217.160.94.107") || ip.equals("217.160.94.108") || ip.equals("217.160.94.109")){
 						String vmID = (String) j.get("vmid").toString();
-						text += vmID + "<br/>";
-						return text.toString();
+						text += vmID;
 					}	
-			
+					
 		
 			}
 			
-			return null;
+			return text.toString();
 	}
 	
 }
