@@ -558,7 +558,7 @@ public class Vcapsmartgwt implements EntryPoint {
 			 */
 	    	public void onClick(ClickEvent event) {
 				
-				updateAppfile();
+				uploadAppfile();
 				
 			}
 
@@ -567,7 +567,7 @@ public class Vcapsmartgwt implements EntryPoint {
 			 */
 	    	public void onKeyUp(KeyUpEvent event) {
 				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					updateAppfile();
+					uploadAppfile();
 				}
 			}
 
@@ -575,8 +575,8 @@ public class Vcapsmartgwt implements EntryPoint {
 			 * Send the name from the nameField to the server and wait for a response.
 			 */
 	
-	    	private void updateAppfile(){
-				cloudinfoSvc.updateAppfile(
+	    	private void uploadAppfile(){
+				cloudinfoSvc.uploadAppfile(
 						new AsyncCallback<Void>() {
 
 							public void onFailure(Throwable caught) {
