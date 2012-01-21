@@ -7,8 +7,23 @@ import com.smartgwt.client.widgets.grid.ListGridRecord;
 @RemoteServiceRelativePath("info")
 public interface CloudInfoService extends RemoteService {
 	
-	//public String myMethod(String s);
+
 	public String getInfo(String i);
-	//public CloudRecord[] createListGridRecords(CloudRecord result);
+	
+	public void stopApp();
+	
+	public void startApp();
+	
+	public void updateAppmemory();
+	
+	public void updateAppinstance();
+	
+	public void addApp();
+		
+	public void deleteApp();
+	
+	public void restartApp();
+	
+	public void updateAppfile();
 
 }

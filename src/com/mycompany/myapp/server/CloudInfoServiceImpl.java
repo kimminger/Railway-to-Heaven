@@ -1,96 +1,375 @@
 package com.mycompany.myapp.server;
 
+import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.cloudfoundry.client.lib.CloudApplication;
 import org.cloudfoundry.client.lib.CloudFoundryClient;
-import org.cloudfoundry.client.lib.CloudInfo;
+import org.cloudfoundry.client.lib.UploadStatusCallback;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mycompany.myapp.client.CloudInfoService;
-import com.mycompany.myapp.client.CloudRecord;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
 
-public class CloudInfoServiceImpl extends RemoteServiceServlet implements CloudInfoService{
+public class CloudInfoServiceImpl extends RemoteServiceServlet implements
+		CloudInfoService {
 
-	/*public String myMethod(String s) {
-		// TODO Auto-generated method stub
-		
-		return "Hello, "+ s +" !<br/>Dein Test war erfolgreich! <br/> Phase 1 abgeschlossen!";
-	}*/
-	
+	/*
+	 * public String myMethod(String s) { // TODO Auto-generated method stub
+	 * 
+	 * return "Hello, "+ s
+	 * +" !<br/>Dein Test war erfolgreich! <br/> Phase 1 abgeschlossen!"; }
+	 */
+
 	public String getInfo(String i) {
-		//VCAP Client auf Amazon Instanzen
+
+		// VCAP Client auf Amazon Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz", "http://api.railwaytoheaven.de");
+			// client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+			// "http://api.railwaytoheaven.de");
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.com");
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		/*
+		 * CloudInfo info = client.getCloudInfo(); String cloudinfo =
+		 * info.toString();
+		 */
+
+		client.login();
+		// List<String> uri = client.get
+		List<CloudApplication> apps = client.getApplications();
+		String appInfo = "";
+		int n = 1;
+		for (CloudApplication app : apps) {
+
+			/*appInfo += "Application: " + app.getName() + "Meta "
+					+ app.getMeta() + "Resource" + app.getResources()
+					+ "<Uris:" + app.getUris() + "Services:"
+					+ app.getServices() + "Env: " + app.getEnv() + "Staging:"
+					+ app.getStaging();*/
+			appInfo +=
+			"<table><tr><th>"+n+"</th><th>Application</th><th>State</th><th>Instance</th><th>Memory</th><th>URI</th></tr><tr><td></td><td>"+app.getName()+"</td><td>"+app.getState()+"</td><td>"+app.getInstances()+"</td><td>"+app.getMemory()+"</td><td>"+app.getUris()+"</td></tr></table>";
+			n++;
+		}
+
+		return appInfo;
+		// return cloudinfo;
+	}
+	
+	
+	public void stopApp() {
+
+		// VCAP Client auf 1&1 Instanzen
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.com");
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		client.login();
+		List<CloudApplication> apps = client.getApplications();
 		
+		for (CloudApplication app : apps) {
+			client.stopApplication(app.getName());
+
+		}
+		
+
+	}
+
+	public void startApp() {
+
+		// VCAP Client auf 1&1 Instanzen
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.com");
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		client.login();
+		List<CloudApplication> apps = client.getApplications();
+		for (CloudApplication app : apps) {
+			client.startApplication(app.getName());
+			
+		}
+		
+
+	}
+
+	public void restartApp() {
+
+		// VCAP Client auf 1&1 Instanzen
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.com");
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		client.login();
+		List<CloudApplication> apps = client.getApplications();
+		
+		for (CloudApplication app : apps) {
+			
+			client.restartApplication(app.getName());
+
+			
+		}
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	public void addApp() {
+
+		// VCAP Client auf 1&1 Instanzen
+
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.com");
+
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		
-//		CloudInfo info = client.getCloudInfo();
-	
-		
+		String appname = "hai";
+		String framework = "rails3";
+		List<String> servicesname = new ArrayList<String> (); 
+		List<String> uris = new ArrayList<String> ();
+		uris.add("hai.railwaytoheaven.com");
 		client.login();
+	  
+		client.createApplication(appname,framework, 256, uris, servicesname);
 		
-		List<CloudApplication> apps = client.getApplications();
-		String appInfo = "";
-		int n = 1;
-		for(CloudApplication app : apps){
-			
-			//appInfo += "<table border = 1 > <td>Application: "+app.getName() + "</td> <td><span style= padding-left:20px> State : </span>"+app.getState() + "</td><td> <span style= padding-left:20px> Instances:</span> "+app.getInstances() + "</td><td><span style= padding-left:20px> Memory: </span>" +app.getMemory() + "</td><td> <span style= padding-left:20px> Uris: </span>"+app.getUris()+ "</td></table>";
-			appInfo += "<table><tr><th>"+n+"</th><th>Application</th><th>State</th><th>Instance</th><th>Memory</th><th>URI</th></tr><tr><td></td><td>"+app.getName()+"</td><td>"+app.getState()+"</td><td>"+app.getInstances()+"</td><td>"+app.getMemory()+"</td><td>"+app.getUris()+"</td></tr></table>";
-			n++;
-		}
-			
-			
-		
-		return appInfo;
 	}
-}
-	
 
+	public void deleteApp() {
 
-
-/*	public static CloudRecord[] createListGridRecords(CloudRecord[] result) {
-
-		CloudRecord[] results = new CloudRecord[15];
-    
+		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
-		
 		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz", "http://api.railwaytoheaven.de");
-	
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.com");
+
 		} catch (MalformedURLException e) {
-		// TODO Auto-generated catch block
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-	
-		
+
 		client.login();
-	
-		List<CloudApplication> apps = client.getApplications();
-
-		int i = 0;
-
-		for(CloudApplication app : apps) {
-            results[i] = new CloudRecord();
-            results[i].setAttribute("name", app.getName());
-            results[i].setAttribute("status", app.getState());
-            results[i].setAttribute("version", app.getInstances());
-            i++;
-    }
-
-    return results;
+		String appname = "hai";
+		client.deleteApplication(appname);
+		
 
 	}
-
 	
+	public void updateAppfile(){
+		
+		// VCAP Client auf 1&1 Instanzen
+
+				CloudFoundryClient client = null;
+				try {
+					client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+							"http://api.railwaytoheaven.com");
+
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				client.login();
+				try {
+					client.uploadApplication("hai", new File("/home/hai/git/Railway-to-Heaven/src/wardrobe.zip"),new UploadStatusCallback() {
+						
+						public void onProcessMatchedResources(int arg0) {
+							// TODO Auto-generated method stub
+							System.out.println(arg0 );
+						}
+						
+						public void onMatchedFileNames(Set<String> arg0) {
+							// TODO Auto-generated method stub
+							System.out.println(arg0 );
+						}
+						
+						public void onCheckResources() {
+							// TODO Auto-generated method stub
+							System.out.println("Check Resource");
+						}
+					} );
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+		
+	}
+	
+	public void updateAppmemory(){
+		
+		// VCAP Client auf 1&1 Instanzen
+
+				CloudFoundryClient client = null;
+				try {
+					client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+							"http://api.railwaytoheaven.com");
+
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				client.login();
+				client.updateApplicationMemory("wardrobe", 256);
+		
+	}
+	
+	public void updateAppinstance(){
+		
+		// VCAP Client auf 1&1 Instanzen
+
+				CloudFoundryClient client = null;
+				try {
+					client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+							"http://api.railwaytoheaven.com");
+
+				} catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				client.login();
+				client.updateApplicationInstances("wardrobe", 2);
+		
+	}
 }
-	*/
+/*
+ 	public String setAmazonCloudController(String c) {
+			
+			String text = "test";
+
+		//AWS Client Initialisierung
+			AWSCredentials credentials = null;
+				try {
+					credentials = new PropertiesCredentials(
+					CloudInfoServiceImpl.class
+					.getResourceAsStream("AwsCredentials.properties"));
+					} catch (IOException e1) {
+			// return
+      	// "Credentials were not properly entered into AwsCredentials.properties.";
+		}
+
+
+
+
+		AmazonEC2 ec2 = new AmazonEC2Client(credentials);
+		ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
+
+
+
+		DescribeInstancesResult result = ec2.describeInstances();
+		for (Reservation reservation : result.getReservations()) {
+		for (Instance instance : reservation.getInstances()) {
+		text += "Instanzen: " + instance.getInstanceId();
+		text += "Typ: " + instance.getInstanceType();
+		text += "Lifecycle: " + instance.getInstanceLifecycle();
+
+		}
+	}
+
+/* VORÜBERLEGUNGEN automatischer Instanzenstart
+RunInstancesRequest req = new RunInstancesRequest();
+req.setImageId("AMI mit cloudcontroller oder was anderem");
+req.setInstanceType("t1.small");
+req.setUserData("");
+*/
+
+//TODO Herausfinden wie man elastische IP festlegt
+
+/*
+StartInstancesRequest start = new StartInstancesRequest().withInstanceIds("i-acd85be5");
+ec2.startInstances(start);
+*/
+
+/*
+DescribeInstancesResult describeInstancesRequest = ec2.describeInstances();
+List<Reservation> reservations = describeInstancesRequest.getReservations();
+Set<Instance> instances = new HashSet<Instance>();
+
+for (Reservation reservation : reservations) {
+instances.addAll(reservation.getInstances());
+}
+text = "You have " + instances.size() + " Amazon EC2 instance(s) running.";
+*/
+        
+/*         
+         return text;
+         
+}
+
+
+	public String start1und1(String i) {
+	
+	// TODO Auto-generated method stub
+		String text = "";
+
+	//1&1 Cloud Adresse benutzen!!!
+		String host = "servermanagement-api.1und1.de";
+		String username = "158341849";
+		String password= "emergent";
+
+		Client client = null;
+		try {
+			client = new Client(host, 443, username, password);
+			
+		} catch (ClientProtocolException e) {
+	// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+	// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		JSONArray ja = null;
+	try {
+			ja = client.doGetServers();
+		} catch (ClientProtocolException e) {
+		// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+		// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+		// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+		}
+		text = ja.toString();
+
+		return text;
+		}
+	}
+ */
+
