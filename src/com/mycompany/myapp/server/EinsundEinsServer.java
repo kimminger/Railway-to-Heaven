@@ -303,7 +303,6 @@ public void poweroff(){
 					String ip = (String) j.get("ip");
 					if(ip.equals("217.160.94.112") || ip.equals("217.160.94.107") || ip.equals("217.160.94.108") || ip.equals("217.160.94.109")){
 							result[index] = (Integer) j.get("vmid");
-							System.out.println(result[index]);
 							index++;
 						}
 						
