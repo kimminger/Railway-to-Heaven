@@ -179,7 +179,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	
 	}
 	
-		public void updateAppfile(){
+		public void uploadAppfile(){
 		
 		// VCAP Client auf 1&1 Instanzen
 
@@ -259,9 +259,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 		
 		
-		
-		
-			
+
 //Kim Rohner		
 		
 		public String setAmazonCloudController(String c) {
