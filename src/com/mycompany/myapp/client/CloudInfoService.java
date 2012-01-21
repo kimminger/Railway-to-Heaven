@@ -23,7 +23,7 @@ public interface CloudInfoService extends RemoteService {
 	
 	public void restartApp();
 	
-	public void updateAppfile();
+	public void uploadAppfile();
 
 	public String setAmazonCloudController(String c);
 	public String start1und1();

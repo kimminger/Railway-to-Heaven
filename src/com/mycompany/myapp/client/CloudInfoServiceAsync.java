@@ -21,7 +21,7 @@ public interface CloudInfoServiceAsync {
 
 	void updateAppinstance(AsyncCallback<Void> callback);
 
-	void updateAppfile(AsyncCallback<Void> callback);	
+	void uploadAppfile(AsyncCallback<Void> callback);	
 
 	void setAmazonCloudController(String c, AsyncCallback<String> callback);
 
