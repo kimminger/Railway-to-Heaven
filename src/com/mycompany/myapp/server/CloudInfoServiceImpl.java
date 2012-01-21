@@ -148,11 +148,35 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	
 	public String start1und1() {
-		String vmIDs = "";
-//		EinsundEinsServer server = new EinsundEinsServer();
+//		String vmIDs = "";
 		try {
+			new EinsundEinsServer();
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		try {
+			String server = EinsundEinsServer.getAllvmIDs();
+			return server;
+		} catch (ClientProtocolException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (JSONException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (URISyntaxException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		
+		/*try {
 			
 			String ids = EinsundEinsServer.getAllvmIDs();
+			
 			return ids;
 		} catch (ClientProtocolException e) {
 			// TODO Auto-generated catch block
@@ -166,7 +190,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 	
 		/*
@@ -188,6 +212,6 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	
 		
 //		return vmIDs.toString();
-		return vmIDs;
+		return null;
 	}
 }
