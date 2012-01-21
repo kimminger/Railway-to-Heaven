@@ -283,15 +283,16 @@ public void poweroff(){
 	}
 	
 	//Gibt alle vmIDs zurück, die Team 3 zugeordnet wurden
-	public static String getAllvmIDs() throws ClientProtocolException, IOException, JSONException, URISyntaxException{
-		String text = "";
+	//Rückgabe als String direkt hintereinander!!! Eine vmID ist 5 Zeichen lang.
+	public static int[] getAllvmIDs() throws ClientProtocolException, IOException, JSONException, URISyntaxException{
+		int[] result = new int[4];
 		Client client;
 		
 			client = new Client(HOST, PORT, USERNAME, PASSWORD);
 			
 			//Befüllt Array mit allen verfügbaren Informationen 
 			JSONArray ja = client.doGetServers();
-			
+			int index=0;
 			//Schleife über Array
 			for (int i = 0; i < ja.length();i++){
 					JSONObject j = ja.getJSONObject(i);
@@ -301,14 +302,18 @@ public void poweroff(){
 					
 					String ip = (String) j.get("ip");
 					if(ip.equals("217.160.94.112") || ip.equals("217.160.94.107") || ip.equals("217.160.94.108") || ip.equals("217.160.94.109")){
-						String vmID = (String) j.get("vmid").toString();
-						text += vmID;
+							result[index] = (Integer) j.get("vmid");
+							System.out.println(result[index]);
+							index++;
+						}
+						
+						
 					}	
 					
 		
-			}
 			
-			return text.toString();
+			
+			return result;
 	}
 	
 }

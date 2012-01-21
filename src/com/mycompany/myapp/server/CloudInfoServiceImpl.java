@@ -257,10 +257,147 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					client.updateApplicationInstances("wardrobe", 2);
 			
 		}
+
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	
 		
 
-//Kim Rohner		
+
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		//Kim Rohner		
 		
 		public String setAmazonCloudController(String c) {
 			String text = "test";
@@ -320,25 +457,35 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 							*/
 	
 	public String start1und1() {
+//		String text = "";
+	
+		int[] server;
 		
-		try {
-			String server = EinsundEinsServer.getAllvmIDs();
-			return server;
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (URISyntaxException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-		
-        return null;
+			try {
+				server = EinsundEinsServer.getAllvmIDs();
+				
+				System.out.println(server[0]);
+				System.out.println(server[1]);
+				System.out.println(server[2]);
+				System.out.println(server[3]);
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+//			server = server.substring(0, server.length());
+//			server[0
+			
+			return null;
+	
         
 	}
 	
