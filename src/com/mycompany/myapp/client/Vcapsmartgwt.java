@@ -117,23 +117,28 @@ public class Vcapsmartgwt implements EntryPoint {
         VerticalPanel vPanel1 = new VerticalPanel();  
         vPanel1.setSpacing(15);  
         vPanel1.setHeight("100px");
+        
+        VerticalPanel vPanel2 = new VerticalPanel();  
+        vPanel2.setSpacing(15);  
+        vPanel2.setHeight("100px");
       
         HorizontalPanel hPanel1 = new HorizontalPanel();  
         hPanel1.setSpacing(15);
         hPanel1.setWidth("100px");
         
-        HorizontalPanel hPanel4 = new HorizontalPanel();  
+        /*HorizontalPanel hPanel4 = new HorizontalPanel();  
         hPanel4.setSpacing(15);
-        hPanel4.setWidth("100px");
+        hPanel4.setWidth("100px");*/
         
         final DynamicForm form = new DynamicForm();  
         form.setAutoWidth();  
-        form.setNumCols(2); 
+        
         
         SelectItem appSelect = new SelectItem();
         appSelect.setName("appnameselect"); 
         appSelect.setTitle("Application");
         appSelect.setValueMap("hello","wardrobe");
+        appSelect.setDefaultValue("hello");
         /*appSelect.addChangedHandler(new ChangedHandler() {  
             public void onChanged(ChangedEvent event) {  
                 String ds = (String) event.getValue();  
@@ -145,8 +150,8 @@ public class Vcapsmartgwt implements EntryPoint {
             }  
         });*/  
         
-        form.setItems(appSelect);
-        form.draw();
+        form.setFields(appSelect);
+        
         
         HorizontalPanel hPanel2 = new HorizontalPanel();  
         hPanel2.setSpacing(15);  
@@ -606,7 +611,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		vPanel0.add(refreshButton);
 		vPanel0.add(serverResponseLabel);
 		
-		hPanel4.add(form);
+		//hPanel4.add(form);
 		
 		hPanel1.add(startButton);
 		hPanel1.add(stopButton);
@@ -621,13 +626,17 @@ public class Vcapsmartgwt implements EntryPoint {
 		hPanel3.add(updateMemoryButton);
 		hPanel3.add(updateInstanceButton);
 		
-		vPanel1.add(hPanel4);
+		
 		vPanel1.add(hPanel1);
 		vPanel1.add(hPanel3);
 		vPanel1.add(hPanel2);
 		
+		//vPanel2.add(hPanel4);
+		vPanel2.add(form);
+		
 		tabPanel.add(vPanel0, "Overview");
 		tabPanel.add(vPanel1, "VCAP");
+		tabPanel.add(vPanel2, "Test");
 		
 		tabPanel.selectTab(0);  
 	    tabPanel.ensureDebugId("cwTabPanel");  
@@ -677,7 +686,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		});
         
                 
-               Button deaSubmitButton = new Button("DEA Submit");
+        Button deaSubmitButton = new Button("DEA Submit");
         deaSubmitButton.setLeft(50);
         Button databaseSubmitButton = new Button("Database Submit"); 
         databaseSubmitButton.setLeft(50);      
