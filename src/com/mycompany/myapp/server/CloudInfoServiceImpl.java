@@ -568,7 +568,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		}
 		
-		
+	//Function handlers	
 	public String start1und1() {
 		handle1und1(START);
 		return "1und1-Instanz gestartet";
@@ -594,7 +594,34 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return "1und1-Instanz ausgeschaltet";
 	}
 	
-	
+	private void handle1und1Hardware(String cpu, String hdd, String ram){
+		//TODO checkbox oder 3 verschiedene Konfigs für jeden für cpu, hdd, ram
+		
+		String[] server;
+		//TODO Buttons im Frontend anpassen
+		try {
+			server = EinsundEinsServer.getAllvmIDs();
+			//Startet alle Server
+			for (int i = 0; i < server.length; i++) {
+				EinsundEinsServer kim = new EinsundEinsServer(server[i]);
+				kim.configureHardware(cpu, hdd, ram);
+			}
+			
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 	
 }
 		
