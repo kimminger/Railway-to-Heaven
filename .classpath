@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/J2SE-1.5"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/smartgwt-skins.jar"/>
-	<classpathentry kind="lib" path="lib/smartgwt.jar"/>
-	<classpathentry kind="lib" path="1und1-cloud-server-api.jar"/>
-	<classpathentry kind="lib" path="lib/VcapJavaClient-0.0.1-SNAPSHOT-jar-with-dependencies.jar"/>
-	<classpathentry kind="con" path="com.amazonaws.eclipse.sdk.AWS_JAVA_SDK"/>
+	<classpathentry kind="lib" path="commons-codec-1.4.jar"/>
+	<classpathentry kind="lib" path="commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="smartgwt.jar"/>
+	<classpathentry kind="lib" path="smartgwt-skins.jar"/>
+	<classpathentry kind="lib" path="VcapJavaClient-0.0.1-SNAPSHOT-jar-with-dependencies.jar"/>
+	<classpathentry exported="true" kind="con" path="com.amazonaws.eclipse.sdk.AWS_JAVA_SDK"/>
+	<classpathentry exported="true" kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

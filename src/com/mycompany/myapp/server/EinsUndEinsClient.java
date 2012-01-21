@@ -21,7 +21,7 @@ public class EinsUndEinsClient {
 		
 		System.out.println();
 		
-		//Gibt alle Metainfos über Server zurück
+		//Gibt alle Metainfos ï¿½ber Server zurï¿½ck
 		/*JSONArray ja = client.doGetServers();
 		System.out.println(ja);*/
 		String vmId = "53135";
@@ -32,13 +32,14 @@ public class EinsUndEinsClient {
 			e.printStackTrace();
 		}
 		System.out.println(jprice);
+	
 		//TODO: vmId aus JSON-Format auslesen -> Michael fragen
-		//Mit for schleife über length für alle json objekte attribute vmid auslesen
+		//Mit for schleife ï¿½ber length fï¿½r alle json objekte attribute vmid auslesen
 		
 		//Server einschalten, ausschalten, neu-starten, abschalten
 //		{"possibleActions":["CAN_RESTART","CAN_SUSPEND","CAN_POWER_OFF","CAN_STOP"],"state":"RUNNING"}
 //		client.doPutServerStateChange(vmId, "CAN_START");
-		
+	
 		
 //		Frage an Markus: Kann man mit doPutInstallImage ein VCAP Image bei 1&1 hinterlegen, dass man damit starten kann?
 //		System.out.println(client.doPutInstallImage(vmId, newImageId))
