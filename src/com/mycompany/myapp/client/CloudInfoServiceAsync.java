@@ -7,6 +7,7 @@ public interface CloudInfoServiceAsync {
 
 	void getInfo(String i, AsyncCallback<String> callback);
 
+	//VCAP Functions
 	void stopApp(AsyncCallback<Void> callback);
 
 	void startApp(AsyncCallback<Void> callback);
@@ -26,6 +27,14 @@ public interface CloudInfoServiceAsync {
 	void setAmazonCloudController(String c, AsyncCallback<String> callback);
 
 
-
+	//1und1 Functions
 	void start1und1(AsyncCallback<String> callback);
+
+	void stop1und1(AsyncCallback<String> callback);
+
+	void poweroff1und1(AsyncCallback<String> callback);
+
+	void restart1und1(AsyncCallback<String> callback);
+
+	void suspend1und1(AsyncCallback<String> callback);
 }

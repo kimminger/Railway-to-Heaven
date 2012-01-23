@@ -527,6 +527,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 							text = "You have " + instances.size() + " Amazon EC2 instance(s) running.";
 							*/
 
+		//Interne Funktion zum Umgang mit der 1und1 API
 		private void handle1und1(String command){
 			String[] server;
 			//TODO Buttons im Frontend anpassen
