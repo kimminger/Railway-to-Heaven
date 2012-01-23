@@ -154,15 +154,17 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 				e.printStackTrace();
 		}
-		String appname = "hai";
-		String framework = "rails3";
+		client.login();
+		String appname = "hello";
+		String framework = "rails";
 		List<String> servicesname = new ArrayList<String> (); 
 		List<String> uris = new ArrayList<String> ();
 		uris.add("hai.railwaytoheaven.de");
-		client.login();
-	  
-		client.createApplication(appname,framework, 256, uris, servicesname);
+		
+	  	client.createApplication(appname,framework, 128, uris, servicesname);
+	  	
 	}
+	
 	
 	public void deleteApp() {
 
@@ -178,7 +180,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 
 		client.login();
-		String appname = "hai";
+		String appname = "hello";
 		client.deleteApplication(appname);
 	
 	}
@@ -199,7 +201,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 				
 				client.login();
 				try {
-					client.uploadApplication("hai", new File("/home/hai/git/Railway-to-Heaven/src/wardrobe.zip"),new UploadStatusCallback() {
+					client.uploadApplication("hello", new File("/home/hai/git/Railway-to-Heaven/src/hello.zip"),new UploadStatusCallback() {
 						
 						public void onProcessMatchedResources(int arg0) {
 							// TODO Auto-generated method stub
@@ -239,7 +241,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			}
 			
 			client.login();
-			client.updateApplicationMemory("wardrobe", 256);
+			client.updateApplicationMemory("hello", 256);
 	
 		}
 		
@@ -258,7 +260,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					}
 					
 					client.login();
-					client.updateApplicationInstances("wardrobe", 2);
+					client.updateApplicationInstances("hello", 2);
 			
 		}
 		
@@ -278,7 +280,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					}
 					
 					client.login();
-					client.bindService("hai", "mongodb");
+					client.bindService("hello", "mongodb");
 			
 		}
 		
