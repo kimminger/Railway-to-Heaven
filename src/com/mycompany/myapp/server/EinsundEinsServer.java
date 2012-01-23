@@ -122,6 +122,7 @@ public class EinsundEinsServer {
 		this.ip = ip;
 	}
 
+	//Constructor für vollständige Konfiguration
 	public EinsundEinsServer(String vmID, boolean configurable, int ram,
 			int contract, int cpu, String hostname, String imagetype,
 			int imageid, String imagename, String ip) {
@@ -138,21 +139,19 @@ public class EinsundEinsServer {
 		this.ip = ip;
 	}
 
+	//Constructor für vmID
 	public EinsundEinsServer(String vmID) {
 		super();
 		Client client;
 		try {
 			client = new Client(HOST, PORT, USERNAME, PASSWORD);
 
-			// Befüllt Array mit allen verfügbaren Informationen
+			// Befüllt JSON Array mit allen verfügbaren Informationen, vmid, cpu, ram, hdd, usw.
 			JSONArray ja = client.doGetServers();
 			// int index = 0;
 			// Schleife über Array
 			for (int i = 0; i < ja.length(); i++) {
 				JSONObject j = ja.getJSONObject(i);
-
-				// EinsundEinsServer server = new EinsundEinsServer(j);
-				// server.getVmID();
 
 				String vmid = (String) j.get("vmid").toString();
 				if (vmid.equals(vmID)) {
@@ -169,16 +168,12 @@ public class EinsundEinsServer {
 				}
 			}
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
