@@ -46,7 +46,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		try {
 
 			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.com");
+					"http://api.railwaytoheaven.de");
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -75,7 +75,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.com");
+					"http://api.railwaytoheaven.de");
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -98,7 +98,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.com");
+					"http://api.railwaytoheaven.de");
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -121,7 +121,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.com");
+					"http://api.railwaytoheaven.de");
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -148,7 +148,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.com");
+					"http://api.railwaytoheaven.de");
 
 		} catch (MalformedURLException e){
 			// TODO Auto-generated catch block
@@ -158,7 +158,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		String framework = "rails3";
 		List<String> servicesname = new ArrayList<String> (); 
 		List<String> uris = new ArrayList<String> ();
-		uris.add("hai.railwaytoheaven.com");
+		uris.add("hai.railwaytoheaven.de");
 		client.login();
 	  
 		client.createApplication(appname,framework, 256, uris, servicesname);
@@ -170,7 +170,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.com");
+					"http://api.railwaytoheaven.de");
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -190,7 +190,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 				CloudFoundryClient client = null;
 				try {
 					client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-							"http://api.railwaytoheaven.com");
+							"http://api.railwaytoheaven.de");
 
 				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
@@ -231,7 +231,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			CloudFoundryClient client = null;
 			try {
 				client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-						"http://api.railwaytoheaven.com");
+						"http://api.railwaytoheaven.de");
 
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
@@ -250,7 +250,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					CloudFoundryClient client = null;
 					try {
 						client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-								"http://api.railwaytoheaven.com");
+								"http://api.railwaytoheaven.de");
 
 					} catch (MalformedURLException e) {
 						// TODO Auto-generated catch block
@@ -261,8 +261,26 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					client.updateApplicationInstances("wardrobe", 2);
 			
 		}
+		
 
+		public void bindingAppservice(){
+			
+			// VCAP Client auf 1&1 Instanzen
 
+					CloudFoundryClient client = null;
+					try {
+						client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+								"http://api.railwaytoheaven.de");
+
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					client.login();
+					client.bindService("hai", "mongodb");
+			
+		}
 		
 		
 		
