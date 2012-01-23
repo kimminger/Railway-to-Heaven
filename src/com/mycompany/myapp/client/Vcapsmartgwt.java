@@ -120,7 +120,7 @@ public class Vcapsmartgwt implements EntryPoint {
         
         VerticalPanel vPanel2 = new VerticalPanel();  
         vPanel2.setSpacing(15);  
-        vPanel2.setHeight("100px");
+        vPanel2.setHeight("500px");
       
         HorizontalPanel hPanel1 = new HorizontalPanel();  
         hPanel1.setSpacing(15);
@@ -150,7 +150,7 @@ public class Vcapsmartgwt implements EntryPoint {
             }  
         });*/  
         
-        form.setFields(appSelect);
+        form.setItems(appSelect);
         
         
         HorizontalPanel hPanel2 = new HorizontalPanel();  
@@ -167,442 +167,196 @@ public class Vcapsmartgwt implements EntryPoint {
 		
         
         final Button refreshButton = new Button("Refresh");
-        
-        class MyHandler implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the refreshButton.
-			 */
-			public void onClick(ClickEvent event) {
-				
-				getInfo();
-				
+        refreshButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.getInfo(null, new AsyncCallback<String>(){
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						//serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					
+					public void onSuccess(String result) {
+						// TODO Auto-generated method stub
+						serverResponseLabel.setContents(result);
+						
+					}
+				});
 			}
-
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					getInfo();
-				}
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-	
-			private void getInfo(){
-				cloudinfoSvc.getInfo(
-						null, new AsyncCallback<String>() {
-
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-
-								//serverResponseLabel.setHTML(SERVER_ERROR);
-								serverResponseLabel.setContents(SERVER_ERROR);
-							}
-
-							public void onSuccess(String result) {
-								// TODO Auto-generated method stub
-								
-								serverResponseLabel.setContents(result);
-							}
-						});
-			}
-		}
-
-		// Add a handler to send the name to the server
-		MyHandler handler = new MyHandler();
-		refreshButton.addClickHandler(handler);
-		
+		});
+            
+			
 		//VCAP: Start, Stop, Add, Delete
 		
 		final Button startButton = new Button("Start App");
-        class MyHandler2 implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the refreshButton.
-			 */
-			public void onClick(ClickEvent event) {
-				
-				startApp();
-				
+		startButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.startApp(new AsyncCallback<Void>(){
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						//serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
-
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					startApp();
-				}
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-	
-			private void startApp(){
-				cloudinfoSvc.startApp(
-						new AsyncCallback<Void>() {
-
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-
-								//serverResponseLabel.setHTML(SERVER_ERROR);
-								serverResponseLabel.setContents(SERVER_ERROR);
-							}
-
-							
-							public void onSuccess(Void result) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
-			}
-		}
-
-		// Add a handler to send the name to the server
-		MyHandler2 handler2 = new MyHandler2();
-		startButton.addClickHandler(handler2);
-		
-		
+		});
+      
+		  
+	        	
 		final Button stopButton = new Button("Stop App");
-        class MyHandler1 implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the refreshButton.
-			 */
-			public void onClick(ClickEvent event) {
-				
-				stopApp();
-				
+		stopButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.stopApp(new AsyncCallback<Void>(){
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						//serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
-
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					stopApp();
-				}
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-	
-			private void stopApp(){
-				cloudinfoSvc.stopApp(
-						new AsyncCallback<Void>() {
-
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-
-								//serverResponseLabel.setHTML(SERVER_ERROR);
-								serverResponseLabel.setContents(SERVER_ERROR);
-							}
-
-							
-							public void onSuccess(Void result) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
-			}
-		}
-
-		// Add a handler to send the name to the server
-		MyHandler1 handler1 = new MyHandler1();
-		stopButton.addClickHandler(handler1);
+		});
+		
+			
 		
 		final Button updateMemoryButton = new Button("Update AppMemory");
-		class MyHandler6 implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the refreshButton.
-			 */
-			public void onClick(ClickEvent event) {
-				
-				updateAppmemory();
-				
+		updateMemoryButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.updateAppmemory(new AsyncCallback<Void>(){
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						//serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
-
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					updateAppmemory();
-				}
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-	
-			private void updateAppmemory(){
-				cloudinfoSvc.updateAppmemory(
-						new AsyncCallback<Void>() {
-
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-
-								//serverResponseLabel.setHTML(SERVER_ERROR);
-								serverResponseLabel.setContents(SERVER_ERROR);
-							}
-
-							
-							public void onSuccess(Void result) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
-			}
-		}
-
-		// Add a handler to send the name to the server
-		MyHandler6 handler6 = new MyHandler6();
-		updateMemoryButton.addClickHandler(handler6);
+		});
 		
+				
 		final Button updateInstanceButton = new Button("Update Instance");
-	    class MyHandler7 implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the refreshButton.
-			 */
-			public void onClick(ClickEvent event) {
-				
-				updateAppinstance();
-				
+		updateInstanceButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.updateAppinstance(new AsyncCallback<Void>(){
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						//serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
-
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					updateAppinstance();
-				}
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-	
-			private void updateAppinstance(){
-				cloudinfoSvc.updateAppinstance(
-						new AsyncCallback<Void>() {
-
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-
-								//serverResponseLabel.setHTML(SERVER_ERROR);
-								serverResponseLabel.setContents(SERVER_ERROR);
-							}
-
-							
-							public void onSuccess(Void result) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
-			}
-		}
-
-		// Add a handler to send the name to the server
-		MyHandler7 handler7 = new MyHandler7();
-		updateInstanceButton.addClickHandler(handler7);
-		
+		});
+						
         final Button addButton = new Button("Add App");
-        class MyHandler3 implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the refreshButton.
-			 */
-			public void onClick(ClickEvent event) {
-				
-				addApp();
-				
+        addButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.addApp(new AsyncCallback<Void>(){
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						//serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
-
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					addApp();
-				}
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-	
-			private void addApp(){
-				cloudinfoSvc.addApp(
-						new AsyncCallback<Void>() {
-
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-
-								//serverResponseLabel.setHTML(SERVER_ERROR);
-								serverResponseLabel.setContents(SERVER_ERROR);
-							}
-
-							
-							public void onSuccess(Void result) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
-			}
-		}
-
-		// Add a handler to send the name to the server
-		MyHandler3 handler3 = new MyHandler3();
-		addButton.addClickHandler(handler3);
-        
+		});
         
 		
 		final Button deleteButton = new Button("Delete App");
-        class MyHandler4 implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the refreshButton.
-			 */
-			public void onClick(ClickEvent event) {
-				
-				deleteApp();
-				
+		deleteButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.deleteApp(new AsyncCallback<Void>(){
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						//serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
-
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					deleteApp();
-				}
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-	
-			private void deleteApp(){
-				cloudinfoSvc.deleteApp(
-						new AsyncCallback<Void>() {
-
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-
-								//serverResponseLabel.setHTML(SERVER_ERROR);
-								serverResponseLabel.setContents(SERVER_ERROR);
-							}
-
-							
-							public void onSuccess(Void result) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
-			}
-		}
-
-		// Add a handler to send the name to the server
-		MyHandler4 handler4 = new MyHandler4();
-		deleteButton.addClickHandler(handler4);
-        
+		});
+		
+		        
 		final Button restartButton = new Button("Restart App");
-        class MyHandler5 implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the refreshButton.
-			 */
-			public void onClick(ClickEvent event) {
-				
-				restartApp();
-				
+		restartButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.restartApp(new AsyncCallback<Void>(){
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						//serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
+		});
+		
+		final Button uploadFileButton = new Button("Upload File");
+		uploadFileButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.uploadAppfile(new AsyncCallback<Void>(){
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
 
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-			public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					restartApp();
-				}
+						//serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
 			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-	
-			private void restartApp(){
-				cloudinfoSvc.restartApp(
-						new AsyncCallback<Void>() {
-
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-
-								//serverResponseLabel.setHTML(SERVER_ERROR);
-								serverResponseLabel.setContents(SERVER_ERROR);
-							}
-
-							
-							public void onSuccess(Void result) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
-			}
-		}
-
-		// Add a handler to send the name to the server
-		MyHandler5 handler5 = new MyHandler5();
-		restartButton.addClickHandler(handler5);
-        	
-		final Button updateFileButton = new Button("Upload File");
-	    class MyHandler8 implements ClickHandler, KeyUpHandler {
-			/**
-			 * Fired when the user clicks on the refreshButton.
-			 */
-	    	public void onClick(ClickEvent event) {
-				
-				uploadAppfile();
-				
-			}
-
-			/**
-			 * Fired when the user types in the nameField.
-			 */
-	    	public void onKeyUp(KeyUpEvent event) {
-				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
-					uploadAppfile();
-				}
-			}
-
-			/**
-			 * Send the name from the nameField to the server and wait for a response.
-			 */
-	
-	    	private void uploadAppfile(){
-				cloudinfoSvc.uploadAppfile(
-						new AsyncCallback<Void>() {
-
-							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
-
-								//serverResponseLabel.setHTML(SERVER_ERROR);
-								serverResponseLabel.setContents(SERVER_ERROR);
-							}
-
-							
-							public void onSuccess(Void result) {
-								// TODO Auto-generated method stub
-								
-							}
-						});
-			}
-		}
-
-		// Add a handler to send the name to the server
-		MyHandler8 handler8 = new MyHandler8();
-		updateFileButton.addClickHandler(handler8);
+		});
+		
 		
         
         // Add Buttons into Panel
@@ -621,7 +375,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		
 		hPanel2.add(addButton);
 		hPanel2.add(deleteButton);
-		hPanel2.add(updateFileButton);
+		hPanel2.add(uploadFileButton);
 		
 		hPanel3.add(updateMemoryButton);
 		hPanel3.add(updateInstanceButton);
