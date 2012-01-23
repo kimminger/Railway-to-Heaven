@@ -487,7 +487,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 						
 							AmazonEC2 ec2 = new AmazonEC2Client(credentials);
 							ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
-
+							
+							
+							
 
 							DescribeInstancesResult result = ec2.describeInstances();
 							for (Reservation reservation : result.getReservations()) {
@@ -509,7 +511,6 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 							req.setUserData("");
 							*/
 
-							//TODO Herausfinden wie man elastische IP festlegt
 
 							/*
 							StartInstancesRequest start = new StartInstancesRequest().withInstanceIds("i-acd85be5");
@@ -554,22 +555,19 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 				}
 				
 			} catch (ClientProtocolException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (JSONException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
 		
-	//Function handlers	
+	//Function handlers
+	//TODO 5 Buttons zum Instanzenstart und Label für Antwort
 	public String start1und1() {
 		handle1und1(START);
 		return "1und1-Instanz gestartet";
@@ -609,16 +607,12 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			}
 			
 		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
