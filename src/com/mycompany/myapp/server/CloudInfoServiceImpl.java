@@ -8,20 +8,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.ClientProtocolException;
 import org.cloudfoundry.client.lib.CloudApplication;
 import org.cloudfoundry.client.lib.CloudFoundryClient;
 import org.cloudfoundry.client.lib.UploadStatusCallback;
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.PropertiesCredentials;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
-import com.amazonaws.services.ec2.model.DescribeInstancesResult;
+import com.amazonaws.services.ec2.model.CreateTagsRequest;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.Reservation;
+import com.amazonaws.services.ec2.model.RunInstancesRequest;
+import com.amazonaws.services.ec2.model.RunInstancesResult;
+import com.amazonaws.services.ec2.model.StartInstancesRequest;
+import com.amazonaws.services.ec2.model.Tag;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mycompany.myapp.client.CloudInfoService;
 
@@ -29,12 +33,15 @@ import com.mycompany.myapp.client.CloudInfoService;
 public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudInfoService {
 
-	//Übergabe Konstanten für Methode handle1und1
+	//Konstanten für Methode handle1und1
 	final String START = "start";
 	final String STOP = "stop";
 	final String RESTART = "restart";
 	final String SUSPEND = "suspend";
 	final String POWEROFF = "poweroff";
+	
+	//Konstanten für AWS-Methoden
+	final String IMAGEID = "ami-b96b55cd";
 
 
 	
@@ -468,14 +475,72 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		
 		
 		
-		//Kim Rohner		
+		//Autor Kim Rohner Mailto: rohner.kim at gmail.com
 		
-		public String setAmazonCloudController(String c) {
-			String text = "test";
+		//TODO Übersicht über alle Instanzen
+		
+//		private void init(){
+//			
+//		}
+		
+		public String setAmazonCloudController(String c){
+			/*
+			instanz erstellen (large mit ami)
+			instanz starten
+			security group default
+			keypair cf.pem
 			
+			anbinden an elastische ip nur bei cloud controller
+			userdata setzen auf String Rest;
+			
+			instanz rebooten.*/
+			
+			AWSCredentials credentials;
+			try {
+				credentials = new PropertiesCredentials(
+				        CloudInfoServiceImpl.class.getResourceAsStream("AwsCredentials.properties"));
+				
+				AmazonEC2 ec2 = new AmazonEC2Client(credentials);
+		        ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
+		        
+		        String userData = "dea";
+		        RunInstancesRequest req = new RunInstancesRequest()
+		        	.withInstanceType("m1.large")
+		        	.withImageId(IMAGEID)
+		        	.withMinCount(2)
+		        	.withMaxCount(2)
+		        	.withSecurityGroupIds("sg-73243f07")
+		        	.withKeyName("cf")
+		        	.withUserData(Base64.encodeBase64String(userData.getBytes()));
+		        
+		        RunInstancesResult res = ec2.runInstances(req);
+		        
+		        List<Instance> instances = res.getReservation().getInstances();
+		        int index = 1;
+		        for(Instance instance : instances){
+		        	CreateTagsRequest tagReq = new CreateTagsRequest();
+		        	tagReq.withResources(instance.getInstanceId())
+		        		.withTags(new Tag("Name", "Kim-DEA" + index));
+		        	ec2.createTags(tagReq);
+		        	index++;
+		        }
+		        
+		        /*String inst = instances.toString();
+		        //Start der neuen Instanz
+		        StartInstancesRequest start = new StartInstancesRequest().withInstanceIds(inst);
+				ec2.startInstances(start);*/
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+	        
+			
+			return "Instanz gestartet";
+			/*
+				String text = "test";
 							//AWS Client Initialisierung
 							AWSCredentials credentials = null;
-							
 							try {
 								credentials = new PropertiesCredentials(
 								CloudInfoServiceImpl.class
@@ -484,13 +549,8 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
-						
 							AmazonEC2 ec2 = new AmazonEC2Client(credentials);
 							ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
-							
-							
-							
-
 							DescribeInstancesResult result = ec2.describeInstances();
 							for (Reservation reservation : result.getReservations()) {
 							for (Instance instance : reservation.getInstances()) {
@@ -501,21 +561,11 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 							}
 							}
 						return text;
+						*/
 		}
 		
 
-							/* VORÜBERLEGUNGEN automatischer Instanzenstart
-							RunInstancesRequest req = new RunInstancesRequest();
-							req.setImageId("AMI mit cloudcontroller oder was anderem");
-							req.setInstanceType("t1.small");
-							req.setUserData("");
-							*/
-
-
-							/*
-							StartInstancesRequest start = new StartInstancesRequest().withInstanceIds("i-acd85be5");
-							ec2.startInstances(start);
-							*/
+					
 
 							/*
 							DescribeInstancesResult describeInstancesRequest = ec2.describeInstances();
@@ -617,6 +667,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 
 	}
+
 	
 }
 		
