@@ -29,8 +29,12 @@ import com.mycompany.myapp.client.CloudInfoService;
 public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudInfoService {
 
-		
-
+	//Übergabe Konstanten für Methode handle1und1
+	final String START = "start";
+	final String STOP = "stop";
+	final String RESTART = "restart";
+	final String SUSPEND = "suspend";
+	final String POWEROFF = "poweroff";
 
 
 	
@@ -257,7 +261,8 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					client.updateApplicationInstances("wardrobe", 2);
 			
 		}
-	
+
+
 		
 		
 		
@@ -350,6 +355,72 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		
 		
 		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
 		
 		
 		
@@ -455,29 +526,102 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 							}
 							text = "You have " + instances.size() + " Amazon EC2 instance(s) running.";
 							*/
-	
-	public String start1und1() {
-		
-		try {
-			String server = EinsundEinsServer.getAllvmIDs();
-			return server;
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (JSONException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (URISyntaxException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+
+		private void handle1und1(String command){
+			String[] server;
+			//TODO Buttons im Frontend anpassen
+			try {
+				server = EinsundEinsServer.getAllvmIDs();
+				//Startet alle Server
+				for (int i = 0; i < server.length; i++) {
+					EinsundEinsServer kim = new EinsundEinsServer(server[i]);
+					if(command == STOP)
+					kim.stop();
+					else if (command == START){
+						kim.start();
+					}
+					else if(command == RESTART){
+						kim.restart();
+					}
+					else if(command == SUSPEND){
+						kim.suspend();
+					}
+					else if(command == POWEROFF){
+						kim.poweroff();
+					}
+					
+				}
+				
+			} catch (ClientProtocolException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 		
-        return null;
-        
+	//Function handlers	
+	public String start1und1() {
+		handle1und1(START);
+		return "1und1-Instanz gestartet";
 	}
 	
+	public String stop1und1() {
+		handle1und1(STOP);
+		return "1und1-Instanz gestoppt";
+	}
+	
+	public String restart1und1() {
+		handle1und1(RESTART);
+		return "1und1-Instanz neu gestartet";
+	}
+	
+	public String suspend1und1() {
+		handle1und1(SUSPEND);
+		return "1und1-Instanz schläft jetzt";
+	}
+	
+	public String poweroff1und1() {
+		handle1und1(POWEROFF);
+		return "1und1-Instanz ausgeschaltet";
+	}
+	
+	private void handle1und1Hardware(String cpu, String hdd, String ram){
+		//TODO checkbox oder 3 verschiedene Konfigs für jeden für cpu, hdd, ram
+		
+		String[] server;
+		//TODO Buttons im Frontend anpassen
+		try {
+			server = EinsundEinsServer.getAllvmIDs();
+			//Startet alle Server
+			for (int i = 0; i < server.length; i++) {
+				EinsundEinsServer kim = new EinsundEinsServer(server[i]);
+				kim.configureHardware(cpu, hdd, ram);
+			}
+			
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+
+	}
+	
+}
 		
