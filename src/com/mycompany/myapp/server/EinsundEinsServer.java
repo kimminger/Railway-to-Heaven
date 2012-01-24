@@ -305,7 +305,7 @@ public class EinsundEinsServer {
 		return null;
 	}
 
-	// Gibt alle vmIDs zurück in einem Array zurück, die Team 3 zugeordnet wurden
+	// Gibt alle vmIDs in einem Array zurück, die Team 3 zugeordnet wurden
 	public static String[] getAllvmIDs() throws ClientProtocolException,
 			IOException, JSONException, URISyntaxException {
 		String[] result = new String[4];
