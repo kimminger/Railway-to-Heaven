@@ -644,30 +644,29 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 		
 	//Function handlers
-	//TODO 5 Buttons zum Instanzenstart und Label für Antwort
 	public String start1und1() {
 		handle1und1(START);
-		return "1und1-Instanz gestartet";
+		return "1und1-Instanzen gestartet";
 	}
 	
 	public String stop1und1() {
 		handle1und1(STOP);
-		return "1und1-Instanz gestoppt";
+		return "1und1-Instanzen gestoppt";
 	}
 	
 	public String restart1und1() {
 		handle1und1(RESTART);
-		return "1und1-Instanz neu gestartet";
+		return "1und1-Instanzen neu gestartet";
 	}
 	
 	public String suspend1und1() {
 		handle1und1(SUSPEND);
-		return "1und1-Instanz schläft jetzt";
+		return "1und1-Instanzen schlafen jetzt";
 	}
 	
 	public String poweroff1und1() {
 		handle1und1(POWEROFF);
-		return "1und1-Instanz ausgeschaltet";
+		return "1und1-Instanzen ausgeschaltet";
 	}
 	
 	private void handle1und1Hardware(String cpu, String hdd, String ram){
