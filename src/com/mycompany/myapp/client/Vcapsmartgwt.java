@@ -104,7 +104,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		
 		//Tab Overview: Overview, VCAP
 		
-		DecoratedTabPanel tabPanel = new DecoratedTabPanel();  
+		final DecoratedTabPanel tabPanel = new DecoratedTabPanel();  
         tabPanel.setWidth("550px");  
         tabPanel.setAnimationEnabled(true); 
         
@@ -138,6 +138,7 @@ public class Vcapsmartgwt implements EntryPoint {
         appSelect.setName("appnameselect"); 
         appSelect.setTitle("Application");
         appSelect.setValueMap("hello","wardrobe");
+        
         appSelect.setDefaultValue("hello");
         /*appSelect.addChangedHandler(new ChangedHandler() {  
             public void onChanged(ChangedEvent event) {  
@@ -357,8 +358,54 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 		
+		final Button bindingserviceButton = new Button("Binding Service");
+		bindingserviceButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.bindingAppservice(new AsyncCallback<Void>(){
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						//serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			}
+		});
+		
+		final VerticalPanel vPanel3 = new VerticalPanel();  
+        vPanel3.setSpacing(15);  
+        vPanel3.setHeight("500px");
+        
+        final Button closeButton = new Button("Close Tab");  
+	     closeButton.addClickHandler(new ClickHandler() {  
+	            public void onClick(ClickEvent event) {  
+	            	tabPanel.remove(vPanel3);
+	            	                
+	            }  
+	        });  
 		
         
+		final Button addtabButton = new Button("Add Tab");  
+	    addtabButton.addClickHandler(new ClickHandler() {  
+	            public void onClick(ClickEvent event) {  
+	            	
+	            	vPanel3.setVisible(true);     
+	              	vPanel3.add(addButton);
+	            	vPanel3.add(bindingserviceButton);
+	              	vPanel3.add(uploadFileButton);
+	            	vPanel3.add(closeButton);
+	              	tabPanel.add(vPanel3, "Add App");            
+	              
+	            }  
+	        });  
+	  
+	            
         // Add Buttons into Panel
 		
 		
@@ -373,12 +420,13 @@ public class Vcapsmartgwt implements EntryPoint {
 		
 		
 		
-		hPanel2.add(addButton);
+		//hPanel2.add(addButton);
 		hPanel2.add(deleteButton);
-		hPanel2.add(uploadFileButton);
-		
+		//hPanel2.add(uploadFileButton);
+				
 		hPanel3.add(updateMemoryButton);
 		hPanel3.add(updateInstanceButton);
+		hPanel3.add(addtabButton);
 		
 		
 		vPanel1.add(hPanel1);

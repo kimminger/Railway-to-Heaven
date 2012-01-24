@@ -23,6 +23,8 @@ public interface CloudInfoServiceAsync {
 	void updateAppinstance(AsyncCallback<Void> callback);
 
 	void uploadAppfile(AsyncCallback<Void> callback);	
+	
+	void bindingAppservice(AsyncCallback<Void> callback);
 
 	void setAmazonCloudController(String c, AsyncCallback<String> callback);
 
@@ -37,4 +39,6 @@ public interface CloudInfoServiceAsync {
 	void restart1und1(AsyncCallback<String> callback);
 
 	void suspend1und1(AsyncCallback<String> callback);
+
+	
 }

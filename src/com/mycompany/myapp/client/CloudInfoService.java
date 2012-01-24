@@ -17,6 +17,7 @@ public interface CloudInfoService extends RemoteService {
 	public void deleteApp();
 	public void restartApp();
 	public void uploadAppfile();
+	public void bindingAppservice();
 
 	public String setAmazonCloudController(String c);
 	

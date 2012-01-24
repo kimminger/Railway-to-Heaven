@@ -59,7 +59,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		int n = 1;
 		for (CloudApplication app : apps) {
 			
-			appInfo +="<table><tr><th>"+n+"</th><th>Application</th><th>State</th><th>Instance</th><th>Memory</th><th>URI</th></tr><tr><td></td><td>"+app.getName()+"</td><td>"+app.getState()+"</td><td>"+app.getInstances()+"</td><td>"+app.getMemory()+"</td><td>"+app.getUris()+"</td></tr></table>";
+			appInfo +="<table><tr><th>"+n+"</th><th>Application</th><th>State</th><th>Instance</th><th>Memory</th><th>Service</th><th>URI</th></tr><tr><td></td><td>"+app.getName()+"</td><td>"+app.getState()+"</td><td>"+app.getInstances()+"</td><td>"+app.getMemory()+"</td><td>"+app.getServices()+"</td><td>"+app.getUris()+"</td></tr></table>";
 			n++;
 
 		}
@@ -108,12 +108,19 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		client.login();
 		List<CloudApplication> apps = client.getApplications();
 		for (CloudApplication app : apps) {
-			client.startApplication(app.getName());
+			//if (app == equals(eingabe)){
+				client.startApplication(app.getName());
+				//System.out.println("App" + eingabe + "" );}
+			//else
+				//System.out.println("This app is not found!" );
+					
+			}
+			//client.startApplication(app.getName());
 			
 		}
 		
 
-	}
+	
 
 	public void restartApp() {
 
@@ -156,7 +163,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 		client.login();
 		String appname = "hello";
-		String framework = "rails";
+		String framework = "rails3";
 		List<String> servicesname = new ArrayList<String> (); 
 		List<String> uris = new ArrayList<String> ();
 		uris.add("hai.railwaytoheaven.de");
@@ -201,7 +208,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 				
 				client.login();
 				try {
-					client.uploadApplication("hello", new File("/home/hai/git/Railway-to-Heaven/src/hello.zip"),new UploadStatusCallback() {
+					client.uploadApplication("hello", new File("/home/hai/git/Railway-to-Heaven/src/wardrobe.zip"),new UploadStatusCallback() {
 						
 						public void onProcessMatchedResources(int arg0) {
 							// TODO Auto-generated method stub
@@ -280,7 +287,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					}
 					
 					client.login();
-					client.bindService("hello", "mongodb");
+					
+					client.bindService("hello","mongodb_hai");
+					
 			
 		}
 		
