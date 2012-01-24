@@ -305,9 +305,7 @@ public class EinsundEinsServer {
 		return null;
 	}
 
-	// Gibt alle vmIDs zurück, die Team 3 zugeordnet wurden
-	// Rückgabe als String direkt hintereinander!!! Eine vmID ist 5 Zeichen
-	// lang.
+	// Gibt alle vmIDs zurück in einem Array zurück, die Team 3 zugeordnet wurden
 	public static String[] getAllvmIDs() throws ClientProtocolException,
 			IOException, JSONException, URISyntaxException {
 		String[] result = new String[4];
