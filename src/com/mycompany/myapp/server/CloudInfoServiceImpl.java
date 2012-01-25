@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -47,6 +49,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	// Objektvariablen
 	private AmazonEC2 ec2;
 	private List<Instance> instanceIds;
+	
 
 	public String getInfo(String i) {
 
@@ -329,20 +332,21 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 			RunInstancesResult awsResult = ec2.runInstances(awsRequest);
 			instanceIds = awsResult.getReservation().getInstances();
+			
 
 			int index = 1;
 			for (Instance instance : instanceIds) {
 				CreateTagsRequest tagReq = new CreateTagsRequest();
 				tagReq.withResources(instance.getInstanceId()).withTags(
-						new Tag("Name", "Kim-" + userData + index));
+						new Tag("Name", "Kim-" + userData + index), 
+						new Tag("Node", userData));
 				ec2.createTags(tagReq);
 				index++;
 			}
 
-			return instanceIds;
+			return (List<Instance>) instanceIds;
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -356,17 +360,23 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	}
 
 	public String stopAmazonDEA() {
-		StopInstancesRequest stop = new StopInstancesRequest();
-
-		for (Instance instance : instanceIds) {
-			if (instance.getTags().contains("dea")) {
-				stop.withInstanceIds(instanceIds.toString());
-			}
+		//TODO hier weitermachen, hat nicht funktioniert, Problem: die instance-ids könnne nicht richtig abgefragt werden
+		//Varianten 1: Abfrage mit Tag -> erfolglos, hat Tag nicht erkannt.
+		//Varianten 2: stopinstancerequest geschachtelt .withinstanceid -> Problem mit Liste von Instanz-objekten -> will einzelne ID als String
+		//-> diese sind aber durch Iterator nicht abfragbar, weil er dafür einen anderen Request braucht
+		
+		/*
+		StopInstancesRequest stop = new StopInstancesRequest().with
+		RunInstancesResult result = ec2.stopInstances(stopInstancesRequest);
+		List<Instance> deaInstances = result.getReservation().getInstances();
+		for(Instance instance : deaInstances){
+			instance.getInstanceId();
+			ec2.stopInstances(new StopInstancesRequest().withInstanceIds(instance.getInstanceId()));
+			
 		}
-
-		String result = "The following instances are about to be stopped: <br/>"
-				+ instanceIds.toString();
-		return result;
+		*/
+		
+		return "hui";
 	}
 
 	public String startAmazonMongoDB() {

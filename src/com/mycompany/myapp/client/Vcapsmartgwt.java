@@ -760,8 +760,28 @@ public class Vcapsmartgwt implements EntryPoint {
 		final HTML awsResponseLabel = new HTML();
 		awsResponseLabel.setWidth("400");
 		awsResponseLabel.setHeight("450");
-		Button dea2Button = new Button("DEA");
+		Button startDeaButton = new Button("Start DEA");
+		Button stoppDeaButton = new Button("Stopp DEA");
 		Button database2Button = new Button("Database");
+		
+		final DialogBox awsResponseBox = new DialogBox();
+		awsResponseBox.setText("AWS Server Response: ");
+		awsResponseBox.setAnimationEnabled(true);
+		awsResponseBox.setPopupPosition(610, 30);
+		final Button closeAwsButton = new Button("<b>Close to continue</b>");
+		final HTML awsServerResponseLabel = new HTML();
+		VerticalPanel dialogAwsPanel = new VerticalPanel();
+		dialogAwsPanel.addStyleName("dialogVPanel");
+		dialogAwsPanel.add(new HTML(
+				"AWS Server Response: <br/>"));
+		dialogAwsPanel.add(awsServerResponseLabel);
+		dialogAwsPanel.add(closeAwsButton);
+		closeAwsButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				awsResponseBox.hide();
+			}
+		});
+		awsResponseBox.setWidget(dialogAwsPanel);
 
 		// AWS Refresh Button - ClickHandler mit RPC
 		refreshButton.addClickHandler(new ClickHandler() {
@@ -773,7 +793,8 @@ public class Vcapsmartgwt implements EntryPoint {
 							}
 
 							public void onSuccess(String result) {
-								awsResponseLabel.setText(result);
+								awsResponseBox.show();
+								awsServerResponseLabel.setText(result);
 							}
 						});
 			}
@@ -791,17 +812,53 @@ public class Vcapsmartgwt implements EntryPoint {
 							}
 
 							public void onSuccess(String result) {
-								awsResponseLabel.setText(result);
+								awsResponseBox.show();
+								awsServerResponseLabel.setText(result);
 							}
 						});
 			}
 		});
+		
+		startDeaButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				cloudinfoSvc.startAmazonDEA(new AsyncCallback<String>() {
 
-		vPanel2.add(refreshButton);
-		vPanel2.add(awsOverviewLabel);
+					public void onFailure(Throwable caught) {
+						awsResponseLabel.setText(SERVER_ERROR);
+					}
+
+					public void onSuccess(String result) {
+						awsResponseBox.show();
+						awsServerResponseLabel.setText(result);
+					}
+				});
+			}
+		});
+		
+		stoppDeaButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				cloudinfoSvc.stopAmazonDEA(new AsyncCallback<String>() {
+
+					public void onFailure(Throwable caught) {
+						awsResponseLabel.setText(SERVER_ERROR);
+					}
+
+					public void onSuccess(String result) {
+						awsResponseBox.show();
+						awsServerResponseLabel.setText(result);
+					}
+				});
+			}
+		});
+
+//		vPanel2.add(refreshButton);
+//		vPanel2.add(awsOverviewLabel);
 		vPanel2.add(cloudcontroller2Button);
 		vPanel2.add(awsResponseLabel);
-		vPanel2.add(dea2Button);
+		vPanel2.add(startDeaButton);
+		vPanel2.add(stoppDeaButton);
 		vPanel2.add(database2Button);
 		tabPanel.add(vPanel2, "Amazon Web Service");
 

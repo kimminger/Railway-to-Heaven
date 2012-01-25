@@ -19,7 +19,10 @@ public interface CloudInfoService extends RemoteService {
 	public void uploadAppfile();
 	public void bindingAppservice();
 
+	//AWS Functions
 	public String setAmazonCloudController(String c);
+	public String startAmazonDEA();
+	public String stopAmazonDEA();
 	
 	//1und1 Functions
 	public String start1und1();
