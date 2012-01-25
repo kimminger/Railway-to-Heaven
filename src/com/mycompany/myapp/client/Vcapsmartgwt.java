@@ -430,7 +430,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		});
 
 	    holder.add(upload);
- 	    formupload.setAction("http://api.railwaytoheaven.de");
+ 	    formupload.setAction("http://hai.railwaytoheaven.de");
  	    
 	    final Button uploadFileButton = new Button("Upload File");
 		uploadFileButton.addClickHandler(new ClickHandler(){
