@@ -12,6 +12,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.ClientProtocolException;
 import org.cloudfoundry.client.lib.CloudApplication;
 import org.cloudfoundry.client.lib.CloudFoundryClient;
+import org.cloudfoundry.client.lib.CloudInfo.Framework;
+import org.cloudfoundry.client.lib.CloudService;
 import org.cloudfoundry.client.lib.UploadStatusCallback;
 import org.json.JSONException;
 
@@ -79,7 +81,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	
-	public void stopApp() {
+	public void stopApp(String appName) {
 
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
@@ -96,13 +98,16 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		List<CloudApplication> apps = client.getApplications();
 		
 		for (CloudApplication app : apps) {
-			client.stopApplication(app.getName());
+			if(app.getName().equals(appName)){
+				client.stopApplication(appName);
+			}		
+			
 
 		}
-
+		
 	}
 
-	public void startApp() {
+	public void startApp(String appName) {
 
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
@@ -114,51 +119,47 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		client.login();
-		List<CloudApplication> apps = client.getApplications();
-		for (CloudApplication app : apps) {
-			//if (app == equals(eingabe)){
-				client.startApplication(app.getName());
-				//System.out.println("App" + eingabe + "" );}
-			//else
-				//System.out.println("This app is not found!" );
-					
-			}
-			//client.startApplication(app.getName());
-			
-		}
 		
-
+		client.login();
 	
-
-	public void restartApp() {
-
-		// VCAP Client auf 1&1 Instanzen
-		CloudFoundryClient client = null;
-		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		client.login();
 		List<CloudApplication> apps = client.getApplications();
-		
 		for (CloudApplication app : apps) {
-			
-			client.restartApplication(app.getName());
-
-			
+			if(app.getName().equals(appName)){
+				client.startApplication(appName);
+			}		
 		}
 		
 	}
 	
 	
-	public void addApp() {
+
+	public void restartApp(String appName) {
+
+		// VCAP Client auf 1&1 Instanzen
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.de");
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		client.login();
+		List<CloudApplication> apps = client.getApplications();
+		
+		for (CloudApplication app : apps) {
+			if(app.getName().equals(appName)){
+				client.restartApplication(appName);
+			}		
+	
+		}
+		
+	}
+	
+	
+	public void addApp(String appName, String framework, int memory, List<String> uris, List<String> servicesname ) {
 
 		// VCAP Client auf 1&1 Instanzen
 
@@ -172,18 +173,18 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 				e.printStackTrace();
 		}
 		client.login();
-		String appname = "hello";
-		String framework = "rails3";
-		List<String> servicesname = new ArrayList<String> (); 
-		List<String> uris = new ArrayList<String> ();
-		uris.add("hai.railwaytoheaven.de");
+		//String appname = "hello";
+		//String framework = "rails3";
+		//List<String> servicesname = new ArrayList<String> (); 
+		//List<String> uris = new ArrayList<String> ();
+		//uris.add("hai.railwaytoheaven.de");
 		
-	  	client.createApplication(appname,framework, 128, uris, servicesname);
+	  	client.createApplication(appName,framework, memory, uris, servicesname);
 	  	
 	}
 	
 	
-	public void deleteApp() {
+	public void deleteApp(String appName) {
 
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
@@ -197,8 +198,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 
 		client.login();
-		String appname = "hello";
-		client.deleteApplication(appname);
+		client.deleteApplication(appName);
 	
 	}
 	
@@ -245,10 +245,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			}
 	
 
-		public void updateAppmemory(){
+		public void updateAppmemory( String appName, int memory){
 	
 			// VCAP Client auf 1&1 Instanzen
-
 			CloudFoundryClient client = null;
 			try {
 				client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
@@ -260,11 +259,12 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			}
 			
 			client.login();
-			client.updateApplicationMemory("hello", 256);
+			client.updateApplicationMemory(appName, memory);
+			
 	
 		}
 		
-		public void updateAppinstance(){
+		public void updateAppinstance(String appName, int instances){
 			
 			// VCAP Client auf 1&1 Instanzen
 
@@ -279,7 +279,8 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					}
 					
 					client.login();
-					client.updateApplicationInstances("hello", 2);
+					client.updateApplicationInstances(appName, instances);
+					
 			
 		}
 		
@@ -305,8 +306,27 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			
 		}
 		
-	
-		  
+		/*public void createAppservice(CloudService service){
+			
+			// VCAP Client auf 1&1 Instanzen
+
+					CloudFoundryClient client = null;
+					try {
+						client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+								"http://api.railwaytoheaven.de");
+
+					} catch (MalformedURLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+					client.login();
+					
+					client.createService(service);
+					
+			
+		}
+		  */
 		
 		
 		

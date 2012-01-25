@@ -1,5 +1,10 @@
 package com.mycompany.myapp.client;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.cloudfoundry.client.lib.CloudService;
+
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -19,7 +24,9 @@ import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.IntegerBox;
 import com.google.gwt.user.client.ui.TextBox;
+import com.google.gwt.user.client.ui.ValueBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.types.Side;
@@ -126,10 +133,11 @@ public class Vcapsmartgwt implements EntryPoint {
 		hPanel1.setSpacing(15);
 		hPanel1.setWidth("100px");
 
-		/*
-		 * HorizontalPanel hPanel4 = new HorizontalPanel();
-		 * hPanel4.setSpacing(15); hPanel4.setWidth("100px");
-		 */
+		
+		HorizontalPanel hPanel4 = new HorizontalPanel();
+		hPanel4.setSpacing(15); 
+		hPanel4.setWidth("100px");
+		
 
 		final DynamicForm form = new DynamicForm();
 		form.setAutoWidth();
@@ -183,11 +191,15 @@ public class Vcapsmartgwt implements EntryPoint {
 		});
 
 		// VCAP: Start, Stop, Add, Delete
-
+		final TextBox inputAppName = new TextBox();
+		inputAppName.setText("Enter Appname here to Start|Stop|Restart|Delete");
+		
 		final Button startButton = new Button("Start App");
 		startButton.addClickHandler(new ClickHandler() {
+			
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.startApp(new AsyncCallback<Void>() {
+				String appName = inputAppName.getText();
+				cloudinfoSvc.startApp(appName, new AsyncCallback<Void>(){
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
@@ -195,9 +207,10 @@ public class Vcapsmartgwt implements EntryPoint {
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
+					
 					public void onSuccess(Void result) {
 						// TODO Auto-generated method stub
-
+						
 					}
 				});
 			}
@@ -206,7 +219,8 @@ public class Vcapsmartgwt implements EntryPoint {
 		final Button stopButton = new Button("Stop App");
 		stopButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.stopApp(new AsyncCallback<Void>() {
+				String appName = inputAppName.getText();
+				cloudinfoSvc.stopApp(appName, new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
@@ -221,11 +235,16 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
+		
+		final IntegerBox inputMemory = new IntegerBox();
+		inputMemory.setText("Memory");
 
 		final Button updateMemoryButton = new Button("Update AppMemory");
 		updateMemoryButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.updateAppmemory(new AsyncCallback<Void>() {
+				String appName = inputAppName.getText();
+				int memory = inputMemory.getValue();
+				cloudinfoSvc.updateAppmemory(appName, memory, new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
@@ -240,16 +259,21 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
-
+		
+		final IntegerBox inputInstance = new IntegerBox();
+		inputInstance.setText("Instances");
+		
 		final Button updateInstanceButton = new Button("Update Instance");
 		updateInstanceButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.updateAppinstance(new AsyncCallback<Void>() {
+				String appName = inputAppName.getText();
+				int instances = inputInstance.getValue();
+				cloudinfoSvc.updateAppinstance(appName, instances, new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
 						// serverResponseLabel.setHTML(SERVER_ERROR);
-						serverResponseLabel.setContents(SERVER_ERROR);
+						serverResponseLabel.setContents("invalid value! please give valid value");
 					}
 
 					public void onSuccess(Void result) {
@@ -260,10 +284,25 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 
+		//String appname = "hello";
+				//String framework = "rails3";
+				//List<String> servicesname = new ArrayList<String> (); 
+				//List<String> uris = new ArrayList<String> ();
+				//uris.add("hai.railwaytoheaven.de");
+		final TextBox inputFramework = new TextBox();
+		inputFramework.setText("Enter Framework of App");
+				
 		final Button addButton = new Button("Add App");
 		addButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.addApp(new AsyncCallback<Void>() {
+				String appName = inputAppName.getText();
+				String framework = inputFramework.getText();
+				int memory = inputMemory.getValue();
+				List<String> uris = new ArrayList<String>();
+				uris.add("hai.railwaytoheaven.de");
+				List<String> servicesname = new ArrayList<String>();
+				servicesname.add("mongodb");
+				cloudinfoSvc.addApp(appName, framework, memory, uris, servicesname, new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
@@ -281,8 +320,10 @@ public class Vcapsmartgwt implements EntryPoint {
 
 		final Button deleteButton = new Button("Delete App");
 		deleteButton.addClickHandler(new ClickHandler() {
+			
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.deleteApp(new AsyncCallback<Void>() {
+				String appName = inputAppName.getText();
+				cloudinfoSvc.deleteApp(appName, new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
@@ -301,7 +342,8 @@ public class Vcapsmartgwt implements EntryPoint {
 		final Button restartButton = new Button("Restart App");
 		restartButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.restartApp(new AsyncCallback<Void>() {
+				String appName = inputAppName.getText();
+				cloudinfoSvc.restartApp(appName, new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
@@ -337,6 +379,27 @@ public class Vcapsmartgwt implements EntryPoint {
 				}
 			});
 		
+		/*final Button createserviceButton = new Button("Create Service");
+
+		bindingserviceButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				CloudService service = "mongodb";
+				cloudinfoSvc.createAppservice(service, new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						// serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+				}
+			});
+		*/
 		final VerticalPanel vPanel3 = new VerticalPanel();  
         vPanel3.setSpacing(15);  
         vPanel3.setHeight("500px");
@@ -485,6 +548,11 @@ public class Vcapsmartgwt implements EntryPoint {
 
 			}
 		});
+		
+		
+		
+		
+		
 		// vPanel2.add(formupload);
 
 		// Add Buttons into Panel
@@ -492,7 +560,10 @@ public class Vcapsmartgwt implements EntryPoint {
 		vPanel0.add(refreshButton);
 		vPanel0.add(serverResponseLabel);
 
-		// hPanel4.add(form);
+		hPanel4.add(inputAppName);
+		hPanel4.add(inputMemory);
+		hPanel4.add(inputInstance);
+		hPanel4.add(inputFramework);
 
 		hPanel1.add(startButton);
 		hPanel1.add(stopButton);
@@ -513,6 +584,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		hPanel3.add(updateMemoryButton);
 		hPanel3.add(updateInstanceButton);
 
+		vPanel1.add(hPanel4);
 		vPanel1.add(hPanel1);
 		vPanel1.add(hPanel3);
 		vPanel1.add(hPanel2);

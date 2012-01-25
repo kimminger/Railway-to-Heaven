@@ -1,5 +1,9 @@
 package com.mycompany.myapp.client;
 
+import java.util.List;
+
+import org.cloudfoundry.client.lib.CloudService;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -9,15 +13,16 @@ public interface CloudInfoService extends RemoteService {
 
 	public String getInfo(String i);
 	//VCAP Functions
-	public void stopApp();
-	public void startApp();
-	public void updateAppmemory();
-	public void updateAppinstance();
-	public void addApp();
-	public void deleteApp();
-	public void restartApp();
+	public void stopApp(String appName);
+	public void startApp(String appName);
+	public void updateAppmemory(String appName, int memory);
+	public void updateAppinstance(String appName, int instance);
+	public void addApp(String appName, String framework, int memory, List<String> uris, List<String> servicesname );
+	public void deleteApp(String appName);
+	public void restartApp(String appName);
 	public void uploadAppfile();
 	public void bindingAppservice();
+	//public void createAppservice(CloudService service);
 
 	public String setAmazonCloudController(String c);
 	
