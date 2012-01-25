@@ -216,6 +216,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 				}
 				
 				client.login();
+				String appName = "hello";
 				try {
 					client.uploadApplication("hello", new File("/home/hai/git/Railway-to-Heaven/src/wardrobe.zip"),new UploadStatusCallback() {
 						
@@ -238,6 +239,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+				
 				
 			}
 	

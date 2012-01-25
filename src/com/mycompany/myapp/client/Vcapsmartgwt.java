@@ -320,7 +320,21 @@ public class Vcapsmartgwt implements EntryPoint {
 		final Button bindingserviceButton = new Button("Binding Service");
 		bindingserviceButton.addClickHandler(new ClickHandler(){
 			public void onClick(ClickEvent event){
-			}});
+				cloudinfoSvc.bindingAppservice(new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						// serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+				}
+			});
 		
 		final VerticalPanel vPanel3 = new VerticalPanel();  
         vPanel3.setSpacing(15);  
@@ -348,14 +362,19 @@ public class Vcapsmartgwt implements EntryPoint {
 
 	    FileUpload upload = new FileUpload();
 	    upload.setName("upload");
-	    holder.add(upload);
-
+	   
 	    holder.add(new HTML("<hr />"));
 	    final Button submitButton = new Button("Submit"); 
 	    holder.setHorizontalAlignment(HasAlignment.ALIGN_RIGHT);
 	    submitButton.addClickHandler(new ClickHandler() {
-			
 	    	public void onClick(ClickEvent event){
+	    		
+	    		formupload.submit();
+	    	}
+	    	
+	     
+	 	    
+	    /*	public void onClick(ClickEvent event){
 				cloudinfoSvc.uploadAppfile(new AsyncCallback<Void>(){
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
@@ -370,9 +389,12 @@ public class Vcapsmartgwt implements EntryPoint {
 						
 					}
 				});
-			}
+			}*/
 		});
 			
+	    holder.add(upload);
+ 	    formupload.setAction("http://api.railwaytoheaven.de");
+ 	    
 	    final Button uploadFileButton = new Button("Upload File");
 		uploadFileButton.addClickHandler(new ClickHandler(){
 			
