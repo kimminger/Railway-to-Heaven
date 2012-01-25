@@ -33,26 +33,25 @@ import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mycompany.myapp.client.CloudInfoService;
 
-
 public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudInfoService {
 
-	//Konstanten für Methode handle1und1
+	// Konstanten für Methode handle1und1
 	final String START = "start";
 	final String STOP = "stop";
 	final String RESTART = "restart";
 	final String SUSPEND = "suspend";
 	final String POWEROFF = "poweroff";
 	final String HDD = "300";
-	
-	//Konstanten für AWS-Methoden
+
+	// Konstanten für AWS-Methoden
 	final String IMAGEID = "ami-b96b55cd";
+	// Objektvariablen
+	private AmazonEC2 ec2;
+	private List<Instance> instanceIds;
 
-
-	
 	public String getInfo(String i) {
-		
-	
+
 		// VCAP Client auf Amazon Instanzen
 		CloudFoundryClient client = null;
 		try {
@@ -64,24 +63,32 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		client.login();
 		List<CloudApplication> apps = client.getApplications();
 		String appInfo = "";
 		int n = 1;
 		for (CloudApplication app : apps) {
-			
-			appInfo +="<table><tr><th>"+n+"</th><th>Application</th><th>State</th><th>Instance</th><th>Memory</th><th>Service</th><th>URI</th></tr><tr><td></td><td>"+app.getName()+"</td><td>"+app.getState()+"</td><td>"+app.getInstances()+"</td><td>"+app.getMemory()+"</td><td>"+app.getServices()+"</td><td>"+app.getUris()+"</td></tr></table>";
+
+			appInfo += "<table><tr><th>"
+					+ n
+					+ "</th><th>Application</th><th>State</th><th>Instance</th><th>Memory</th><th>Service</th><th>URI</th></tr><tr><td></td><td>"
+					+ app.getName() + "</td><td>" + app.getState()
+					+ "</td><td>" + app.getInstances() + "</td><td>"
+					+ app.getMemory() + "</td><td>" + app.getServices()
+					+ "</td><td>" + app.getUris() + "</td></tr></table>";
 			n++;
 
 		}
 
 		return appInfo;
-		
+
 	}
+
 	
 	
 	public void stopApp(String appName) {
+
 
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
@@ -96,7 +103,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		client.login();
 		List<CloudApplication> apps = client.getApplications();
-		
+
 		for (CloudApplication app : apps) {
 			if(app.getName().equals(appName)){
 				client.stopApplication(appName);
@@ -124,6 +131,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	
 		List<CloudApplication> apps = client.getApplications();
 		for (CloudApplication app : apps) {
+
 			if(app.getName().equals(appName)){
 				client.startApplication(appName);
 			}		
@@ -131,8 +139,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		
 	}
 	
-	
-
+				
 	public void restartApp(String appName) {
 
 		// VCAP Client auf 1&1 Instanzen
@@ -148,15 +155,18 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		client.login();
 		List<CloudApplication> apps = client.getApplications();
-		
+
 		for (CloudApplication app : apps) {
+
 			if(app.getName().equals(appName)){
 				client.restartApplication(appName);
 			}		
 	
+
 		}
-		
+
 	}
+
 	
 	
 	public void addApp(String appName, String framework, int memory, List<String> uris, List<String> servicesname ) {
@@ -168,11 +178,12 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
 					"http://api.railwaytoheaven.de");
 
-		} catch (MalformedURLException e){
+		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-				e.printStackTrace();
+			e.printStackTrace();
 		}
 		client.login();
+
 		//String appname = "hello";
 		//String framework = "rails3";
 		//List<String> servicesname = new ArrayList<String> (); 
@@ -186,6 +197,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	
 	public void deleteApp(String appName) {
 
+	
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
@@ -198,52 +210,56 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 
 		client.login();
+
 		client.deleteApplication(appName);
 	
+		String appname = "hello";
+		client.deleteApplication(appname);
+
+
 	}
-	
-		public void uploadAppfile(){
-		
+
+	public void uploadAppfile() {
+
 		// VCAP Client auf 1&1 Instanzen
 
-				CloudFoundryClient client = null;
-				try {
-					client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-							"http://api.railwaytoheaven.de");
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.de");
 
-				} catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				client.login();
-				String appName = "hello";
-				try {
-					client.uploadApplication("hello", new File("/home/hai/git/Railway-to-Heaven/src/wardrobe.zip"),new UploadStatusCallback() {
-						
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		client.login();
+		String appName = "hello";
+		try {
+			client.uploadApplication("hello", new File(
+					"/home/hai/git/Railway-to-Heaven/src/wardrobe.zip"),
+					new UploadStatusCallback() {
+
 						public void onProcessMatchedResources(int arg0) {
 							// TODO Auto-generated method stub
-							System.out.println(arg0 );
+							System.out.println(arg0);
 						}
-						
+
 						public void onMatchedFileNames(Set<String> arg0) {
 							// TODO Auto-generated method stub
-							System.out.println(arg0 );
+							System.out.println(arg0);
 						}
-						
+
 						public void onCheckResources() {
 							// TODO Auto-generated method stub
 							System.out.println("Check Resource");
 						}
-					} );
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				
-			}
-	
+					});
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 		public void updateAppmemory( String appName, int memory){
 	
@@ -282,30 +298,132 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					client.updateApplicationInstances(appName, instances);
 					
 			
+
+	}
+
+	public void updateAppmemory() {
+
+		// VCAP Client auf 1&1 Instanzen
+
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.de");
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
 
-		public void bindingAppservice(){
-			
-			// VCAP Client auf 1&1 Instanzen
+		client.login();
+		client.updateApplicationMemory("hello", 256);
 
-					CloudFoundryClient client = null;
-					try {
-						client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-								"http://api.railwaytoheaven.de");
+	}
 
-					} catch (MalformedURLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					client.login();
-					
-					client.bindService("hello","mongodb_hai");
-					
-			
+	public void updateAppinstance() {
+
+		// VCAP Client auf 1&1 Instanzen
+
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.de");
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
+
+		client.login();
+		client.updateApplicationInstances("hello", 2);
+
+	}
+
+	public void bindingAppservice() {
+
+		// VCAP Client auf 1&1 Instanzen
+
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
+					"http://api.railwaytoheaven.de");
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		client.login();
+
+		client.bindService("hello", "mongodb_hai");
+
+	}
+
+	// Autor Kim Rohner Mailto: rohner.kim at gmail.com
+
+	// TODO Übersicht über alle Instanzen
+
+	// Klasseninterne Methode zur Initialisierung eines EC2-Client Objektes und
+	// RunInstance Aufrufs
+	private List<Instance> handleStartAws(String userData) {
+		AWSCredentials credentials;
+		try {
+			credentials = new PropertiesCredentials(
+					CloudInfoServiceImpl.class
+							.getResourceAsStream("AwsCredentials.properties"));
+
+			ec2 = new AmazonEC2Client(credentials);
+			ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
+
+			RunInstancesRequest awsRequest = new RunInstancesRequest()
+					.withInstanceType("m1.large")
+					.withImageId(IMAGEID)
+					.withMinCount(2)
+					.withMaxCount(2)
+					.withSecurityGroupIds("sg-73243f07")
+					.withKeyName("cf")
+					.withUserData(
+							Base64.encodeBase64String(userData.getBytes()));
+
+			RunInstancesResult awsResult = ec2.runInstances(awsRequest);
+			instanceIds = awsResult.getReservation().getInstances();
+
+			int index = 1;
+			for (Instance instance : instanceIds) {
+				CreateTagsRequest tagReq = new CreateTagsRequest();
+				tagReq.withResources(instance.getInstanceId()).withTags(
+						new Tag("Name", "Kim-" + userData + index));
+				ec2.createTags(tagReq);
+				index++;
+			}
+
+			return instanceIds;
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+
+		}
+		return null;
+	}
+
+	public String startAmazonDEA() {
+		handleStartAws("dea");
+		String result = "DEA Node started: <br/>" + "with InstanceIDs: <br/>"
+				+ instanceIds.toString();
+		return result;
+	}
+
+/*ublic String stopAmazonDEA() {
+		StopInstancesRequest stop = new StopInstancesRequest();
+
+		for (Instance instance : instanceIds) {
+			if (instance.getTags().contains("dea")) {
+				stop.withInstanceIds(instanceIds.toString());
+			}
+		}
+
+	}*/
 		/*public void createAppservice(CloudService service){
 			
 			// VCAP Client auf 1&1 Instanzen
@@ -541,180 +659,184 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		
 		
 		public String setAmazonCloudController(String c){
-			/*
-			instanz erstellen (large mit ami)
-			instanz starten
-			security group default
-			keypair cf.pem
-			
-			anbinden an elastische ip nur bei cloud controller
-			userdata setzen auf String Rest;
-			
-			instanz rebooten.*/
-			
-			AWSCredentials credentials;
-			try {
-				credentials = new PropertiesCredentials(
-				        CloudInfoServiceImpl.class.getResourceAsStream("AwsCredentials.properties"));
-				
-				AmazonEC2 ec2 = new AmazonEC2Client(credentials);
-		        ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
-		        
-		        String userData = "dea";
-		        RunInstancesRequest req = new RunInstancesRequest()
-		        	.withInstanceType("m1.large")
-		        	.withImageId(IMAGEID)
-		        	.withMinCount(2)
-		        	.withMaxCount(2)
-		        	.withSecurityGroupIds("sg-73243f07")
-		        	.withKeyName("cf")
-		        	.withUserData(Base64.encodeBase64String(userData.getBytes()));
-		        
-		        RunInstancesResult res = ec2.runInstances(req);
-		        
-		        List<Instance> instances = res.getReservation().getInstances();
-		        int index = 1;
-		        for(Instance instance : instances){
-		        	CreateTagsRequest tagReq = new CreateTagsRequest();
-		        	tagReq.withResources(instance.getInstanceId())
-		        		.withTags(new Tag("Name", "Kim-DEA" + index));
-		        	ec2.createTags(tagReq);
-		        	index++;
-		        }
-		        
-		        /*String inst = instances.toString();
-		        //Start der neuen Instanz
-		        StartInstancesRequest start = new StartInstancesRequest().withInstanceIds(inst);
-				ec2.startInstances(start);*/
-		        
-		        
-		        ec2.stopInstances(new StopInstancesRequest().withInstanceIds(instances.toString()));
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+=======
 
-	        
-			
-			return "Instanz gestartet";
-			/*
-				String text = "test";
-							//AWS Client Initialisierung
-							AWSCredentials credentials = null;
-							try {
-								credentials = new PropertiesCredentials(
-								CloudInfoServiceImpl.class
-								.getResourceAsStream("AwsCredentials.properties"));
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-							AmazonEC2 ec2 = new AmazonEC2Client(credentials);
-							ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
-							DescribeInstancesResult result = ec2.describeInstances();
-							for (Reservation reservation : result.getReservations()) {
-							for (Instance instance : reservation.getInstances()) {
-							text += "Instanzen: " + instance.getInstanceId();
-							text += "Typ: " + instance.getInstanceType();
-							text += "Lifecycle: " + instance.getInstanceLifecycle();
+		String result = "The following instances are about to be stopped: <br/>"
+				+ instanceIds.toString();
+		return result;
+	}
 
-							}
-							}
-						return text;
-						*/
+	public String startAmazonMongoDB() {
+		handleStartAws("mongodb0");
+		String result = "MongoDB Node started: <br/>"
+				+ "with InstanceIDs: <br/>" + instanceIds.toString();
+		return result;
+	}
+
+	public String setAmazonCloudController(String c) {
+		/*
+		 * instanz erstellen (large mit ami) instanz starten security group
+		 * default keypair cf.pem
+		 * 
+		 * anbinden an elastische ip nur bei cloud controller userdata setzen
+		 * auf String Rest;
+		 * 
+		 * instanz rebooten.
+		 */
+		// TODO buttons DEA, mongodb-> sollten erst gestartet werden, wenn
+		// cloudcontroller richtig läuft -> mehrere Knoten,
+		// cloudController+rest -> 1Node Userdata rest
+		AWSCredentials credentials;
+		try {
+			credentials = new PropertiesCredentials(
+					CloudInfoServiceImpl.class
+							.getResourceAsStream("AwsCredentials.properties"));
+
+			AmazonEC2 ec2 = new AmazonEC2Client(credentials);
+			ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
+
+			String userData = "dea";
+			RunInstancesRequest req = new RunInstancesRequest()
+					.withInstanceType("m1.large")
+					.withImageId(IMAGEID)
+					.withMinCount(2)
+					.withMaxCount(2)
+					.withSecurityGroupIds("sg-73243f07")
+					.withKeyName("cf")
+					.withUserData(
+							Base64.encodeBase64String(userData.getBytes()));
+
+			RunInstancesResult res = ec2.runInstances(req);
+
+			List<Instance> instances = res.getReservation().getInstances();
+			System.out.println(instances);
+>>>>>>> c91faabd854d74ffe0f5498067a85fa83e8f72a4
+			/*
+			 * int index = 1; for(Instance instance : instances){
+			 * CreateTagsRequest tagReq = new CreateTagsRequest();
+			 * tagReq.withResources(instance.getInstanceId()) .withTags(new
+			 * Tag("Name", "Kim-DEA" + index)); ec2.createTags(tagReq); index++;
+			 * }
+			 */
+
+			/*
+			 * String inst = instances.toString(); //Start der neuen Instanz
+			 * StartInstancesRequest start = new
+			 * StartInstancesRequest().withInstanceIds(inst);
+			 * ec2.startInstances(start);
+			 */
+
+			ec2.stopInstances(new StopInstancesRequest()
+					.withInstanceIds(instances.toString()));
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
 
-					
+		return "Instanz gestartet";
+		/*
+		 * String text = "test"; //AWS Client Initialisierung AWSCredentials
+		 * credentials = null; try { credentials = new PropertiesCredentials(
+		 * CloudInfoServiceImpl.class
+		 * .getResourceAsStream("AwsCredentials.properties")); } catch
+		 * (IOException e) {
+		 * 
+		 * e.printStackTrace(); } AmazonEC2 ec2 = new
+		 * AmazonEC2Client(credentials);
+		 * ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
+		 * DescribeInstancesResult result = ec2.describeInstances(); for
+		 * (Reservation reservation : result.getReservations()) { for (Instance
+		 * instance : reservation.getInstances()) { text += "Instanzen: " +
+		 * instance.getInstanceId(); text += "Typ: " +
+		 * instance.getInstanceType(); text += "Lifecycle: " +
+		 * instance.getInstanceLifecycle();
+		 * 
+		 * } } return text;
+		 */
+	}
 
-							/*
-							DescribeInstancesResult describeInstancesRequest = ec2.describeInstances();
-							List<Reservation> reservations = describeInstancesRequest.getReservations();
-							Set<Instance> instances = new HashSet<Instance>();
+	/*
+	 * DescribeInstancesResult describeInstancesRequest =
+	 * ec2.describeInstances(); List<Reservation> reservations =
+	 * describeInstancesRequest.getReservations(); Set<Instance> instances = new
+	 * HashSet<Instance>();
+	 * 
+	 * for (Reservation reservation : reservations) {
+	 * instances.addAll(reservation.getInstances()); } text = "You have " +
+	 * instances.size() + " Amazon EC2 instance(s) running.";
+	 */
 
-							for (Reservation reservation : reservations) {
-							instances.addAll(reservation.getInstances());
-							}
-							text = "You have " + instances.size() + " Amazon EC2 instance(s) running.";
-							*/
-
-		//Interne Funktion zum Umgang mit der 1und1 API
-		private void handle1und1(String command){
-			String[] server;
-			//TODO Buttons im Frontend anpassen
-			try {
-				server = EinsundEinsServer.getAllvmIDs();
-				//Startet alle Server
-				for (int i = 0; i < server.length; i++) {
-					EinsundEinsServer kim = new EinsundEinsServer(server[i]);
-					if(command == STOP)
+	// Interne Funktion zum Umgang mit der 1und1 API
+	private void handle1und1(String command) {
+		String[] server;
+		try {
+			server = EinsundEinsServer.getAllvmIDs();
+			// Startet alle Server
+			for (int i = 0; i < server.length; i++) {
+				EinsundEinsServer kim = new EinsundEinsServer(server[i]);
+				if (command == STOP)
 					kim.stop();
-					else if (command == START){
-						kim.start();
-					}
-					else if(command == RESTART){
-						kim.restart();
-					}
-					else if(command == SUSPEND){
-						kim.suspend();
-					}
-					else if(command == POWEROFF){
-						kim.poweroff();
-					}
-					
+				else if (command == START) {
+					kim.start();
+				} else if (command == RESTART) {
+					kim.restart();
+				} else if (command == SUSPEND) {
+					kim.suspend();
+				} else if (command == POWEROFF) {
+					kim.poweroff();
 				}
-				
-			} catch (ClientProtocolException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			} catch (JSONException e) {
-				e.printStackTrace();
-			} catch (URISyntaxException e) {
-				e.printStackTrace();
+
 			}
 
+		} catch (ClientProtocolException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
 		}
-		
-	//Function handlers
+
+	}
+
+	// Function handlers
 	public String start1und1() {
 		handle1und1(START);
 		return "1und1-Instanzen gestartet";
 	}
-	
+
 	public String stop1und1() {
 		handle1und1(STOP);
 		return "1und1-Instanzen gestoppt";
 	}
-	
+
 	public String restart1und1() {
 		handle1und1(RESTART);
 		return "1und1-Instanzen neu gestartet";
 	}
-	
+
 	public String suspend1und1() {
 		handle1und1(SUSPEND);
 		return "1und1-Instanzen schlafen jetzt";
 	}
-	
+
 	public String poweroff1und1() {
 		handle1und1(POWEROFF);
 		return "1und1-Instanzen ausgeschaltet";
 	}
-	
-	public String handle1und1Hardware(String cpu, String HDD, String ram){
-		//TODO checkbox oder 3 verschiedene Konfigs für jeden für cpu, hdd, ram , klein mittel groß
-		
+
+	public String handle1und1Hardware(String cpu, String HDD, String ram) {
+
 		String[] server;
-		//TODO Buttons im Frontend anpassen
 		try {
 			server = EinsundEinsServer.getAllvmIDs();
-			//Startet alle Server
+			// Startet alle Server
 			for (int i = 0; i < server.length; i++) {
 				EinsundEinsServer kim = new EinsundEinsServer(server[i]);
 				kim.configureHardware(cpu, HDD, ram);
 			}
-			
+
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -728,6 +850,4 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return "Changes completed!";
 	}
 
-	
 }
-		
