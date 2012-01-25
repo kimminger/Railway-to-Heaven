@@ -122,7 +122,7 @@ public class EinsundEinsServer {
 		this.ip = ip;
 	}
 
-	//Constructor für vollständige Konfiguration
+	// Constructor für vollständige Konfiguration
 	public EinsundEinsServer(String vmID, boolean configurable, int ram,
 			int contract, int cpu, String hostname, String imagetype,
 			int imageid, String imagename, String ip) {
@@ -139,14 +139,15 @@ public class EinsundEinsServer {
 		this.ip = ip;
 	}
 
-	//Constructor für vmID
+	// Constructor für vmID
 	public EinsundEinsServer(String vmID) {
 		super();
 		Client client;
 		try {
 			client = new Client(HOST, PORT, USERNAME, PASSWORD);
 
-			// Befüllt JSON Array mit allen verfügbaren Informationen, vmid, cpu, ram, hdd, usw.
+			// Befüllt JSON Array mit allen verfügbaren Informationen, vmid,
+			// cpu, ram, hdd, usw.
 			JSONArray ja = client.doGetServers();
 			// int index = 0;
 			// Schleife über Array
@@ -277,7 +278,6 @@ public class EinsundEinsServer {
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
 			client.doPutHardwareConfiguration(vmID, cpu, HDD, ram);
-			
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -321,12 +321,8 @@ public class EinsundEinsServer {
 		for (int i = 0; i < ja.length(); i++) {
 			JSONObject j = ja.getJSONObject(i);
 
-			// EinsundEinsServer server = new EinsundEinsServer(j);
-			// server.getVmID();
-
 			String ip = (String) j.get("ip");
-//			TODO ip.equals("217.160.94.112") wieder einfügen
-			if (ip.equals("217.160.94.107")
+			if (ip.equals("217.160.94.112") || ip.equals("217.160.94.107")
 					|| ip.equals("217.160.94.108")
 					|| ip.equals("217.160.94.109")) {
 				result[index] = (String) j.get("vmid").toString();
@@ -337,7 +333,5 @@ public class EinsundEinsServer {
 
 		return result;
 	}
-
-	
 
 }
