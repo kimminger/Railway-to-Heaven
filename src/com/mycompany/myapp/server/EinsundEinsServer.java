@@ -277,6 +277,7 @@ public class EinsundEinsServer {
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
 			client.doPutHardwareConfiguration(vmID, cpu, HDD, ram);
+			
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();

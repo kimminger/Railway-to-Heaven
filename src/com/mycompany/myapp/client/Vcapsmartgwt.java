@@ -318,6 +318,66 @@ public class Vcapsmartgwt implements EntryPoint {
 		});
 
 		final Button bindingserviceButton = new Button("Binding Service");
+
+		bindingserviceButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				cloudinfoSvc.bindingAppservice(new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						// serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+				}
+			});
+		
+		final VerticalPanel vPanel3 = new VerticalPanel();  
+        vPanel3.setSpacing(15);  
+        vPanel3.setHeight("500px");
+        
+        final Button closeButton = new Button("Close Tab");  
+	    closeButton.addClickHandler(new ClickHandler() {  
+	            public void onClick(ClickEvent event) {  
+	            	tabPanel.remove(vPanel3);
+	            	                
+	            }  
+	        });  
+		
+        
+	  
+	    final FormPanel formupload = new FormPanel();
+	    formupload.setEncoding(FormPanel.ENCODING_MULTIPART);
+	    formupload.setMethod(FormPanel.METHOD_POST);
+	    formupload.addStyleName("table-center");
+	    formupload.addStyleName("demo-panel-padded");
+	    formupload.setWidth("275px");
+	    	    
+	   
+	    final VerticalPanel holder = new VerticalPanel();
+
+	    FileUpload upload = new FileUpload();
+	    upload.setName("upload");
+	   
+	    holder.add(new HTML("<hr />"));
+	    final Button submitButton = new Button("Submit"); 
+	    holder.setHorizontalAlignment(HasAlignment.ALIGN_RIGHT);
+	    submitButton.addClickHandler(new ClickHandler() {
+	    	public void onClick(ClickEvent event){
+	    		
+	    		formupload.submit();
+	    	}
+	    	
+	     
+	 	    
+	    /*	public void onClick(ClickEvent event){
+				cloudinfoSvc.uploadAppfile(new AsyncCallback<Void>(){
+
 		bindingserviceButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 			}
@@ -355,6 +415,7 @@ public class Vcapsmartgwt implements EntryPoint {
 
 			public void onClick(ClickEvent event) {
 				cloudinfoSvc.uploadAppfile(new AsyncCallback<Void>() {
+
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
@@ -367,19 +428,33 @@ public class Vcapsmartgwt implements EntryPoint {
 
 					}
 				});
-			}
+			}*/
 		});
 
-		final Button uploadFileButton = new Button("Upload File");
+	    holder.add(upload);
+ 	    formupload.setAction("http://api.railwaytoheaven.de");
+ 	    
+	    final Button uploadFileButton = new Button("Upload File");
+		uploadFileButton.addClickHandler(new ClickHandler(){
+			
+			public void onClick(ClickEvent event){
+				formupload.submit();
+			}
+
+			});
+		
 		uploadFileButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
+
 				holder.add(submitButton);
 				formupload.add(holder);
 				tabPanel.add(formupload, "Upload");
 			}
 
 		});
+		
+		
 
 		// form.setAction("url");
 
@@ -619,13 +694,12 @@ public class Vcapsmartgwt implements EntryPoint {
 		HTML cpuConfigLabel = new HTML("Change CPU");
 		HTML ramConfigLabel = new HTML("Change RAM");
 		
-		TextBox inputCpuConfig = new TextBox();
+		final TextBox inputCpuConfig = new TextBox();
 		inputCpuConfig.setText("Enter Number of CPU Cores here!");
-		final String cpu = inputCpuConfig.getText();
 		
-		TextBox inputRamConfig = new TextBox();
+		
+		final TextBox inputRamConfig = new TextBox();
 		inputRamConfig.setText("Enter RAM Capacity from 1 to 24GB here!");
-		final String ram = inputRamConfig.getText();
 		
 
 		final Button configButton = new Button("Configure Hardware");
@@ -634,6 +708,8 @@ public class Vcapsmartgwt implements EntryPoint {
 		configButton.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
+				final String cpu = inputCpuConfig.getText();
+				final String ram = inputRamConfig.getText();
 				cloudinfoSvc.handle1und1Hardware(cpu, HDD, ram, new AsyncCallback<String>() {
 
 					public void onFailure(Throwable caught) {

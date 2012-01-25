@@ -142,6 +142,10 @@ public class Client {
 		params.put("cpu", cpu);
 		params.put("hdd", hdd);
 		params.put("ram", ram);
+		System.out.println(cpu);
+		System.out.println(hdd);
+		System.out.println(ram);
+		System.out.println(params.toString());
 		return doHttpPut("/cloudServer/mobile/servers/"+vmId+"/hardware",params);
 	}
 	
