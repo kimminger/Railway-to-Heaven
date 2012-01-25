@@ -40,5 +40,7 @@ public interface CloudInfoServiceAsync {
 
 	void suspend1und1(AsyncCallback<String> callback);
 
+	void handle1und1Hardware(String cpu, String HDD, String ram,
+			AsyncCallback<String> callback);
 	
 }

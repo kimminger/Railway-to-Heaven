@@ -680,7 +680,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return "1und1-Instanzen ausgeschaltet";
 	}
 	
-	private void handle1und1Hardware(String cpu, String hdd, String ram){
+	public String handle1und1Hardware(String cpu, String HDD, String ram){
 		//TODO checkbox oder 3 verschiedene Konfigs für jeden für cpu, hdd, ram , klein mittel groß
 		
 		String[] server;
@@ -690,7 +690,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			//Startet alle Server
 			for (int i = 0; i < server.length; i++) {
 				EinsundEinsServer kim = new EinsundEinsServer(server[i]);
-				kim.configureHardware(cpu, hdd, ram);
+				kim.configureHardware(cpu, HDD, ram);
 			}
 			
 		} catch (ClientProtocolException e) {
@@ -703,6 +703,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
+		return "Changes completed!";
 	}
 
 	
