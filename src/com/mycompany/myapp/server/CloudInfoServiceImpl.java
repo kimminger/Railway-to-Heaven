@@ -41,6 +41,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	final String RESTART = "restart";
 	final String SUSPEND = "suspend";
 	final String POWEROFF = "poweroff";
+	final String HDD = "300";
 	
 	//Konstanten für AWS-Methoden
 	final String IMAGEID = "ami-b96b55cd";

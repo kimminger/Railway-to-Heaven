@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.smartgwt.client.types.Side;
@@ -93,13 +94,11 @@ public class Vcapsmartgwt implements EntryPoint {
 		 */
 
 		topTabset.draw();
-		
+
 	}
 
-
 	@SuppressWarnings("deprecation")
-	
-	private Widget getOverview(){
+	private Widget getOverview() {
 
 		// Tab Overview: Overview, VCAP
 
@@ -315,116 +314,103 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
-			
-		
+
 		final Button bindingserviceButton = new Button("Binding Service");
-		bindingserviceButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event){
-			}});
-		
-		final VerticalPanel vPanel3 = new VerticalPanel();  
-        vPanel3.setSpacing(15);  
-        vPanel3.setHeight("500px");
-        
-        final Button closeButton = new Button("Close Tab");  
-	    closeButton.addClickHandler(new ClickHandler() {  
-	            public void onClick(ClickEvent event) {  
-	            	tabPanel.remove(vPanel3);
-	            	                
-	            }  
-	        });  
-		
-        
-	  
-	    final FormPanel formupload = new FormPanel();
-	    formupload.setEncoding(FormPanel.ENCODING_MULTIPART);
-	    formupload.setMethod(FormPanel.METHOD_POST);
-	    formupload.addStyleName("table-center");
-	    formupload.addStyleName("demo-panel-padded");
-	    formupload.setWidth("275px");
-	    	    
-	   
-	    final VerticalPanel holder = new VerticalPanel();
+		bindingserviceButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+			}
+		});
 
-	    FileUpload upload = new FileUpload();
-	    upload.setName("upload");
-	    holder.add(upload);
+		final VerticalPanel vPanel3 = new VerticalPanel();
+		vPanel3.setSpacing(15);
+		vPanel3.setHeight("500px");
 
-	    holder.add(new HTML("<hr />"));
-	    final Button submitButton = new Button("Submit"); 
-	    holder.setHorizontalAlignment(HasAlignment.ALIGN_RIGHT);
-	    submitButton.addClickHandler(new ClickHandler() {
-			
-	    	public void onClick(ClickEvent event){
-				cloudinfoSvc.uploadAppfile(new AsyncCallback<Void>(){
+		final Button closeButton = new Button("Close Tab");
+		closeButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				tabPanel.remove(vPanel3);
+
+			}
+		});
+
+		final FormPanel formupload = new FormPanel();
+		formupload.setEncoding(FormPanel.ENCODING_MULTIPART);
+		formupload.setMethod(FormPanel.METHOD_POST);
+		formupload.addStyleName("table-center");
+		formupload.addStyleName("demo-panel-padded");
+		formupload.setWidth("275px");
+
+		final VerticalPanel holder = new VerticalPanel();
+
+		FileUpload upload = new FileUpload();
+		upload.setName("upload");
+		holder.add(upload);
+
+		holder.add(new HTML("<hr />"));
+		final Button submitButton = new Button("Submit");
+		holder.setHorizontalAlignment(HasAlignment.ALIGN_RIGHT);
+		submitButton.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				cloudinfoSvc.uploadAppfile(new AsyncCallback<Void>() {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						//serverResponseLabel.setHTML(SERVER_ERROR);
+						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
-					
 					public void onSuccess(Void result) {
 						// TODO Auto-generated method stub
-						
+
 					}
 				});
 			}
 		});
-			
-	    final Button uploadFileButton = new Button("Upload File");
-		uploadFileButton.addClickHandler(new ClickHandler(){
-			
-			public void onClick(ClickEvent event){
+
+		final Button uploadFileButton = new Button("Upload File");
+		uploadFileButton.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
 				holder.add(submitButton);
 				formupload.add(holder);
-				tabPanel.add(formupload,"Upload");
+				tabPanel.add(formupload, "Upload");
 			}
-			
+
 		});
-	    
-	   
-	    // form.setAction("url");
 
-	    formupload.addFormHandler(new FormHandler()
-	    {
-	    	public void onSubmit(FormSubmitEvent event)
-	    	{
-	    		// if (something_is_wrong)
-	    		// {
-	    		// Take some action
-	    		// event.setCancelled(true);
-	    		// }
-	    	}
+		// form.setAction("url");
 
-	    	public void onSubmitComplete(FormSubmitCompleteEvent event)
-	    	{
-	    		Window.alert(event.getResults());
-	    	}
-	    });
+		formupload.addFormHandler(new FormHandler() {
+			public void onSubmit(FormSubmitEvent event) {
+				// if (something_is_wrong)
+				// {
+				// Take some action
+				// event.setCancelled(true);
+				// }
+			}
 
-	    
-	    final Button addtabButton = new Button("Add Tab");  
-	    addtabButton.addClickHandler(new ClickHandler() {  
-	            public void onClick(ClickEvent event) {  
-	            	
-	            	vPanel3.setVisible(true);     
-	              	vPanel3.add(addButton);
-	            	vPanel3.add(bindingserviceButton);
-	              	vPanel3.add(uploadFileButton);
-	            	vPanel3.add(closeButton);
-	              	tabPanel.add(vPanel3, "Add App");            
-	              
-	            }  
-	        });  
-	    //vPanel2.add(formupload);
-	    
-	     
-		
-	
+			public void onSubmitComplete(FormSubmitCompleteEvent event) {
+				Window.alert(event.getResults());
+			}
+		});
+
+		final Button addtabButton = new Button("Add Tab");
+		addtabButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+
+				vPanel3.setVisible(true);
+				vPanel3.add(addButton);
+				vPanel3.add(bindingserviceButton);
+				vPanel3.add(uploadFileButton);
+				vPanel3.add(closeButton);
+				tabPanel.add(vPanel3, "Add App");
+
+			}
+		});
+		// vPanel2.add(formupload);
+
 		// Add Buttons into Panel
-
 
 		vPanel0.add(refreshButton);
 		vPanel0.add(serverResponseLabel);
@@ -435,18 +421,13 @@ public class Vcapsmartgwt implements EntryPoint {
 		hPanel1.add(stopButton);
 		hPanel1.add(restartButton);
 
-		
-		
-		//hPanel2.add(addButton);
+		// hPanel2.add(addButton);
 		hPanel2.add(deleteButton);
-		//hPanel2.add(uploadFileButton);
-				
+		// hPanel2.add(uploadFileButton);
+
 		hPanel3.add(updateMemoryButton);
 		hPanel3.add(updateInstanceButton);
 		hPanel3.add(addtabButton);
-		
-		
-
 
 		hPanel2.add(addButton);
 		hPanel2.add(deleteButton);
@@ -466,11 +447,10 @@ public class Vcapsmartgwt implements EntryPoint {
 		tabPanel.add(vPanel1, "VCAP");
 		tabPanel.add(vPanel2, "Test");
 
-		
-		tabPanel.selectTab(0);  
-	    tabPanel.ensureDebugId("cwTabPanel");  
-	    return tabPanel;
-	
+		tabPanel.selectTab(0);
+		tabPanel.ensureDebugId("cwTabPanel");
+		return tabPanel;
+
 	}
 
 	private Widget getProviderTab() {
@@ -480,12 +460,18 @@ public class Vcapsmartgwt implements EntryPoint {
 
 		// Provider Button
 		// 1&1 Cloud Server
-		VerticalPanel vPanel1 = new VerticalPanel();
-		vPanel1.setSpacing(15);
-		vPanel1.setHeight("600");
-
+		VerticalPanel links = new VerticalPanel();
+		links.setSpacing(15);
+		links.setHeight("600");
+		
+		HorizontalPanel hPanel1 = new HorizontalPanel();
+		VerticalPanel rechts = new VerticalPanel();
+		
+		
 		final HTML einsUndeinsResponseLabel = new HTML();
 		einsUndeinsResponseLabel.setHeight("570");
+		
+		final HTML ueberschriftVpanel = new HTML("<b>Instance Control</b>");
 
 		// Erstelle Buttons
 		Button start1und1Button = new Button("Start 1und1 Instances");
@@ -517,6 +503,11 @@ public class Vcapsmartgwt implements EntryPoint {
 				.add(new HTML(
 						"<b>Host</b><br/><b>Username</b><br/><b>Password</b><br/><b>Port</b><br/>"));
 		dialogPanel.add(new HTML("are <b>preconfigured</b>"));
+		dialogPanel.add(new HTML(
+				"Harddrive Configuration <b>is fixed</b> at 300GB,<br/>"));
+		dialogPanel
+				.add(new HTML(
+						"because downsizing activities would <b>delete all information</b> on the server"));
 		dialogPanel.add(closeButton);
 
 		closeButton.addClickHandler(new ClickHandler() {
@@ -546,7 +537,7 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
-		
+
 		// Stoppt Instanzen auf 1&1 - Button - ClickHandler und RPC
 		stop1und1Button.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -564,7 +555,7 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
-		
+
 		// Restartet Instanzen auf 1&1 - Button - ClickHandler und RPC
 		restart1und1Button.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -582,7 +573,7 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
-		
+
 		// Suspends Instanzen auf 1&1 - Button - ClickHandler und RPC
 		suspend1und1Button.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -600,7 +591,7 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
-		
+
 		// Schaltet Instanzen auf 1&1 ab - Button - ClickHandler und RPC
 		powerOff1und1Button.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -619,15 +610,48 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 
-		// Fügt Elemente zum VPanel hinzu
-		vPanel1.add(einsUndeinsResponseLabel);
-		vPanel1.add(start1und1Button);
-		vPanel1.add(stop1und1Button);
-		vPanel1.add(restart1und1Button);
-		vPanel1.add(suspend1und1Button);
-		vPanel1.add(powerOff1und1Button);
+		// Feld zur Eingabe von Hardware - Konfigs
+		final HTML configureLabel = new HTML(
+				"<b>Configure 1und1-Instance Hardware:</b><br/>");
+		HTML cpuConfigLabel = new HTML("Change CPU");
+		HTML ramConfigLabel = new HTML("Change RAM");
+		
+		TextBox inputCpuConfig = new TextBox();
+		inputCpuConfig.setText("Enter Number of CPU Cores here!");
+		
+		TextBox inputRamConfig = new TextBox();
+		inputRamConfig.setText("Enter RAM Capacity from 1 to 24GB here!");
 
-		tabPanel.add(vPanel1, "1&1 Cloud Server");
+		final Button cpuConfigButton = new Button("Set CPU");
+		
+		
+		
+		final Button ramConfigButton = new Button("Set RAM");
+		
+
+		// Fügt Elemente zum VPanel hinzu
+		links.add(einsUndeinsResponseLabel);
+		links.add(ueberschriftVpanel);
+		links.add(start1und1Button);
+		links.add(stop1und1Button);
+		links.add(restart1und1Button);
+		links.add(suspend1und1Button);
+		links.add(powerOff1und1Button);
+		
+		//Fügt Elemente zum vPanel2 hinzu
+		rechts.add(configureLabel);
+		rechts.add(cpuConfigLabel);
+		rechts.add(inputCpuConfig);
+		rechts.add(cpuConfigButton);
+		rechts.add(ramConfigLabel);
+		rechts.add(inputRamConfig);
+		rechts.add(ramConfigButton);
+
+		// Fügt Elemente zum hPanel hinzu
+		hPanel1.add(links);
+		hPanel1.add(rechts);
+		
+		tabPanel.add(hPanel1, "1&1 Cloud Server");
 
 		// Amazon Web Service
 		VerticalPanel vPanel2 = new VerticalPanel();
