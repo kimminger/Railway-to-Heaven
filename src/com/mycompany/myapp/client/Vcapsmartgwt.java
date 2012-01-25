@@ -2,11 +2,22 @@ package com.mycompany.myapp.client;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.core.ext.linker.EmittedArtifact.Visibility;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.DecoratedTabPanel;
 import com.google.gwt.user.client.ui.DialogBox;
+import com.google.gwt.user.client.ui.FileUpload;
+import com.google.gwt.user.client.ui.FormHandler;
+import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.FormSubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormSubmitEvent;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HasAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -82,31 +93,35 @@ public class Vcapsmartgwt implements EntryPoint {
 		 */
 
 		topTabset.draw();
+		
 	}
 
-	private Widget getOverview() {
+
+	@SuppressWarnings("deprecation")
+	
+	private Widget getOverview(){
 
 		// Tab Overview: Overview, VCAP
 
-		DecoratedTabPanel tabPanel = new DecoratedTabPanel();
+		final DecoratedTabPanel tabPanel = new DecoratedTabPanel();
 		tabPanel.setWidth("550px");
 		tabPanel.setAnimationEnabled(true);
 
 		// Applications: Name, State, Instance, Memory, URI
 
-		VerticalPanel vPanel0 = new VerticalPanel();
+		final VerticalPanel vPanel0 = new VerticalPanel();
 		vPanel0.setSpacing(15);
 		vPanel0.setHeight("500px");
 
-		VerticalPanel vPanel1 = new VerticalPanel();
+		final VerticalPanel vPanel1 = new VerticalPanel();
 		vPanel1.setSpacing(15);
 		vPanel1.setHeight("100px");
 
-		VerticalPanel vPanel2 = new VerticalPanel();
+		final VerticalPanel vPanel2 = new VerticalPanel();
 		vPanel2.setSpacing(15);
 		vPanel2.setHeight("500px");
 
-		HorizontalPanel hPanel1 = new HorizontalPanel();
+		final HorizontalPanel hPanel1 = new HorizontalPanel();
 		hPanel1.setSpacing(15);
 		hPanel1.setWidth("100px");
 
@@ -133,11 +148,11 @@ public class Vcapsmartgwt implements EntryPoint {
 
 		form.setItems(appSelect);
 
-		HorizontalPanel hPanel2 = new HorizontalPanel();
+		final HorizontalPanel hPanel2 = new HorizontalPanel();
 		hPanel2.setSpacing(15);
 		hPanel2.setWidth("100px");
 
-		HorizontalPanel hPanel3 = new HorizontalPanel();
+		final HorizontalPanel hPanel3 = new HorizontalPanel();
 		hPanel3.setSpacing(15);
 		hPanel3.setWidth("100px");
 
@@ -300,27 +315,116 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
+			
+		
+		final Button bindingserviceButton = new Button("Binding Service");
+		bindingserviceButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+			}});
+		
+		final VerticalPanel vPanel3 = new VerticalPanel();  
+        vPanel3.setSpacing(15);  
+        vPanel3.setHeight("500px");
+        
+        final Button closeButton = new Button("Close Tab");  
+	    closeButton.addClickHandler(new ClickHandler() {  
+	            public void onClick(ClickEvent event) {  
+	            	tabPanel.remove(vPanel3);
+	            	                
+	            }  
+	        });  
+		
+        
+	  
+	    final FormPanel formupload = new FormPanel();
+	    formupload.setEncoding(FormPanel.ENCODING_MULTIPART);
+	    formupload.setMethod(FormPanel.METHOD_POST);
+	    formupload.addStyleName("table-center");
+	    formupload.addStyleName("demo-panel-padded");
+	    formupload.setWidth("275px");
+	    	    
+	   
+	    final VerticalPanel holder = new VerticalPanel();
 
-		final Button uploadFileButton = new Button("Upload File");
-		uploadFileButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				cloudinfoSvc.uploadAppfile(new AsyncCallback<Void>() {
+	    FileUpload upload = new FileUpload();
+	    upload.setName("upload");
+	    holder.add(upload);
+
+	    holder.add(new HTML("<hr />"));
+	    final Button submitButton = new Button("Submit"); 
+	    holder.setHorizontalAlignment(HasAlignment.ALIGN_RIGHT);
+	    submitButton.addClickHandler(new ClickHandler() {
+			
+	    	public void onClick(ClickEvent event){
+				cloudinfoSvc.uploadAppfile(new AsyncCallback<Void>(){
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
+						//serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
+					
 					public void onSuccess(Void result) {
 						// TODO Auto-generated method stub
-
+						
 					}
 				});
 			}
 		});
+			
+	    final Button uploadFileButton = new Button("Upload File");
+		uploadFileButton.addClickHandler(new ClickHandler(){
+			
+			public void onClick(ClickEvent event){
+				holder.add(submitButton);
+				formupload.add(holder);
+				tabPanel.add(formupload,"Upload");
+			}
+			
+		});
+	    
+	   
+	    // form.setAction("url");
 
+	    formupload.addFormHandler(new FormHandler()
+	    {
+	    	public void onSubmit(FormSubmitEvent event)
+	    	{
+	    		// if (something_is_wrong)
+	    		// {
+	    		// Take some action
+	    		// event.setCancelled(true);
+	    		// }
+	    	}
+
+	    	public void onSubmitComplete(FormSubmitCompleteEvent event)
+	    	{
+	    		Window.alert(event.getResults());
+	    	}
+	    });
+
+	    
+	    final Button addtabButton = new Button("Add Tab");  
+	    addtabButton.addClickHandler(new ClickHandler() {  
+	            public void onClick(ClickEvent event) {  
+	            	
+	            	vPanel3.setVisible(true);     
+	              	vPanel3.add(addButton);
+	            	vPanel3.add(bindingserviceButton);
+	              	vPanel3.add(uploadFileButton);
+	            	vPanel3.add(closeButton);
+	              	tabPanel.add(vPanel3, "Add App");            
+	              
+	            }  
+	        });  
+	    //vPanel2.add(formupload);
+	    
+	     
+		
+	
 		// Add Buttons into Panel
+
 
 		vPanel0.add(refreshButton);
 		vPanel0.add(serverResponseLabel);
@@ -330,6 +434,19 @@ public class Vcapsmartgwt implements EntryPoint {
 		hPanel1.add(startButton);
 		hPanel1.add(stopButton);
 		hPanel1.add(restartButton);
+
+		
+		
+		//hPanel2.add(addButton);
+		hPanel2.add(deleteButton);
+		//hPanel2.add(uploadFileButton);
+				
+		hPanel3.add(updateMemoryButton);
+		hPanel3.add(updateInstanceButton);
+		hPanel3.add(addtabButton);
+		
+		
+
 
 		hPanel2.add(addButton);
 		hPanel2.add(deleteButton);
@@ -349,10 +466,11 @@ public class Vcapsmartgwt implements EntryPoint {
 		tabPanel.add(vPanel1, "VCAP");
 		tabPanel.add(vPanel2, "Test");
 
-		tabPanel.selectTab(0);
-		tabPanel.ensureDebugId("cwTabPanel");
-		return tabPanel;
-
+		
+		tabPanel.selectTab(0);  
+	    tabPanel.ensureDebugId("cwTabPanel");  
+	    return tabPanel;
+	
 	}
 
 	private Widget getProviderTab() {
