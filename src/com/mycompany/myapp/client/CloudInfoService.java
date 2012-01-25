@@ -27,5 +27,6 @@ public interface CloudInfoService extends RemoteService {
 	public String restart1und1();
 	public String suspend1und1();
 	public String poweroff1und1();
+	public String handle1und1Hardware(String cpu, String HDD, String ram);
 	
 }

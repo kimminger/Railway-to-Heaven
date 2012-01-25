@@ -273,10 +273,11 @@ public class EinsundEinsServer {
 	public void priceInfo() {
 	}
 
-	public void configureHardware(String cpu, String hdd, String ram) {
+	public void configureHardware(String cpu, String HDD, String ram) {
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
-			client.doPutHardwareConfiguration(vmID, cpu, hdd, ram);
+			client.doPutHardwareConfiguration(vmID, cpu, HDD, ram);
+			
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -324,7 +325,8 @@ public class EinsundEinsServer {
 			// server.getVmID();
 
 			String ip = (String) j.get("ip");
-			if (ip.equals("217.160.94.112") || ip.equals("217.160.94.107")
+//			TODO ip.equals("217.160.94.112") wieder einfügen
+			if (ip.equals("217.160.94.107")
 					|| ip.equals("217.160.94.108")
 					|| ip.equals("217.160.94.109")) {
 				result[index] = (String) j.get("vmid").toString();

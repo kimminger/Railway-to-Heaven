@@ -47,6 +47,8 @@ public class Vcapsmartgwt implements EntryPoint {
 			+ "attempting to contact the server. Please check your network "
 			+ "connection and try again.";
 
+	final String HDD = "300";
+	
 	public void onModuleLoad() {
 
 		// Tabset Definition
@@ -569,7 +571,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		annahmenEinsundEins.setText("Implied Assumptions");
 		annahmenEinsundEins.setAnimationEnabled(true);
 		annahmenEinsundEins.setPopupPosition(610, 30);
-		final Button closeButton = new Button("Close");
+		final Button closeButton = new Button("<b>Close to continue</b>");
 		VerticalPanel dialogPanel = new VerticalPanel();
 		dialogPanel.addStyleName("dialogVPanel");
 		dialogPanel.add(new HTML(
@@ -582,7 +584,8 @@ public class Vcapsmartgwt implements EntryPoint {
 				"Harddrive Configuration <b>is fixed</b> at 300GB,<br/>"));
 		dialogPanel
 				.add(new HTML(
-						"because downsizing activities would <b>delete all information</b> on the server"));
+						"because downsizing activities<br/>" +
+						"would <b>delete all information</b> on the server"));
 		dialogPanel.add(closeButton);
 
 		closeButton.addClickHandler(new ClickHandler() {
@@ -691,17 +694,35 @@ public class Vcapsmartgwt implements EntryPoint {
 		HTML cpuConfigLabel = new HTML("Change CPU");
 		HTML ramConfigLabel = new HTML("Change RAM");
 		
-		TextBox inputCpuConfig = new TextBox();
+		final TextBox inputCpuConfig = new TextBox();
 		inputCpuConfig.setText("Enter Number of CPU Cores here!");
 		
-		TextBox inputRamConfig = new TextBox();
+		
+		final TextBox inputRamConfig = new TextBox();
 		inputRamConfig.setText("Enter RAM Capacity from 1 to 24GB here!");
+		
 
-		final Button cpuConfigButton = new Button("Set CPU");
+		final Button configButton = new Button("Configure Hardware");
+		//ClickHandler für cpuConfigButton - mit RPC
 		
-		
-		
-		final Button ramConfigButton = new Button("Set RAM");
+		configButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				final String cpu = inputCpuConfig.getText();
+				final String ram = inputRamConfig.getText();
+				cloudinfoSvc.handle1und1Hardware(cpu, HDD, ram, new AsyncCallback<String>() {
+
+					public void onFailure(Throwable caught) {
+						einsUndeinsResponseLabel.setText("Check input type of Configuration!");
+					}
+
+					public void onSuccess(String result) {
+						einsUndeinsResponseLabel.setText(result);
+						annahmenEinsundEins.show();
+					}
+				});
+			}
+		});
 		
 
 		// Fügt Elemente zum VPanel hinzu
@@ -717,10 +738,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		rechts.add(configureLabel);
 		rechts.add(cpuConfigLabel);
 		rechts.add(inputCpuConfig);
-		rechts.add(cpuConfigButton);
 		rechts.add(ramConfigLabel);
 		rechts.add(inputRamConfig);
-		rechts.add(ramConfigButton);
+		rechts.add(configButton);
 
 		// Fügt Elemente zum hPanel hinzu
 		hPanel1.add(links);
