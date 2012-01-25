@@ -41,6 +41,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	final String RESTART = "restart";
 	final String SUSPEND = "suspend";
 	final String POWEROFF = "poweroff";
+	final String HDD = "300";
 	
 	//Konstanten für AWS-Methoden
 	final String IMAGEID = "ami-b96b55cd";
@@ -682,7 +683,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	private void handle1und1Hardware(String cpu, String hdd, String ram){
-		//TODO checkbox oder 3 verschiedene Konfigs für jeden für cpu, hdd, ram
+		//TODO checkbox oder 3 verschiedene Konfigs für jeden für cpu, hdd, ram , klein mittel groß
 		
 		String[] server;
 		//TODO Buttons im Frontend anpassen
