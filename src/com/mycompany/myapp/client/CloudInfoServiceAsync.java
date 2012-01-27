@@ -50,6 +50,15 @@ public interface CloudInfoServiceAsync {
 	void handle1und1Hardware(String cpu, String HDD, String ram,
 			AsyncCallback<String> callback);
 
+
 	//void createAppservice(CloudService service, AsyncCallback<Void> callback);
+
+	//AWS Functions
+	void startAmazonDEA(AsyncCallback<String> callback);
+	
+	void stopAmazonDEA(AsyncCallback<String> callback);
+
+	
+
 	
 }
