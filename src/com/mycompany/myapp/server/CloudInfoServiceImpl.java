@@ -23,8 +23,10 @@ import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.PropertiesCredentials;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
+import com.amazonaws.services.ec2.model.AssociateAddressRequest;
 import com.amazonaws.services.ec2.model.CreateTagsRequest;
 import com.amazonaws.services.ec2.model.Instance;
+import com.amazonaws.services.ec2.model.RebootInstancesRequest;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
@@ -51,6 +53,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	// Objektvariablen
 	private AmazonEC2 ec2;
 	private List<Instance> instanceIds;
+	private String elasticIp;
 
 	public String getInfo(String i) {
 
@@ -387,8 +390,8 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			RunInstancesRequest awsRequest = new RunInstancesRequest()
 					.withInstanceType("m1.large")
 					.withImageId(IMAGEID)
-					.withMinCount(2)
-					.withMaxCount(2)
+					.withMinCount(1)
+					.withMaxCount(1)
 					.withSecurityGroupIds("sg-73243f07")
 					.withKeyName("cf")
 					.withUserData(
@@ -415,144 +418,110 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return null;
 	}
 
+	// getter and setter für ElasticIP
+	public String getElasticIp() {
+		return elasticIp;
+	}
+
+	public String setElasticIp(String elasticIp) {
+		this.elasticIp = elasticIp;
+		
+		return "Magic in progress...Now START the Cloud Controller to continue";
+	}
+
+	// Starten einer CloudController und Rest Instanz auf Amazon
+	// Instanz sollte bestehen, bevor andere Nodes gestartet werden
+	public String startAmazonCloudController(String c) {
+		/*
+		 * Ablauf: Instanz wird gestartet, Elastic IP übergeben, reboot
+		 */
+
+		handleStartAws("rest");
+
+		AssociateAddressRequest associateAddressReq = new AssociateAddressRequest();
+		String instanceId = null;
+		for (Instance instance : instanceIds) {
+			instanceId = instance.getInstanceId();
+			elasticIp = getElasticIp();
+		}
+		ec2.associateAddress(associateAddressReq.withInstanceId(instanceId)
+				.withPublicIp(elasticIp));
+		System.out.println(instanceId);
+		ArrayList<String> rebootInstances = new ArrayList<String>();
+		for (Instance instance : instanceIds) {
+			rebootInstances.add(instance.getInstanceId());
+		}
+		System.out.println(rebootInstances);
+
+		ec2.rebootInstances(new RebootInstancesRequest()
+				.withInstanceIds(rebootInstances));
+
+		String result = "Cloud Controller und Rest wird gestartet mit InstanceID: "
+				+ instanceId;
+
+		return result;
+
+	}
+
 	public String startAmazonDEA() {
 		handleStartAws("dea");
-		String result = "DEA Node started: " + "with InstanceIDs: <br/>"
-				+ instanceIds.toString();
+		String inst = null;
+		for (Instance instance : instanceIds) {
+			inst = instance.getInstanceId();
+		}
+		String result = "MongoDB Node wird gestarted: " + "with InstanceIDs: "
+				+ inst;
 		return result;
+
 	}
 
-	public String stopAmazonDEA() {
-		// TODO hier weitermachen, hat nicht funktioniert, Problem: die
-		// instance-ids könnne nicht richtig abgefragt werden
-		// Varianten 1: Abfrage mit Tag -> erfolglos, hat Tag nicht erkannt.
-		// Varianten 2: stopinstancerequest geschachtelt .withinstanceid ->
-		// Problem mit Liste von Instanz-objekten -> will einzelne ID als String
-		// -> diese sind aber durch Iterator nicht abfragbar, weil er dafür
-		// einen anderen Request braucht
-
-		 for(Instance instance : instanceIds){
-			 /*
-			 int laenge = instance.getInstanceId().length();
-			 String[] stopInstances = new String[laenge];
-			 for(int index=1;index<laenge;index++){
-				 stopInstances[index] = instance.getInstanceId();
-				 System.out.println(stopInstances[index]);
-			 }*/
-			 
-			 ArrayList<String> stopInstances = new ArrayList<String>();
-			 Iterator<String> it = stopInstances.iterator();
-			 while(it.hasNext()){
-				 stopInstances.add(instance.getInstanceId());
-			 }
-			 ec2.stopInstances(new StopInstancesRequest(stopInstances));
-			 
-//			 System.out.println(instance.getInstanceId());
-
-//			 StopInstancesRequest will List<String> instancesids
-		 }
-		 
-
-		return "hui";
-	}
-
+	// Startet Mongodb Instanz und gibt InstanzID in DialogBox zurück
 	public String startAmazonMongoDB() {
 		handleStartAws("mongodb0");
-		String result = "MongoDB Node started: <br/>"
-				+ "with InstanceIDs: <br/>" + instanceIds.toString();
+		String inst = null;
+		for (Instance instance : instanceIds) {
+			inst = instance.getInstanceId();
+		}
+		String result = "MongoDB Node wird gestarted: " + "with InstanceIDs: "
+				+ inst;
 		return result;
 	}
 
-	public String setAmazonCloudController(String c) {
-		/*
-		 * instanz erstellen (large mit ami) instanz starten security group
-		 * default keypair cf.pem
-		 * 
-		 * anbinden an elastische ip nur bei cloud controller userdata setzen
-		 * auf String Rest;
-		 * 
-		 * instanz rebooten.
-		 */
-		// TODO buttons DEA, mongodb-> sollten erst gestartet werden, wenn
-		// cloudcontroller richtig läuft -> mehrere Knoten,
-		// cloudController+rest -> 1Node Userdata rest
-		AWSCredentials credentials;
-		try {
-			credentials = new PropertiesCredentials(
-					CloudInfoServiceImpl.class
-							.getResourceAsStream("AwsCredentials.properties"));
+	// Stoppt alle Instanzen
+	public String stopAmazonInstances() {
 
-			AmazonEC2 ec2 = new AmazonEC2Client(credentials);
-			ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
-
-			String userData = "dea";
-			RunInstancesRequest req = new RunInstancesRequest()
-					.withInstanceType("m1.large")
-					.withImageId(IMAGEID)
-					.withMinCount(2)
-					.withMaxCount(2)
-					.withSecurityGroupIds("sg-73243f07")
-					.withKeyName("cf")
-					.withUserData(
-							Base64.encodeBase64String(userData.getBytes()));
-
-			RunInstancesResult res = ec2.runInstances(req);
-
-			List<Instance> instances = res.getReservation().getInstances();
-			System.out.println(instances);
-			/*
-			 * int index = 1; for(Instance instance : instances){
-			 * CreateTagsRequest tagReq = new CreateTagsRequest();
-			 * tagReq.withResources(instance.getInstanceId()) .withTags(new
-			 * Tag("Name", "Kim-DEA" + index)); ec2.createTags(tagReq); index++;
-			 * }
-			 */
-
-			/*
-			 * String inst = instances.toString(); //Start der neuen Instanz
-			 * StartInstancesRequest start = new
-			 * StartInstancesRequest().withInstanceIds(inst);
-			 * ec2.startInstances(start);
-			 */
-
-			ec2.stopInstances(new StopInstancesRequest()
-					.withInstanceIds(instances.toString()));
-
-		} catch (IOException e) {
-			e.printStackTrace();
+		ArrayList<String> stopInstances = new ArrayList<String>();
+		for (Instance instance : instanceIds) {
+			stopInstances.add(instance.getInstanceId());
 		}
 
-		return "Instanz gestartet";
-		/*
-		 * String text = "test"; //AWS Client Initialisierung AWSCredentials
-		 * credentials = null; try { credentials = new PropertiesCredentials(
-		 * CloudInfoServiceImpl.class
-		 * .getResourceAsStream("AwsCredentials.properties")); } catch
-		 * (IOException e) {
-		 * 
-		 * e.printStackTrace(); } AmazonEC2 ec2 = new
-		 * AmazonEC2Client(credentials);
-		 * ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
-		 * DescribeInstancesResult result = ec2.describeInstances(); for
-		 * (Reservation reservation : result.getReservations()) { for (Instance
-		 * instance : reservation.getInstances()) { text += "Instanzen: " +
-		 * instance.getInstanceId(); text += "Typ: " +
-		 * instance.getInstanceType(); text += "Lifecycle: " +
-		 * instance.getInstanceLifecycle();
-		 * 
-		 * } } return text;
-		 */
+		ec2.stopInstances(new StopInstancesRequest(stopInstances));
+
+		return "Amazon Instanzen werden gestoppt";
 	}
 
+	// TODO buttons DEA, mongodb-> sollten erst gestartet werden, wenn
+	// cloudcontroller richtig läuft -> mehrere Knoten,
+	// cloudController+rest -> 1Node Userdata rest
 	/*
-	 * DescribeInstancesResult describeInstancesRequest =
-	 * ec2.describeInstances(); List<Reservation> reservations =
-	 * describeInstancesRequest.getReservations(); Set<Instance> instances = new
-	 * HashSet<Instance>();
+	 * 
+	 * //TODO infos in Overview reinpacken /* DescribeInstancesResult
+	 * describeInstancesRequest = ec2.describeInstances(); List<Reservation>
+	 * reservations = describeInstancesRequest.getReservations(); Set<Instance>
+	 * instances = new HashSet<Instance>();
 	 * 
 	 * for (Reservation reservation : reservations) {
 	 * instances.addAll(reservation.getInstances()); } text = "You have " +
 	 * instances.size() + " Amazon EC2 instance(s) running.";
+	 */
+	/*
+	 * DescribeInstancesResult result = ec2.describeInstances(); for
+	 * (Reservation reservation : result.getReservations()) { for (Instance
+	 * instance : reservation.getInstances()) { text += "Instanzen: " +
+	 * instance.getInstanceId(); text += "Typ: " + instance.getInstanceType();
+	 * text += "Lifecycle: " + instance.getInstanceLifecycle();
+	 * 
+	 * } } return text;
 	 */
 
 	// Interne Funktion zum Umgang mit der 1und1 API

@@ -25,9 +25,11 @@ public interface CloudInfoService extends RemoteService {
 	//public void createAppservice(CloudService service);
 
 	//AWS Functions
-	public String setAmazonCloudController(String c);
+	public String startAmazonCloudController(String c);
 	public String startAmazonDEA();
-	public String stopAmazonDEA();
+	public String startAmazonMongoDB();
+	public String stopAmazonInstances();
+	public String setElasticIp(String elasticIp);
 	
 	//1und1 Functions
 	public String start1und1();

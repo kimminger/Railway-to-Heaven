@@ -33,7 +33,7 @@ public interface CloudInfoServiceAsync {
 	
 	void bindingAppservice(AsyncCallback<Void> callback);
 
-	void setAmazonCloudController(String c, AsyncCallback<String> callback);
+	void startAmazonCloudController(String c, AsyncCallback<String> callback);
 
 
 	//1und1 Functions
@@ -56,7 +56,11 @@ public interface CloudInfoServiceAsync {
 	//AWS Functions
 	void startAmazonDEA(AsyncCallback<String> callback);
 	
-	void stopAmazonDEA(AsyncCallback<String> callback);
+	void stopAmazonInstances(AsyncCallback<String> callback);
+
+	void startAmazonMongoDB(AsyncCallback<String> callback);
+
+	void setElasticIp(String elasticIp, AsyncCallback<String> callback);
 
 	
 
