@@ -1,2 +1,2 @@
 serviceClass: com.mycompany.myapp.client.CloudInfoService
-path: 916675718CC87D796D2412B4A7B0D0A1.gwt.rpc
+path: E686B035A79C585BF30BCA51EBCEB97C.gwt.rpc
