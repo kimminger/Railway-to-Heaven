@@ -380,8 +380,8 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 				}
 			});
-		*/
 		
+		*/
          
         	  
 	    final FormPanel formupload = new FormPanel();

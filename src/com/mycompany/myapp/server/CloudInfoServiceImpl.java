@@ -304,24 +304,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	public void updateAppmemory() {
-
-		// VCAP Client auf 1&1 Instanzen
-
-		CloudFoundryClient client = null;
-		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		client.login();
-		client.updateApplicationMemory("hello", 256);
-
-	}
+	
 
 	public void updateAppinstance() {
 

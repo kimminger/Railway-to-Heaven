@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="smartgwt.jar"/>
 	<classpathentry kind="lib" path="smartgwt-skins.jar"/>
-	<classpathentry kind="lib" path="VcapJavaClient-0.0.1-SNAPSHOT-jar-with-dependencies.jar"/>
+	<classpathentry kind="lib" path="VcapJavaClient-0.0.1-SNAPSHOT-jar-with-dependencies.jar" sourcepath="/home/hai/Dropbox/SeminarPraktikum2012/Libs/VCAP/cloudfoundry-client-sources"/>
 	<classpathentry exported="true" kind="con" path="com.amazonaws.eclipse.sdk.AWS_JAVA_SDK"/>
 	<classpathentry exported="true" kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
