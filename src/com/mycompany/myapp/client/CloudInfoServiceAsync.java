@@ -29,9 +29,16 @@ public interface CloudInfoServiceAsync {
 	void updateAppinstance(String appName, int instance,
 			AsyncCallback<Void> callback);
 
-	void uploadAppfile(AsyncCallback<Void> callback);	
+	//void uploadAppfile(AsyncCallback<Void> callback);	
 	
-	void bindingAppservice(AsyncCallback<Void> callback);
+	void bindingAppservice(String appName, String serviceName,
+			AsyncCallback<Void> callback);
+	
+	void unbindingAppservice(String appName, String serviceName,
+			AsyncCallback<Void> callback);
+
+	void createAppservice(String serviceName, String vendor,
+			AsyncCallback<Void> callback);
 
 	void setAmazonCloudController(String c, AsyncCallback<String> callback);
 
@@ -51,12 +58,15 @@ public interface CloudInfoServiceAsync {
 			AsyncCallback<String> callback);
 
 
-	//void createAppservice(CloudService service, AsyncCallback<Void> callback);
+	
 
 	//AWS Functions
 	void startAmazonDEA(AsyncCallback<String> callback);
 	
 	void stopAmazonDEA(AsyncCallback<String> callback);
+
+	
+	
 
 	
 

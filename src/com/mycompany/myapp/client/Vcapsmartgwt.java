@@ -170,6 +170,10 @@ public class Vcapsmartgwt implements EntryPoint {
 		final HorizontalPanel hPanel9 = new HorizontalPanel();
 		hPanel9.setSpacing(15);
 		hPanel9.setWidth("100px");
+		
+		final HorizontalPanel hPanel10 = new HorizontalPanel();
+		hPanel10.setSpacing(15);
+		hPanel10.setWidth("100px");
 
 		final HTMLFlow serverResponseLabel = new HTMLFlow();
 		serverResponseLabel.setWidth("550px");
@@ -293,9 +297,7 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
-
-		
-		
+			
 
 		final Button deleteButton = new Button("Delete");
 		deleteButton.addClickHandler(new ClickHandler() {
@@ -337,170 +339,79 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
-
-		final Button bindingserviceButton = new Button("Binding Service");
-
-		bindingserviceButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event){
-				cloudinfoSvc.bindingAppservice(new AsyncCallback<Void>() {
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-
-						// serverResponseLabel.setHTML(SERVER_ERROR);
-						serverResponseLabel.setContents(SERVER_ERROR);
-					}
-
-					public void onSuccess(Void result) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-				}
-			});
 		
-		//fragen wegen Cloudservice class
-		
-		/*final Button createserviceButton = new Button("Create Service");
-
-		bindingserviceButton.addClickHandler(new ClickHandler(){
-			public void onClick(ClickEvent event){
-				CloudService service = "mongodb";
-				cloudinfoSvc.createAppservice(service, new AsyncCallback<Void>() {
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-
-						// serverResponseLabel.setHTML(SERVER_ERROR);
-						serverResponseLabel.setContents(SERVER_ERROR);
-					}
-
-					public void onSuccess(Void result) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-				}
-			});
-		
-		*/
-         
-        	  
-	    final FormPanel formupload = new FormPanel();
-	    formupload.setEncoding(FormPanel.ENCODING_MULTIPART);
-	    formupload.setMethod(FormPanel.METHOD_POST);
-	    formupload.addStyleName("table-center");
-	    formupload.addStyleName("demo-panel-padded");
-	    formupload.setWidth("275px");
-	    	    
-	   
-	    final VerticalPanel holder = new VerticalPanel();
-
-	    FileUpload upload = new FileUpload();
-	    upload.setName("upload");
-	   
-	    holder.add(new HTML("<hr />"));
-	    final Button submitButton = new Button("Submit"); 
-	    holder.setHorizontalAlignment(HasAlignment.ALIGN_RIGHT);
-	    submitButton.addClickHandler(new ClickHandler() {
-	    	public void onClick(ClickEvent event){
-	    		
-	    		formupload.submit();
-	    	}
-	    	
-	     
-	 	    
-	    /*	public void onClick(ClickEvent event){
-				cloudinfoSvc.uploadAppfile(new AsyncCallback<Void>(){
-
-		bindingserviceButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-			}
-		});
-
-		final VerticalPanel vPanel3 = new VerticalPanel();
-		vPanel3.setSpacing(15);
-		vPanel3.setHeight("500px");
-
-		final Button closeButton = new Button("Close Tab");
-		closeButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				tabPanel.remove(vPanel3);
-
-			}
-		});
-
-		final FormPanel formupload = new FormPanel();
-		formupload.setEncoding(FormPanel.ENCODING_MULTIPART);
-		formupload.setMethod(FormPanel.METHOD_POST);
-		formupload.addStyleName("table-center");
-		formupload.addStyleName("demo-panel-padded");
-		formupload.setWidth("275px");
-
-		final VerticalPanel holder = new VerticalPanel();
-
-		FileUpload upload = new FileUpload();
-		upload.setName("upload");
-		holder.add(upload);
-
-		holder.add(new HTML("<hr />"));
-		final Button submitButton = new Button("Submit");
-		holder.setHorizontalAlignment(HasAlignment.ALIGN_RIGHT);
-		submitButton.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				cloudinfoSvc.uploadAppfile(new AsyncCallback<Void>() {
-
-					public void onFailure(Throwable caught) {
-						// TODO Auto-generated method stub
-
-						// serverResponseLabel.setHTML(SERVER_ERROR);
-						serverResponseLabel.setContents(SERVER_ERROR);
-					}
-
-					public void onSuccess(Void result) {
-						// TODO Auto-generated method stub
-
-					}
-				});
-			}*/
-		});
-
-	    holder.add(upload);
- 	    formupload.setAction("http://hai.railwaytoheaven.de");
- 	    
-	    final Button uploadFileButton = new Button("Upload File");
-		uploadFileButton.addClickHandler(new ClickHandler(){
-			
-			public void onClick(ClickEvent event){
-				formupload.submit();
-			}
-
-			});
-		
-		uploadFileButton.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-
-				holder.add(submitButton);
-				formupload.add(holder);
-				tabPanel.add(formupload, "Upload");
-			}
-
-		});
-		
+		final HTML service = new HTML ("<b>Service</b>");
+		final TextBox inputServiceName = new TextBox();
+		inputServiceName.setText("Enter Servicename here!");
 				
-		formupload.addFormHandler(new FormHandler() {
-			public void onSubmit(FormSubmitEvent event) {
-				// if (something_is_wrong)
-				// {
-				// Take some action
-				// event.setCancelled(true);
-				// }
-			}
+		final Button bindingserviceButton = new Button("Binding Service");
+		bindingserviceButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				String appName = inputAppName.getText();
+				String serviceName = inputServiceName.getText();
+				cloudinfoSvc.bindingAppservice(appName, serviceName, new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
 
-			public void onSubmitComplete(FormSubmitCompleteEvent event) {
-				Window.alert(event.getResults());
-			}
-		});
+						// serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+				}
+			});
+		
+		final Button unbindingserviceButton = new Button("unbinding Service");
+		unbindingserviceButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				String appName = inputAppName.getText();
+				String serviceName = inputServiceName.getText();
+				cloudinfoSvc.unbindingAppservice(appName, serviceName, new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						// serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+				}
+			});
+		
+		final HTML vendor = new HTML ("<b>Vendor</b>");
+		final TextBox inputVendor= new TextBox();
+		inputVendor.setText("Enter Servicename here!");
+		
+		final Button createserviceButton = new Button("Create Service");
+		createserviceButton.addClickHandler(new ClickHandler(){
+			public void onClick(ClickEvent event){
+				String serviceName = inputServiceName.getText();
+				String vendor = inputVendor.getText();
+				cloudinfoSvc.createAppservice(serviceName,vendor, new AsyncCallback<Void>() {
+					public void onFailure(Throwable caught) {
+						// TODO Auto-generated method stub
+
+						// serverResponseLabel.setHTML(SERVER_ERROR);
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					public void onSuccess(Void result) {
+						// TODO Auto-generated method stub
+
+					}
+				});
+				}
+			});
+				        
+        
 		final HTML inputCreateName = new HTML ("<b>App Name</b>");
 		final TextBox inputCreateApp = new TextBox();
 		inputCreateApp.setText("Enter Appname here!");  
@@ -574,8 +485,6 @@ public class Vcapsmartgwt implements EntryPoint {
 				hPanel9.add(inputURI);
 				
 				hPanel7.add(addButton);
-				//hPanel7.add(bindingserviceButton);
-				hPanel7.add(uploadFileButton);
 				hPanel7.add(closeButton);
 				
 				vPanel3.add(hPanel6);
@@ -586,10 +495,7 @@ public class Vcapsmartgwt implements EntryPoint {
 
 			}
 		});
-		
 				
-		
-		// vPanel2.add(formupload);
 
 		// Add Buttons into Panel
 
@@ -598,10 +504,16 @@ public class Vcapsmartgwt implements EntryPoint {
 		
 		hPanel4.add(inputName);
 		hPanel4.add(inputAppName);
+		
 		hPanel5.add(appMemory);
 		hPanel5.add(inputMemory);
 		hPanel5.add(instances);
 		hPanel5.add(inputInstance);
+		
+		hPanel10.add(service);
+		hPanel10.add(inputServiceName);
+		hPanel10.add(vendor);
+		hPanel10.add(inputVendor);
 		
 		hPanel1.add(startButton);
 		hPanel1.add(stopButton);
@@ -610,8 +522,11 @@ public class Vcapsmartgwt implements EntryPoint {
 
 		hPanel3.add(updateMemoryButton);
 		hPanel3.add(updateInstanceButton);
+		hPanel3.add(createserviceButton);
+		hPanel3.add(bindingserviceButton);
 		
 		hPanel2.add(addtabButton);
+		hPanel2.add(unbindingserviceButton);
 		hPanel2.add(deleteButton);
 		
 
@@ -619,16 +534,15 @@ public class Vcapsmartgwt implements EntryPoint {
 
 		vPanel1.add(hPanel4);
 		vPanel1.add(hPanel5);
+		vPanel1.add(hPanel10);
 		vPanel1.add(hPanel1);
 		vPanel1.add(hPanel3);
 		vPanel1.add(hPanel2);
 
-		// vPanel2.add(hPanel4);
-		//vPanel2.add(form);
-
+		
 		tabPanel.add(vPanel0, "Overview");
 		tabPanel.add(vPanel1, "VCAP");
-		//tabPanel.add(vPanel2, "Test");
+
 
 		tabPanel.selectTab(0);
 		tabPanel.ensureDebugId("cwTabPanel");

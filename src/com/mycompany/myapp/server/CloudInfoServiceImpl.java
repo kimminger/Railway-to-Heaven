@@ -52,6 +52,11 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	private AmazonEC2 ec2;
 	private List<Instance> instanceIds;
 	
+	//CloudFoundryClient Parameter
+	final String email = "moritz-behr@web.de";
+	final String password = "moritz";
+	final String cloudcontrollerURL = "http://api.railwaytoheaven.de";
+	
 
 	public String getInfo(String i) {
 
@@ -59,8 +64,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudFoundryClient client = null;
 		try {
 
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
+			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -96,8 +100,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
+			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -122,8 +125,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
+			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -148,8 +150,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
+			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -178,20 +179,13 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
+			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		client.login();
-
-		//String appname = "hello";
-		//String framework = "rails3";
-		//List<String> servicesname = new ArrayList<String> (); 
-		//List<String> uris = new ArrayList<String> ();
-		//uris.add("hai.railwaytoheaven.de");
 		
 	  	client.createApplication(appName,framework, memory, uris, servicesname);
 	  	
@@ -204,8 +198,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
+			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -213,23 +206,17 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 
 		client.login();
-
 		client.deleteApplication(appName);
 	
-		String appname = "hello";
-		client.deleteApplication(appname);
-
-
 	}
 
-	public void uploadAppfile() {
+	/*public void uploadAppfile() {
 
 		// VCAP Client auf 1&1 Instanzen
 
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
+			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -263,14 +250,13 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 	}
-
+*/
 		public void updateAppmemory( String appName, int memory){
 	
 			// VCAP Client auf 1&1 Instanzen
 			CloudFoundryClient client = null;
 			try {
-				client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-						"http://api.railwaytoheaven.de");
+				client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
 			} catch (MalformedURLException e) {
 				// TODO Auto-generated catch block
@@ -280,7 +266,6 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			client.login();
 			client.updateApplicationMemory(appName, memory);
 			
-	
 		}
 		
 		public void updateAppinstance(String appName, int instances){
@@ -289,8 +274,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 					CloudFoundryClient client = null;
 					try {
-						client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-								"http://api.railwaytoheaven.de");
+						client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
 					} catch (MalformedURLException e) {
 						// TODO Auto-generated catch block
@@ -300,70 +284,73 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 					client.login();
 					client.updateApplicationInstances(appName, instances);
 					
+		}
+	
+		public void bindingAppservice(String appName, String serviceName) {
+
+			// VCAP Client auf 1&1 Instanzen
+
+			CloudFoundryClient client = null;
+			try {
+				client = new CloudFoundryClient(email, password,cloudcontrollerURL);
+
+			} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			client.login();
+
+			client.bindService(appName, serviceName);
 			
 
-	}
-
-	
-
-	public void updateAppinstance() {
-
-		// VCAP Client auf 1&1 Instanzen
-
-		CloudFoundryClient client = null;
-		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
-
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
-		client.login();
-		client.updateApplicationInstances("hello", 2);
+		public void unbindingAppservice(String appName, String serviceName) {
 
-	}
+			// VCAP Client auf 1&1 Instanzen
 
-	public void bindingAppservice() {
+			CloudFoundryClient client = null;
+			try {
+				client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
-		// VCAP Client auf 1&1 Instanzen
-
-		CloudFoundryClient client = null;
-		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
-
-		} catch (MalformedURLException e) {
+			} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+				e.printStackTrace();
+			}
+
+			client.login();
+
+			client.unbindService(appName, serviceName);
+			
+
 		}
 
-		client.login();
+		public void createAppservice(String serviceName, String vendor/*, String tier, String version*/) {
 
-		client.bindService("hello", "mongodb_hai");
+			
+			System.out.println("hai test create app");
+			// VCAP Client auf 1&1 Instanzen
 
-	}
+			CloudFoundryClient client = null;
+			try {
+				client = new CloudFoundryClient(email, password,cloudcontrollerURL);
 
-	public void createAppservice(CloudService service) {
-
-		// VCAP Client auf 1&1 Instanzen
-
-		CloudFoundryClient client = null;
-		try {
-			client = new CloudFoundryClient("moritz-behr@web.de", "moritz",
-					"http://api.railwaytoheaven.de");
-
-		} catch (MalformedURLException e) {
+			} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+				e.printStackTrace();
+			}
+
+			client.login();
+			CloudService service = new CloudService();
+			service.setName(serviceName);
+			service.setVendor(vendor);
+			//service.setTier(tier);
+			//service.setVersion(version);
+			client.createService(service);
+			
 		}
-
-		client.login();
-	
-		client.createService(service);
-
-	}
+		
 		
 		
 		

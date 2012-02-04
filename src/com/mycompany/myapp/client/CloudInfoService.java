@@ -20,9 +20,10 @@ public interface CloudInfoService extends RemoteService {
 	public void addApp(String appName, String framework, int memory, List<String> uris, List<String> servicesname );
 	public void deleteApp(String appName);
 	public void restartApp(String appName);
-	public void uploadAppfile();
-	public void bindingAppservice();
-	//public void createAppservice(CloudService service);
+	//public void uploadAppfile();
+	public void bindingAppservice(String appName, String serviceName);
+	public void unbindingAppservice(String appName, String serviceName);
+	public void createAppservice(String serviceName, String vendor);
 
 	//AWS Functions
 	public String setAmazonCloudController(String c);
