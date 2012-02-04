@@ -25,7 +25,10 @@ import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.model.AssociateAddressRequest;
 import com.amazonaws.services.ec2.model.CreateTagsRequest;
+import com.amazonaws.services.ec2.model.DescribeInstanceStatusRequest;
+import com.amazonaws.services.ec2.model.DescribeInstanceStatusResult;
 import com.amazonaws.services.ec2.model.Instance;
+import com.amazonaws.services.ec2.model.InstanceStatus;
 import com.amazonaws.services.ec2.model.RebootInstancesRequest;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
@@ -54,15 +57,12 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	private AmazonEC2 ec2;
 	private List<Instance> instanceIds;
 
-	
-	//CloudFoundryClient Parameter
+	// CloudFoundryClient Parameter
 	final String email = "moritz-behr@web.de";
 	final String password = "moritz";
 	final String cloudcontrollerURL = "http://api.railwaytoheaven.de";
-	
 
 	private String elasticIp;
-
 
 	public String getInfo(String i) {
 
@@ -70,7 +70,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudFoundryClient client = null;
 		try {
 
-			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -103,7 +103,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -127,7 +127,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -151,7 +151,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -178,17 +178,15 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		client.login();
-  			
-		
-		client.createApplication(appName, framework, memory, uris, servicesname);
 
+		client.createApplication(appName, framework, memory, uris, servicesname);
 
 	}
 
@@ -197,7 +195,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password,cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -206,150 +204,112 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		client.login();
 		client.deleteApplication(appName);
-		
 
 	}
 
-	
-		public void updateAppmemory( String appName, int memory){
-	
-			// VCAP Client auf 1&1 Instanzen
-			CloudFoundryClient client = null;
-			try {
-				client = new CloudFoundryClient(email, password,cloudcontrollerURL);
+	public void updateAppmemory(String appName, int memory) {
 
-			} catch (MalformedURLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			client.login();
-			client.updateApplicationMemory(appName, memory);
-			
-		}
-		
-		public void updateAppinstance(String appName, int instances){
-			
-			// VCAP Client auf 1&1 Instanzen
+		// VCAP Client auf 1&1 Instanzen
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
 
-					CloudFoundryClient client = null;
-					try {
-						client = new CloudFoundryClient(email, password,cloudcontrollerURL);
-
-					} catch (MalformedURLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					
-					client.login();
-					client.updateApplicationInstances(appName, instances);
-					
-		}
-
-			
-		public void bindingAppservice(String appName, String serviceName) {
-
-			// VCAP Client auf 1&1 Instanzen
-
-			CloudFoundryClient client = null;
-			try {
-				client = new CloudFoundryClient(email, password,cloudcontrollerURL);
-
-			} catch (MalformedURLException e) {
+		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			client.login();
-
-			client.bindService(appName, serviceName);
-			
-
+			e.printStackTrace();
 		}
 
-		public void unbindingAppservice(String appName, String serviceName) {
+		client.login();
+		client.updateApplicationMemory(appName, memory);
 
-			// VCAP Client auf 1&1 Instanzen
+	}
 
-			CloudFoundryClient client = null;
-			try {
-				client = new CloudFoundryClient(email, password,cloudcontrollerURL);
+	public void updateAppinstance(String appName, int instances) {
 
-			} catch (MalformedURLException e) {
+		// VCAP Client auf 1&1 Instanzen
+
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+
+		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			client.login();
-
-			client.unbindService(appName, serviceName);
-		
+			e.printStackTrace();
 		}
 
-		public void createAppservice(String serviceName, String vendor/*, String tier, String version*/) {
+		client.login();
+		client.updateApplicationInstances(appName, instances);
 
-			
-			System.out.println("hai test create app");
-			// VCAP Client auf 1&1 Instanzen
+	}
 
-			CloudFoundryClient client = null;
-			try {
-				client = new CloudFoundryClient(email, password,cloudcontrollerURL);
+	public void bindingAppservice(String appName, String serviceName) {
 
-			} catch (MalformedURLException e) {
+		// VCAP Client auf 1&1 Instanzen
+
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		client.login();
+
+		client.bindService(appName, serviceName);
+
+	}
+
+	public void unbindingAppservice(String appName, String serviceName) {
+
+		// VCAP Client auf 1&1 Instanzen
+
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		client.login();
+
+		client.unbindService(appName, serviceName);
+
+	}
+
+	public void createAppservice(String serviceName, String vendor/*
+																 * , String
+																 * tier, String
+																 * version
+																 */) {
+
+		System.out.println("hai test create app");
+		// VCAP Client auf 1&1 Instanzen
+
+		CloudFoundryClient client = null;
+		try {
+			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+
+		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 
-				e.printStackTrace();
-			}
-
-			client.login();
-			CloudService service = new CloudService();
-			service.setName(serviceName);
-			service.setVendor(vendor);
-			//service.setTier(tier);
-			//service.setVersion(version);
-			client.createService(service);
-			
+			e.printStackTrace();
 		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-	
-		
+
+		client.login();
+		CloudService service = new CloudService();
+		service.setName(serviceName);
+		service.setVendor(vendor);
+		// service.setTier(tier);
+		// service.setVersion(version);
+		client.createService(service);
+
+	}
 
 	// Autor Kim Rohner Mailto: rohner.kim at gmail.com
-
 
 	// Klasseninterne Methode zur Initialisierung eines EC2-Client Objektes und
 	// RunInstance Aufrufs
@@ -401,7 +361,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	public String setElasticIp(String elasticIp) {
 		this.elasticIp = elasticIp;
-		
+
 		return "Magic in progress...Now START the Cloud Controller to continue";
 	}
 
@@ -409,10 +369,32 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	// Instanz sollte bestehen, bevor andere Nodes gestartet werden
 	public String startAmazonCloudController(String c) {
 		/*
-		 * Ablauf: Instanz wird gestartet, Elastic IP übergeben, reboot
+		 * Ablauf: Instanz wird gestartet, Elastic IP übergeben, Warten bis
+		 * gestartet, reboot
 		 */
 
 		handleStartAws("rest");
+
+		//Nimm dir alle ids der Instanzen, die gerade gestartet werden
+		String instanceIDS = null;
+		for(Instance inst : instanceIds){
+			instanceIDS = inst.getInstanceId(); 
+		}
+		
+		// Status der Instanzen wird abgefragt, so lange bis Instanzen gestartet
+		// sind
+		DescribeInstanceStatusRequest describeInstanceStatusRequest = new DescribeInstanceStatusRequest()
+				.withInstanceIds(instanceIDS);
+		DescribeInstanceStatusResult describeInstanceStatusResult = ec2
+				.describeInstanceStatus(describeInstanceStatusRequest);
+		List<InstanceStatus> instanceStatus = describeInstanceStatusResult
+				.getInstanceStatuses();
+		while (instanceStatus.size() < 1) {
+			// Status Aktualiserung
+			describeInstanceStatusResult = ec2
+					.describeInstanceStatus(describeInstanceStatusRequest);
+			instanceStatus = describeInstanceStatusResult.getInstanceStatuses();
+		}
 
 		AssociateAddressRequest associateAddressReq = new AssociateAddressRequest();
 		String instanceId = null;
@@ -439,13 +421,14 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	}
 
+	// Startet DEA Instanz und gibt InstanzID in DialogBox zurück
 	public String startAmazonDEA() {
 		handleStartAws("dea");
 		String inst = null;
 		for (Instance instance : instanceIds) {
 			inst = instance.getInstanceId();
 		}
-		String result = "MongoDB Node wird gestarted: " + "with InstanceIDs: "
+		String result = "DEA Node wird gestarted: " + "with InstanceID: "
 				+ inst;
 		return result;
 
@@ -458,7 +441,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		for (Instance instance : instanceIds) {
 			inst = instance.getInstanceId();
 		}
-		String result = "MongoDB Node wird gestarted: " + "with InstanceIDs: "
+		String result = "MongoDB Node wird gestarted: " + "with InstanceID: "
 				+ inst;
 		return result;
 	}
@@ -470,13 +453,12 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		for (Instance instance : instanceIds) {
 			stopInstances.add(instance.getInstanceId());
 		}
-//TODO wait einbauen, siehe: http://stackoverflow.com/questions/7652247/ec2-java-api-wait-till-ec2-instance-gets-created
+		
 		ec2.stopInstances(new StopInstancesRequest(stopInstances));
 
 		return "Amazon Instanzen werden gestoppt";
 	}
 
-	
 	/*
 	 * 
 	 * //TODO infos in Overview reinpacken /* DescribeInstancesResult
@@ -558,7 +540,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return "1und1-Instanzen ausgeschaltet";
 	}
 
-	//Übergibt im Frontend definierte Hardware-Werte an 1und1 Server
+	// Übergibt im Frontend definierte Hardware-Werte an 1und1 Server
 	public String handle1und1Hardware(String cpu, String HDD, String ram) {
 
 		String[] server;
