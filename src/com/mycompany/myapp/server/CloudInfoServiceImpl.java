@@ -373,7 +373,6 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	// Autor Kim Rohner Mailto: rohner.kim at gmail.com
 
-	// TODO Übersicht über alle Instanzen
 
 	// Klasseninterne Methode zur Initialisierung eines EC2-Client Objektes und
 	// RunInstance Aufrufs
@@ -487,22 +486,20 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return result;
 	}
 
-	// Stoppt alle Instanzen
+	// Stoppt alle Amazon Instanzen
 	public String stopAmazonInstances() {
 
 		ArrayList<String> stopInstances = new ArrayList<String>();
 		for (Instance instance : instanceIds) {
 			stopInstances.add(instance.getInstanceId());
 		}
-
+//TODO wait einbauen, siehe: http://stackoverflow.com/questions/7652247/ec2-java-api-wait-till-ec2-instance-gets-created
 		ec2.stopInstances(new StopInstancesRequest(stopInstances));
 
 		return "Amazon Instanzen werden gestoppt";
 	}
 
-	// TODO buttons DEA, mongodb-> sollten erst gestartet werden, wenn
-	// cloudcontroller richtig läuft -> mehrere Knoten,
-	// cloudController+rest -> 1Node Userdata rest
+	
 	/*
 	 * 
 	 * //TODO infos in Overview reinpacken /* DescribeInstancesResult
@@ -584,6 +581,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return "1und1-Instanzen ausgeschaltet";
 	}
 
+	//Übergibt im Frontend definierte Hardware-Werte an 1und1 Server
 	public String handle1und1Hardware(String cpu, String HDD, String ram) {
 
 		String[] server;
