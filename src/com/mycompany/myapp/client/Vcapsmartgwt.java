@@ -79,7 +79,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		 */
 
 		// Choose Provider Tab
-		Tab tTab2 = new Tab("Choose Provider");
+		Tab tTab2 = new Tab("Cloud Configuration");
 		Canvas tabPane2 = new Canvas();
 		tabPane2.setWidth100();
 		tabPane2.setHeight100();
@@ -771,21 +771,30 @@ public class Vcapsmartgwt implements EntryPoint {
 		tabPanel.add(hPanel1, "1&1 Cloud Server");
 
 		// Amazon Web Service
-		VerticalPanel vPanel2 = new VerticalPanel();
-		vPanel2.setSpacing(15);
-		vPanel2.setHeight("500px");
-		Button refreshButton = new Button("Refresh");
-		final HTML awsOverviewLabel = new HTML();
-		awsOverviewLabel.setWidth("400");
-		awsOverviewLabel.setHeight("450");
-		Button cloudcontroller2Button = new Button("Cloud Controller");
-		final HTML awsResponseLabel = new HTML();
+		VerticalPanel awsLinks = new VerticalPanel();
+		awsLinks.setSpacing(15);
+		awsLinks.setHeight("600");
+		
+		HorizontalPanel hPanel2 = new HorizontalPanel();
+		VerticalPanel awsRechts = new VerticalPanel();
+		
+		//Erstelle Amazon Buttons und Anzeigeelemente
+		final HTML ueberschriftLinks = new HTML("<b>Instance control:</b>");
+		final HTML ueberschriftRechts = new HTML("<b>Enter Elastic IP:</b>");
+		final TextBox elasticIp = new TextBox();
+		elasticIp.setText("176.34.231.13");
+		Button setElasticIp = new Button("Set Elastic IP");
+		Button cloudControllerButton = new Button("Start Cloud Controller + Rest");
+		final Button startDeaButton = new Button("Start DEA");
+		startDeaButton.setVisible(false);
+		final Button startMongoButton = new Button("Start MongoDB");
+		startMongoButton.setVisible(false);
+		Button stoppInstancesButton = new Button("Stopp Instanzen");
+		final HTML awsResponseLabel = new HTML("Enter Elastic IP to begin!");
 		awsResponseLabel.setWidth("400");
 		awsResponseLabel.setHeight("450");
-		Button startDeaButton = new Button("Start DEA");
-		Button stoppDeaButton = new Button("Stopp DEA");
-		Button database2Button = new Button("Database");
 		
+		//Erstelle DialogBox um Server-Antwort anzuzeigen
 		final DialogBox awsResponseBox = new DialogBox();
 		awsResponseBox.setText("AWS Server Response: ");
 		awsResponseBox.setAnimationEnabled(true);
@@ -794,8 +803,6 @@ public class Vcapsmartgwt implements EntryPoint {
 		final HTML awsServerResponseLabel = new HTML();
 		VerticalPanel dialogAwsPanel = new VerticalPanel();
 		dialogAwsPanel.addStyleName("dialogVPanel");
-		dialogAwsPanel.add(new HTML(
-				"AWS Server Response: <br/>"));
 		dialogAwsPanel.add(awsServerResponseLabel);
 		dialogAwsPanel.add(closeAwsButton);
 		closeAwsButton.addClickHandler(new ClickHandler() {
@@ -804,11 +811,12 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 		awsResponseBox.setWidget(dialogAwsPanel);
-
+		
+		/*
 		// AWS Refresh Button - ClickHandler mit RPC
 		refreshButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.setAmazonCloudController(null,
+				cloudinfoSvc.startAmazonCloudController(null,
 						new AsyncCallback<String>() {
 							public void onFailure(Throwable caught) {
 								awsResponseLabel.setText(SERVER_ERROR);
@@ -821,13 +829,14 @@ public class Vcapsmartgwt implements EntryPoint {
 						});
 			}
 		});
+		*/
 
 		// Cloud Controller Button- ClickHandler mit RPC
-		cloudcontroller2Button.addClickHandler(new ClickHandler() {
+		cloudControllerButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 
-				cloudinfoSvc.setAmazonCloudController(null,
+				cloudinfoSvc.startAmazonCloudController(null,
 						new AsyncCallback<String>() {
 							public void onFailure(Throwable caught) {
 								awsResponseLabel.setText(SERVER_ERROR);
@@ -836,6 +845,8 @@ public class Vcapsmartgwt implements EntryPoint {
 							public void onSuccess(String result) {
 								awsResponseBox.show();
 								awsServerResponseLabel.setText(result);
+								startDeaButton.setVisible(true);
+								startMongoButton.setVisible(true);
 							}
 						});
 			}
@@ -858,10 +869,27 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 		
-		stoppDeaButton.addClickHandler(new ClickHandler() {
+		startMongoButton.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.stopAmazonDEA(new AsyncCallback<String>() {
+				cloudinfoSvc.startAmazonMongoDB(new AsyncCallback<String>() {
+
+					public void onFailure(Throwable caught) {
+						awsResponseLabel.setText(SERVER_ERROR);
+					}
+
+					public void onSuccess(String result) {
+						awsResponseBox.show();
+						awsResponseLabel.setText(result);
+					}
+				});
+			}
+		});
+		
+		stoppInstancesButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				cloudinfoSvc.stopAmazonInstances(new AsyncCallback<String>() {
 
 					public void onFailure(Throwable caught) {
 						awsResponseLabel.setText(SERVER_ERROR);
@@ -874,15 +902,42 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
+		
+		setElasticIp.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				String IP = elasticIp.getText();
+				cloudinfoSvc.setElasticIp(IP, new AsyncCallback<String>(){
+					public void onFailure(Throwable caught) {
+						awsResponseLabel.setText(SERVER_ERROR);
+					}
 
-//		vPanel2.add(refreshButton);
-//		vPanel2.add(awsOverviewLabel);
-		vPanel2.add(cloudcontroller2Button);
-		vPanel2.add(awsResponseLabel);
-		vPanel2.add(startDeaButton);
-		vPanel2.add(stoppDeaButton);
-		vPanel2.add(database2Button);
-		tabPanel.add(vPanel2, "Amazon Web Service");
+					public void onSuccess(String result) {
+						awsResponseBox.show();
+						awsServerResponseLabel.setText(result);
+					}
+				});
+			}
+		});
+
+		//Hinzufügen Elemente zu Panel links
+		awsLinks.add(awsResponseLabel);
+		awsLinks.add(ueberschriftLinks);
+		awsLinks.add(cloudControllerButton);
+		awsLinks.add(startDeaButton);
+		awsLinks.add(startMongoButton);
+		awsLinks.add(stoppInstancesButton);
+		
+		//HInzufügen der Elemente zu rechtem Panel
+		awsRechts.add(ueberschriftRechts);
+		awsRechts.add(elasticIp);
+		awsRechts.add(setElasticIp);
+		
+		//Hinzufügen der Panels zu HPanel
+		hPanel2.add(awsLinks);
+		hPanel2.add(awsRechts);
+		
+		tabPanel.add(hPanel2, "Amazon Web Service");
 
 		// Return the content
 		tabPanel.selectTab(0);
