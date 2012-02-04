@@ -369,8 +369,8 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	// Instanz sollte bestehen, bevor andere Nodes gestartet werden
 	public String startAmazonCloudController(String c) {
 		/*
-		 * Ablauf: Instanz wird gestartet, Elastic IP übergeben, Warten bis
-		 * gestartet, reboot
+		 * Ablauf: Instanz wird gestartet, Warten bis gestartet, Elastic IP übergeben, 
+		 * , reboot
 		 */
 
 		handleStartAws("rest");
