@@ -69,6 +69,8 @@ public interface CloudInfoServiceAsync {
 
 	void setElasticIp(String elasticIp, AsyncCallback<String> callback);
 
+	void getAwsInfo(String i, AsyncCallback<String> callback);
+
 	
 	
 

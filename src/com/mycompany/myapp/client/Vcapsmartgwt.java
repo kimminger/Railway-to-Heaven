@@ -144,6 +144,16 @@ public class Vcapsmartgwt implements EntryPoint {
 
 					}
 				});
+				cloudinfoSvc.getAwsInfo(null, new AsyncCallback<String>() {
+
+					public void onFailure(Throwable caught) {
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+
+					public void onSuccess(String result) {
+						serverResponseLabel.setContents(result);
+					}
+				});
 			}
 		});
 			

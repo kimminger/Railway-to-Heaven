@@ -31,6 +31,7 @@ public interface CloudInfoService extends RemoteService {
 	public String startAmazonMongoDB();
 	public String stopAmazonInstances();
 	public String setElasticIp(String elasticIp);
+	public String getAwsInfo(String i);
 	
 	//1und1 Functions
 	public String start1und1();
