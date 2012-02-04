@@ -61,7 +61,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		// Tabset Definition
 		final TabSet topTabset = new TabSet();
 		topTabset.setTabBarPosition(Side.TOP);
-		topTabset.setWidth(850);
+		topTabset.setWidth(600);
 		topTabset.setHeight(600);
 
 		// Overview Tab
@@ -163,7 +163,7 @@ public class Vcapsmartgwt implements EntryPoint {
 	
 	private Widget getProviderTab() {
 		final DecoratedTabPanel tabPanel = new DecoratedTabPanel();
-		tabPanel.setWidth("800px");
+		tabPanel.setWidth("580px");
 		tabPanel.setAnimationEnabled(true);
 		
 
@@ -172,6 +172,25 @@ public class Vcapsmartgwt implements EntryPoint {
 		serverResponseLabel.setHeight("450px");
 				
 		//VCAP
+		
+		/*final DialogBox appResponseBox = new DialogBox();
+		appResponseBox.setText("Response");
+		appResponseBox.setAnimationEnabled(true);
+		appResponseBox.setPopupPosition(610, 30);
+		
+		final Button closeAppButton = new Button("<b>Close to continue</b>");
+		final HTML appServerResponseLabel = new HTML();
+		
+		VerticalPanel dialogAppPanel = new VerticalPanel();
+		dialogAppPanel.addStyleName("dialogVPanel");
+		dialogAppPanel.add(appServerResponseLabel);
+		dialogAppPanel.add(closeAppButton);
+		closeAppButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				appResponseBox.hide();
+			}
+		});
+		appResponseBox.setWidget(dialogAppPanel);*/
 		
 		final VerticalPanel vPanel1 = new VerticalPanel();
 		vPanel1.setSpacing(15);
@@ -972,7 +991,7 @@ public class Vcapsmartgwt implements EntryPoint {
 
 	private Widget getBenchmarkTab() {
 		DecoratedTabPanel tabPanel = new DecoratedTabPanel();
-		tabPanel.setWidth("800px");
+		tabPanel.setWidth("580px");
 		tabPanel.setAnimationEnabled(true);
 
 		// RAINTOOLS Functions
