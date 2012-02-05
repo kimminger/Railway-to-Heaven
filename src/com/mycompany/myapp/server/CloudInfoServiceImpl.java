@@ -310,28 +310,43 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	public String getAwsInfo(String i){
 			
-		
-		 DescribeInstancesResult res = ec2.describeInstances();
-		 
-		 List<Reservation> reservations = res.getReservations(); 
-		 String text = "";
-		 int n = 1;
-		 for (Reservation reservation : reservations) {
-			 for(Instance instance : reservation.getInstances()){
-				 text += "<br/><p1><b>Amazon Web Service Instances</b></p1><table><tr><th>"
-							+ n
-							+ "</th><th>Instance-ID</th><th>State</th><th>Type</th><th>Image-ID</th><th>Tags</th><th>Public DNS-Name</th></tr><tr><td></td><td>"
-							+ instance.getInstanceId() + "</td><td>" + instance.getState()
-							+ "</td><td>" + instance.getInstanceType() +"</td><td>"
-							+ instance.getImageId() + "</td><td>" + instance.getTags()
-							+ "</td><td>" + instance.getPublicDnsName() + "</td></tr></table>";
-				 n++;
+		AWSCredentials credentials;
+			try {
+				credentials = new PropertiesCredentials(
+						CloudInfoServiceImpl.class
+								.getResourceAsStream("AwsCredentials.properties"));
+				
+				ec2 = new AmazonEC2Client(credentials);
+				ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
+			
+			 DescribeInstancesResult res = ec2.describeInstances();
+			 
+			 List<Reservation> reservations = res.getReservations(); 
+			 String text = "";
+			 int n = 1;
+			 for (Reservation reservation : reservations) {
+				 for(Instance instance : reservation.getInstances()){
+					 text += "<br/><p1><b>Amazon Web Service Instances</b></p1><table><tr><th>"
+								+ n
+								+ "</th><th>Instance-ID</th><th>State</th><th>Type</th><th>Image-ID</th><th>Tags</th><th>Public DNS-Name</th></tr><tr><td></td><td>"
+								+ instance.getInstanceId() + "</td><td>" + instance.getState()
+								+ "</td><td>" + instance.getInstanceType() +"</td><td>"
+								+ instance.getImageId() + "</td><td>" + instance.getTags()
+								+ "</td><td>" + instance.getPublicDnsName() + "</td></tr></table>";
+					 n++;
+				 }
 			 }
-		 }
 
-		return text;
+			return text;
+				
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return "Error while processing";
 	}
-	
 	
 	
 	// Klasseninterne Methode zur Initialisierung eines EC2-Client Objektes und
