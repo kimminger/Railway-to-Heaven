@@ -107,7 +107,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	
 	
 
-	public void stopApp(String appName) {
+	public String stopApp(String appName) {
 
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
@@ -128,10 +128,10 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			}
 
 		}
-
+		return "App is stopped!";
 	}
 
-	public void startApp(String appName) {
+	public String startApp(String appName) {
 
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
@@ -152,10 +152,10 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 				client.startApplication(appName);
 			}
 		}
-
+		return "App start";
 	}
 
-	public void restartApp(String appName) {
+	public String restartApp(String appName) {
 
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
@@ -177,7 +177,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			}
 
 		}
-
+		return "App restart";
 	}
 
 	public void addApp(String appName, String framework, int memory,
@@ -199,7 +199,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	public void deleteApp(String appName) {
+	public String deleteApp(String appName) {
 
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
@@ -213,10 +213,10 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		client.login();
 		client.deleteApplication(appName);
-
+		return "finish";
 	}
 
-	public void updateAppmemory(String appName, int memory) {
+	public String updateAppmemory(String appName, int memory) {
 
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
@@ -230,10 +230,10 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		client.login();
 		client.updateApplicationMemory(appName, memory);
-
+		return "finish";
 	}
 
-	public void updateAppinstance(String appName, int instances) {
+	public String updateAppinstance(String appName, int instances) {
 
 		// VCAP Client auf 1&1 Instanzen
 
@@ -248,10 +248,10 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		client.login();
 		client.updateApplicationInstances(appName, instances);
-
+		return "finish";
 	}
 
-	public void bindingAppservice(String appName, String serviceName) {
+	public String bindingAppservice(String appName, String serviceName) {
 
 		// VCAP Client auf 1&1 Instanzen
 
@@ -267,10 +267,10 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		client.login();
 
 		client.bindService(appName, serviceName);
-
+		return "finish";
 	}
 
-	public void unbindingAppservice(String appName, String serviceName) {
+	public String unbindingAppservice(String appName, String serviceName) {
 
 		// VCAP Client auf 1&1 Instanzen
 
@@ -286,7 +286,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		client.login();
 
 		client.unbindService(appName, serviceName);
-
+		return "finish";
 	}
 
 	public void createAppservice(String serviceName, String vendor/*

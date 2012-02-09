@@ -11,31 +11,31 @@ public interface CloudInfoServiceAsync {
 
 	void getInfo(String i, AsyncCallback<String> callback);
 
-	void stopApp(String appName, AsyncCallback<Void> callback);
+	void stopApp(String appName, AsyncCallback<String> callback);
 
-	void startApp(String appName, AsyncCallback<Void> callback);
+	void startApp(String appName, AsyncCallback<String> callback);
 
 	void addApp(String appName, String framework, int memory,
 			List<String> uris, List<String> servicesname,
 			AsyncCallback<Void> callback);
 
-	void deleteApp(String appName, AsyncCallback<Void> callback);
+	void deleteApp(String appName, AsyncCallback<String> callback);
 
-	void restartApp(String appName, AsyncCallback<Void> callback);
+	void restartApp(String appName, AsyncCallback<String> callback);
 
 	void updateAppmemory(String appName, int memory,
-			AsyncCallback<Void> callback);
+			AsyncCallback<String> callback);
 
 	void updateAppinstance(String appName, int instance,
-			AsyncCallback<Void> callback);
+			AsyncCallback<String> callback);
 
 	//void uploadAppfile(AsyncCallback<Void> callback);	
 	
 	void bindingAppservice(String appName, String serviceName,
-			AsyncCallback<Void> callback);
+			AsyncCallback<String> callback);
 	
 	void unbindingAppservice(String appName, String serviceName,
-			AsyncCallback<Void> callback);
+			AsyncCallback<String> callback);
 
 	void createAppservice(String serviceName, String vendor,
 			AsyncCallback<Void> callback);

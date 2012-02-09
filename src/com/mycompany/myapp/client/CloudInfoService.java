@@ -13,16 +13,16 @@ public interface CloudInfoService extends RemoteService {
 
 	public String getInfo(String url);
 	//VCAP Functions
-	public void stopApp(String appName);
-	public void startApp(String appName);
-	public void updateAppmemory(String appName, int memory);
-	public void updateAppinstance(String appName, int instance);
+	public String stopApp(String appName);
+	public String startApp(String appName);
+	public String updateAppmemory(String appName, int memory);
+	public String updateAppinstance(String appName, int instance);
 	public void addApp(String appName, String framework, int memory, List<String> uris, List<String> servicesname );
-	public void deleteApp(String appName);
-	public void restartApp(String appName);
+	public String deleteApp(String appName);
+	public String restartApp(String appName);
 	//public void uploadAppfile();
-	public void bindingAppservice(String appName, String serviceName);
-	public void unbindingAppservice(String appName, String serviceName);
+	public String bindingAppservice(String appName, String serviceName);
+	public String unbindingAppservice(String appName, String serviceName);
 	public void createAppservice(String serviceName, String vendor);
 
 	//AWS Functions
