@@ -1,12 +1,10 @@
 package com.mycompany.myapp.server;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,9 +12,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.http.client.ClientProtocolException;
 import org.cloudfoundry.client.lib.CloudApplication;
 import org.cloudfoundry.client.lib.CloudFoundryClient;
-import org.cloudfoundry.client.lib.CloudInfo.Framework;
 import org.cloudfoundry.client.lib.CloudService;
-import org.cloudfoundry.client.lib.UploadStatusCallback;
 import org.json.JSONException;
 
 import com.amazonaws.auth.AWSCredentials;
@@ -27,16 +23,16 @@ import com.amazonaws.services.ec2.model.AssociateAddressRequest;
 import com.amazonaws.services.ec2.model.CreateTagsRequest;
 import com.amazonaws.services.ec2.model.DescribeInstanceStatusRequest;
 import com.amazonaws.services.ec2.model.DescribeInstanceStatusResult;
+import com.amazonaws.services.ec2.model.DescribeInstancesRequest;
+import com.amazonaws.services.ec2.model.DescribeInstancesResult;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.InstanceStatus;
 import com.amazonaws.services.ec2.model.RebootInstancesRequest;
 import com.amazonaws.services.ec2.model.Reservation;
 import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
-import com.amazonaws.services.ec2.model.StartInstancesRequest;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
 import com.amazonaws.services.ec2.model.Tag;
-import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mycompany.myapp.client.CloudInfoService;
 
@@ -75,19 +71,20 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-
-		client.login();
-		List<CloudApplication> apps = client.getApplications();
-		String appInfo = "";
-		int n = 1;
+		}  
+		
+		//VCAP client login
+			client.login();
+			List<CloudApplication> apps = client.getApplications();
+			String appInfo = "";
+			int n = 1;
 		for (CloudApplication app : apps) {
 
-			appInfo += "<table><tr><th>"
+			appInfo += "<p1><b>1&1 Cloud Server Instances</b></p1><table><tr><th>"
 					+ n
 					+ "</th><th>Application</th><th>State</th><th>Instance</th><th>Memory</th><th>Service</th><th>URI</th></tr><tr><td></td><td>"
 					+ app.getName() + "</td><td>" + app.getState()
-					+ "</td><td>" + app.getInstances() + "</td><td>"
+					+ "</td><td>" + app.getInstances() +"</td><td>"
 					+ app.getMemory() + "</td><td>" + app.getServices()
 					+ "</td><td>" + app.getUris() + "</td></tr></table>";
 			n++;
@@ -311,6 +308,47 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	// Autor Kim Rohner Mailto: rohner.kim at gmail.com
 
+	public String getAwsInfo(String i){
+			
+		AWSCredentials credentials;
+			try {
+				credentials = new PropertiesCredentials(
+						CloudInfoServiceImpl.class
+								.getResourceAsStream("AwsCredentials.properties"));
+				
+				ec2 = new AmazonEC2Client(credentials);
+				ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
+			
+			 DescribeInstancesResult res = ec2.describeInstances();
+			 
+			 List<Reservation> reservations = res.getReservations(); 
+			 String text = "";
+			 int n = 1;
+			 for (Reservation reservation : reservations) {
+				 for(Instance instance : reservation.getInstances()){
+					 text += "<br/><p1><b>Amazon Web Service Instances</b></p1><table><tr><th>"
+								+ n
+								+ "</th><th>Instance-ID</th><th>State</th><th>Type</th><th>Image-ID</th><th>Tags</th><th>Public DNS-Name</th></tr><tr><td></td><td>"
+								+ instance.getInstanceId() + "</td><td>" + instance.getState()
+								+ "</td><td>" + instance.getInstanceType() +"</td><td>"
+								+ instance.getImageId() + "</td><td>" + instance.getTags()
+								+ "</td><td>" + instance.getPublicDnsName() + "</td></tr></table>";
+					 n++;
+				 }
+			 }
+
+			return text;
+				
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return "Error while processing";
+	}
+	
+	
 	// Klasseninterne Methode zur Initialisierung eines EC2-Client Objektes und
 	// RunInstance Aufrufs
 	private List<Instance> handleStartAws(String userData) {
@@ -396,6 +434,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			instanceStatus = describeInstanceStatusResult.getInstanceStatuses();
 		}
 
+		//Zuordnung Elastic IP
 		AssociateAddressRequest associateAddressReq = new AssociateAddressRequest();
 		String instanceId = null;
 		for (Instance instance : instanceIds) {
@@ -458,27 +497,6 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		return "Amazon Instanzen werden gestoppt";
 	}
-
-	/*
-	 * 
-	 * //TODO infos in Overview reinpacken /* DescribeInstancesResult
-	 * describeInstancesRequest = ec2.describeInstances(); List<Reservation>
-	 * reservations = describeInstancesRequest.getReservations(); Set<Instance>
-	 * instances = new HashSet<Instance>();
-	 * 
-	 * for (Reservation reservation : reservations) {
-	 * instances.addAll(reservation.getInstances()); } text = "You have " +
-	 * instances.size() + " Amazon EC2 instance(s) running.";
-	 */
-	/*
-	 * DescribeInstancesResult result = ec2.describeInstances(); for
-	 * (Reservation reservation : result.getReservations()) { for (Instance
-	 * instance : reservation.getInstances()) { text += "Instanzen: " +
-	 * instance.getInstanceId(); text += "Typ: " + instance.getInstanceType();
-	 * text += "Lifecycle: " + instance.getInstanceLifecycle();
-	 * 
-	 * } } return text;
-	 */
 
 	// Interne Funktion zum Umgang mit der 1und1 API
 	private void handle1und1(String command) {
@@ -562,7 +580,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			e.printStackTrace();
 		}
 
-		return "Changes completed!";
+		return "Changes transmitted!";
 	}
 
 }
