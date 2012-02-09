@@ -341,7 +341,6 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 				
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
