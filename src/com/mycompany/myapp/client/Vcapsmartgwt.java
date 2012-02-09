@@ -63,6 +63,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		topTabset.setTabBarPosition(Side.TOP);
 		topTabset.setWidth(600);
 		topTabset.setHeight(600);
+		
 
 		// Overview Tab
 		Tab tTab1 = new Tab("Overview");
@@ -121,16 +122,19 @@ public class Vcapsmartgwt implements EntryPoint {
 		final VerticalPanel vPanel0 = new VerticalPanel();
 		vPanel0.setSpacing(15);
 		vPanel0.setHeight("500px");
+		
+		final HorizontalPanel horPanel = new HorizontalPanel();
 
 		
 		final HTMLFlow serverResponseLabel = new HTMLFlow();
 		serverResponseLabel.setWidth("550px");
 		serverResponseLabel.setHeight("450px");
 
-		final Button refreshButton = new Button("Refresh");
-		refreshButton.addClickHandler(new ClickHandler() {
+		//RPC zum Abruf von AWS Informationen
+		final Button refreshAwsAppInfoButton = new Button("AWS App Info");
+		refreshAwsAppInfoButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.getInfo(null, new AsyncCallback<String>() {
+				cloudinfoSvc.getInfo("http://api.railwaytoheaven.de", new AsyncCallback<String>() {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
@@ -144,6 +148,14 @@ public class Vcapsmartgwt implements EntryPoint {
 
 					}
 				});
+			}
+		});
+		
+		//RPC zum Abruf von AWS Informationen
+		final Button refreshAwsButton = new Button("AWS Instance-Info");
+		refreshAwsButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
 				cloudinfoSvc.getAwsInfo(null, new AsyncCallback<String>() {
 
 					public void onFailure(Throwable caught) {
@@ -156,15 +168,33 @@ public class Vcapsmartgwt implements EntryPoint {
 				});
 			}
 		});
+		
+		final Button refresh1und1AppButton = new Button("1und1 App Info");
+		refresh1und1AppButton.addClickHandler(new ClickHandler() {
 			
+			public void onClick(ClickEvent event) {
+				cloudinfoSvc.getInfo("http://api.railwaytoheaven.com", new AsyncCallback<String>() {
+					
+					public void onSuccess(String result) {
+						serverResponseLabel.setContents(result);
+					}
+					
+					public void onFailure(Throwable caught) {
+						serverResponseLabel.setContents(SERVER_ERROR);
+					}
+				});
+			}
+		});
+							
+		
+		horPanel.add(refreshAwsButton);
+		horPanel.add(refreshAwsAppInfoButton);
+		horPanel.add(refresh1und1AppButton);
 
-		vPanel0.add(refreshButton);
+		vPanel0.add(horPanel);
 		vPanel0.add(serverResponseLabel);
 					
-		//tabPanel.add(vPanel0,"");
-	
-		//tabPanel.selectTab(0);
-		//tabPanel.ensureDebugId("cwTabPanel");
+		
 		return vPanel0;
 
 	}
@@ -837,14 +867,15 @@ public class Vcapsmartgwt implements EntryPoint {
 		final HTML ueberschriftRechts = new HTML("<b>Enter Elastic IP:</b>");
 		final TextBox elasticIp = new TextBox();
 		elasticIp.setText("176.34.231.13");
-		Button setElasticIp = new Button("Set Elastic IP");
-		Button cloudControllerButton = new Button("Start Cloud Controller + Rest");
-		final Button startDeaButton = new Button("Start DEA");
+		Button setElasticIp = new Button("1. Set Elastic IP");
+		Button cloudControllerButton = new Button("2. Start Cloud Controller + Rest");
+		final Button startDeaButton = new Button("3. Start DEA");
 		startDeaButton.setVisible(false);
-		final Button startMongoButton = new Button("Start MongoDB");
+		final Button startMongoButton = new Button("4. Start MongoDB");
 		startMongoButton.setVisible(false);
 		Button stoppInstancesButton = new Button("Stopp Instanzen");
-		final HTML awsResponseLabel = new HTML("Enter Elastic IP to begin!");
+		Button terminateInstancesButton = new Button("Terminate Instances");
+		final HTML awsResponseLabel = new HTML("Enter Elastic IP to begin! We assume you registered an AWS Account");
 		awsResponseLabel.setWidth("400");
 		awsResponseLabel.setHeight("450");
 		
@@ -866,24 +897,6 @@ public class Vcapsmartgwt implements EntryPoint {
 		});
 		awsResponseBox.setWidget(dialogAwsPanel);
 		
-		/*
-		// AWS Refresh Button - ClickHandler mit RPC
-		refreshButton.addClickHandler(new ClickHandler() {
-			public void onClick(ClickEvent event) {
-				cloudinfoSvc.startAmazonCloudController(null,
-						new AsyncCallback<String>() {
-							public void onFailure(Throwable caught) {
-								awsResponseLabel.setText(SERVER_ERROR);
-							}
-
-							public void onSuccess(String result) {
-								awsResponseBox.show();
-								awsServerResponseLabel.setText(result);
-							}
-						});
-			}
-		});
-		*/
 
 		// Cloud Controller Button- ClickHandler mit RPC
 		cloudControllerButton.addClickHandler(new ClickHandler() {
@@ -943,7 +956,24 @@ public class Vcapsmartgwt implements EntryPoint {
 		stoppInstancesButton.addClickHandler(new ClickHandler() {
 			
 			public void onClick(ClickEvent event) {
-				cloudinfoSvc.stopAmazonInstances(new AsyncCallback<String>() {
+				cloudinfoSvc.stopAmazonInstances("stop", new AsyncCallback<String>() {
+
+					public void onFailure(Throwable caught) {
+						awsResponseLabel.setText(SERVER_ERROR);
+					}
+
+					public void onSuccess(String result) {
+						awsResponseBox.show();
+						awsServerResponseLabel.setText(result);
+					}
+				});
+			}
+		});
+		
+		terminateInstancesButton.addClickHandler(new ClickHandler() {
+			
+			public void onClick(ClickEvent event) {
+				cloudinfoSvc.stopAmazonInstances("terminate", new AsyncCallback<String>() {
 
 					public void onFailure(Throwable caught) {
 						awsResponseLabel.setText(SERVER_ERROR);
@@ -981,6 +1011,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		awsLinks.add(startDeaButton);
 		awsLinks.add(startMongoButton);
 		awsLinks.add(stoppInstancesButton);
+		awsLinks.add(terminateInstancesButton);
 		
 		//HInzufügen der Elemente zu rechtem Panel
 		awsRechts.add(ueberschriftRechts);

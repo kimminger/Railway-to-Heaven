@@ -322,7 +322,7 @@ public class EinsundEinsServer {
 			JSONObject j = ja.getJSONObject(i);
 
 			String ip = (String) j.get("ip");
-			if (ip.equals("217.160.94.112") || ip.equals("217.160.94.107")
+			if (ip.equals("217.160.94.107")
 					|| ip.equals("217.160.94.108")
 					|| ip.equals("217.160.94.109")) {
 				result[index] = (String) j.get("vmid").toString();

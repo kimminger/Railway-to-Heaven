@@ -33,6 +33,7 @@ import com.amazonaws.services.ec2.model.RunInstancesRequest;
 import com.amazonaws.services.ec2.model.RunInstancesResult;
 import com.amazonaws.services.ec2.model.StopInstancesRequest;
 import com.amazonaws.services.ec2.model.Tag;
+import com.amazonaws.services.ec2.model.TerminateInstancesRequest;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 import com.mycompany.myapp.client.CloudInfoService;
 
@@ -56,17 +57,26 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	// CloudFoundryClient Parameter
 	final String email = "moritz-behr@web.de";
 	final String password = "moritz";
-	final String cloudcontrollerURL = "http://api.railwaytoheaven.de";
+	final String amazonCloudcontrollerURL = "http://api.railwaytoheaven.de";
+	final String einsundeinsCloudcontrollerURL = "http://api.railwaytoheaven.com";
 
 	private String elasticIp;
 
-	public String getInfo(String i) {
-
+	public String getInfo(String url) {
+		String title = "";
+		
+		if(url == amazonCloudcontrollerURL){
+			title = "Amazon Web Service - Apps";
+		}
+		else if(url == einsundeinsCloudcontrollerURL){
+			title = "1&1 Cloud Server - Apps";
+		}
+		
 		// VCAP Client auf Amazon Instanzen
 		CloudFoundryClient client = null;
 		try {
 
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, url);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -80,7 +90,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			int n = 1;
 		for (CloudApplication app : apps) {
 
-			appInfo += "<p1><b>1&1 Cloud Server Instances</b></p1><table><tr><th>"
+			appInfo += "<p1><b>"+title+"</b></p1><table><tr><th>"
 					+ n
 					+ "</th><th>Application</th><th>State</th><th>Instance</th><th>Memory</th><th>Service</th><th>URI</th></tr><tr><td></td><td>"
 					+ app.getName() + "</td><td>" + app.getState()
@@ -92,15 +102,17 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 
 		return appInfo;
-
+		
 	}
+	
+	
 
 	public void stopApp(String appName) {
 
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -124,7 +136,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -148,7 +160,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -175,7 +187,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -192,7 +204,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -209,7 +221,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -227,7 +239,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -245,7 +257,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -264,7 +276,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -288,7 +300,7 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 		CloudFoundryClient client = null;
 		try {
-			client = new CloudFoundryClient(email, password, cloudcontrollerURL);
+			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -341,7 +353,6 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 				
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -486,16 +497,43 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	}
 
 	// Stoppt alle Amazon Instanzen
-	public String stopAmazonInstances() {
-
-		ArrayList<String> stopInstances = new ArrayList<String>();
-		for (Instance instance : instanceIds) {
-			stopInstances.add(instance.getInstanceId());
-		}
+	public String stopAmazonInstances(String command) {
+		System.out.println(command);
+		AWSCredentials credentials;
+		try {
+			credentials = new PropertiesCredentials(
+					CloudInfoServiceImpl.class
+							.getResourceAsStream("AwsCredentials.properties"));
+			
+			ec2 = new AmazonEC2Client(credentials);
+			ec2.setEndpoint("https://eu-west-1.ec2.amazonaws.com");
 		
-		ec2.stopInstances(new StopInstancesRequest(stopInstances));
+		 DescribeInstancesResult res = ec2.describeInstances();
+		 
+		 List<Reservation> reservations = res.getReservations(); 
+		 
+		 ArrayList<String> stopInstances = new ArrayList<String>();
+		 for (Reservation reservation : reservations) {
+			 for(Instance instance : reservation.getInstances()){
+				 stopInstances.add(instance.getInstanceId());
+			}
+		 }
+		 
+		 if(command.equals("stop")){
+			 ec2.stopInstances(new StopInstancesRequest(stopInstances));
+			 return "Amazon Instanzen werden gestoppt!";
+		 }
+		 else if(command.equals("terminate")){
+			 ec2.terminateInstances(new TerminateInstancesRequest(stopInstances));
+			 return "Hasta La Vista Instances !!!";
+		 }
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		return "Amazon Instanzen werden gestoppt";
+		return "Error";
 	}
 
 	// Interne Funktion zum Umgang mit der 1und1 API

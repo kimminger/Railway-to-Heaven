@@ -11,7 +11,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 public interface CloudInfoService extends RemoteService {
 	
 
-	public String getInfo(String i);
+	public String getInfo(String url);
 	//VCAP Functions
 	public void stopApp(String appName);
 	public void startApp(String appName);
@@ -29,7 +29,7 @@ public interface CloudInfoService extends RemoteService {
 	public String startAmazonCloudController(String c);
 	public String startAmazonDEA();
 	public String startAmazonMongoDB();
-	public String stopAmazonInstances();
+	public String stopAmazonInstances(String command);
 	public String setElasticIp(String elasticIp);
 	public String getAwsInfo(String i);
 	
