@@ -63,7 +63,7 @@ public interface CloudInfoServiceAsync {
 	//AWS Functions
 	void startAmazonDEA(AsyncCallback<String> callback);
 	
-	void stopAmazonInstances(AsyncCallback<String> callback);
+	void stopAmazonInstances(String command, AsyncCallback<String> callback);
 
 	void startAmazonMongoDB(AsyncCallback<String> callback);
 
