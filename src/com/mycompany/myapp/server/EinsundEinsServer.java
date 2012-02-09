@@ -22,25 +22,25 @@ public class EinsundEinsServer {
 	final static String PASSWORD = "emergent";
 	final static int PORT = 443;
 
-	public String vmID;
+	private String vmID;
 
-	public boolean configurable;
+	private boolean configurable;
 
-	public int ram;
+	private int ram;
 
-	public int contract;
+	private int contract;
 
-	public int cpu;
+	private int cpu;
 
-	public String hostname;
+	private String hostname;
 
-	public String imagetype;
+	private String imagetype;
 
-	public int imageid;
+	private int imageid;
 
-	public String imagename;
+	private String imagename;
 
-	public String ip;
+	private String ip;
 
 	public String getVmID() {
 		return vmID;
@@ -199,7 +199,7 @@ public class EinsundEinsServer {
 
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
-			client.doPutServerStateChange(vmID, "CAN_START");
+			client.doPutServerStateChange(this.vmID, "CAN_START");
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -214,7 +214,7 @@ public class EinsundEinsServer {
 
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
-			client.doPutServerStateChange(vmID, "CAN_STOP");
+			client.doPutServerStateChange(this.vmID, "CAN_STOP");
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -229,7 +229,7 @@ public class EinsundEinsServer {
 
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
-			client.doPutServerStateChange(vmID, "CAN_RESTART");
+			client.doPutServerStateChange(this.vmID, "CAN_RESTART");
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -244,7 +244,7 @@ public class EinsundEinsServer {
 
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
-			client.doPutServerStateChange(vmID, "CAN_SUSPEND");
+			client.doPutServerStateChange(this.vmID, "CAN_SUSPEND");
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -259,7 +259,7 @@ public class EinsundEinsServer {
 
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
-			client.doPutServerStateChange(vmID, "CAN_POWER_OFF");
+			client.doPutServerStateChange(this.vmID, "CAN_POWER_OFF");
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -277,7 +277,8 @@ public class EinsundEinsServer {
 	public void configureHardware(String cpu, String HDD, String ram) {
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
-			client.doPutHardwareConfiguration(vmID, cpu, HDD, ram);
+		
+			client.doPutHardwareConfiguration(this.vmID, cpu, HDD, ram);
 
 		} catch (ClientProtocolException e) {
 			e.printStackTrace();
@@ -291,7 +292,7 @@ public class EinsundEinsServer {
 	public String getState() {
 		try {
 			Client client = new Client(HOST, PORT, USERNAME, PASSWORD);
-			JSONObject j = client.doGetServerState(vmID);
+			JSONObject j = client.doGetServerState(this.vmID);
 			// j.get(key);
 			return j.toString();
 		} catch (ClientProtocolException e) {
