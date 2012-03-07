@@ -40,7 +40,9 @@ import com.mycompany.myapp.client.CloudInfoService;
 public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		CloudInfoService {
 
-	// Konstanten für Methode handle1und1
+	/**
+	 *  Konstanten für Methode handle1und1
+	 */
 	final String START = "start";
 	final String STOP = "stop";
 	final String RESTART = "restart";
@@ -48,23 +50,38 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	final String POWEROFF = "poweroff";
 	final String HDD = "300";
 
-	// Konstanten für AWS-Methoden
+	/**
+	 *  Konstanten für AWS-Methoden
+	 */
 	final String IMAGEID = "ami-b96b55cd";
-	// Objektvariablen
+	/**
+	 *  Objektvariablen
+	 */
 	private AmazonEC2 ec2;
 	private List<Instance> instanceIds;
 
-	// CloudFoundryClient Parameter
+	/**
+	 *  CloudFoundryClient Parameter
+	 */
 	final String email = "moritz-behr@web.de";
 	final String password = "moritz";
 	final String amazonCloudcontrollerURL = "http://api.railwaytoheaven.de";
 	final String einsundeinsCloudcontrollerURL = "http://api.railwaytoheaven.com";
 
 	private String elasticIp;
-
+	
+	/**
+	 *  VCAP Methode
+	 */
+	/**
+	 *  getInfo Methode gibt Apps-Information an
+	 */
+		
 	public String getInfo(String url) {
 		String title = "";
-		
+		/**
+		 * if-else if wird benutzt, um die Service Providers automatisch zu erkennen
+		 */
 		if(url == amazonCloudcontrollerURL){
 			title = "Amazon Web Service - Apps";
 		}
@@ -72,22 +89,29 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 			title = "1&1 Cloud Server - Apps";
 		}
 		
-		// VCAP Client auf Amazon Instanzen
+		/**
+		 *  VCAP Client auf Amazon Instanzen
+		 */
 		CloudFoundryClient client = null;
 		try {
 
 			client = new CloudFoundryClient(email, password, url);
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}  
 		
-		//VCAP client login
+		/**
+		 * VCAP client login
+		 */
 			client.login();
 			List<CloudApplication> apps = client.getApplications();
 			String appInfo = "";
 			int n = 1;
+		/**
+		 * for-Schleife wird benutzt, um die Apps in der Liste CloudApplication zu suchen und informieren 
+		 */
 		for (CloudApplication app : apps) {
 
 			appInfo += "<p1><b>"+title+"</b></p1><table><tr><th>"
@@ -106,23 +130,29 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	
-
+	/**
+	 * stopApp Mehthode stoppt die ausgewählte Applikation
+	 */
 	public String stopApp(String appName) {
 
-		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
 		client.login();
 		List<CloudApplication> apps = client.getApplications();
-
+		/**
+		 * for-Schleife wird benutzt, um die Apps in der Liste CloudApplication zu suchen und informieren 
+		 */
 		for (CloudApplication app : apps) {
+			/**
+			 * if-else if wird benutzt, um die appName in der List CloudApplication zu identifizieren
+			 */
 			if (app.getName().equals(appName)) {
 				client.stopApplication(appName);
 			}
@@ -131,15 +161,18 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return "App is stopped!";
 	}
 
+	/**
+	 * startApp Methode startet die ausgewählte Applikation
+	 */
 	public String startApp(String appName) {
 
-		// VCAP Client auf 1&1 Instanzen
+		
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -154,16 +187,18 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 		return "App start";
 	}
-
+	/**
+	 * restartApp Methode startet die ausgewählte Applikation neu 
+	 */
 	public String restartApp(String appName) {
 
-		// VCAP Client auf 1&1 Instanzen
+	
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+		
 			e.printStackTrace();
 		}
 
@@ -179,18 +214,19 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		}
 		return "App restart";
 	}
-
+	/**
+	 * addApp Methode fügt die ausgewählte Applikation hinzu
+	 */
 	public void addApp(String appName, String framework, int memory,
 			List<String> uris, List<String> servicesname) {
 
-		// VCAP Client auf 1&1 Instanzen
 
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 		client.login();
@@ -198,16 +234,18 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		client.createApplication(appName, framework, memory, uris, servicesname);
 
 	}
-
+	/**
+	 * deleteApp Methode löscht die ausgewählte Applikation
+	 */
 	public String deleteApp(String appName) {
 
-		// VCAP Client auf 1&1 Instanzen
+		
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -215,16 +253,17 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		client.deleteApplication(appName);
 		return "finish";
 	}
-
+	/**
+	 * updateAppmemory Methode aktualisiert neue Memory für die ausgewählte Applikation
+	 */
 	public String updateAppmemory(String appName, int memory) {
 
-		// VCAP Client auf 1&1 Instanzen
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -232,17 +271,18 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		client.updateApplicationMemory(appName, memory);
 		return "finish";
 	}
-
+	/**
+	 * updateAppinstance Methode aktualisiert neue Instances für die ausgewählte Applikation
+	 */
 	public String updateAppinstance(String appName, int instances) {
 
-		// VCAP Client auf 1&1 Instanzen
-
+		
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -250,10 +290,11 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		client.updateApplicationInstances(appName, instances);
 		return "finish";
 	}
-
+	/**
+	 * bindingAppservice Methode verbindet ein bestehendes Service für die ausgewählte Applikation
+	 */
 	public String bindingAppservice(String appName, String serviceName) {
 
-		// VCAP Client auf 1&1 Instanzen
 
 		CloudFoundryClient client = null;
 		try {
@@ -269,17 +310,18 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		client.bindService(appName, serviceName);
 		return "finish";
 	}
-
+	/**
+	 * unbindingAppservice Methode trennt ein verbundetes Service von der ausgewählten Applikation
+	 */
 	public String unbindingAppservice(String appName, String serviceName) {
 
-		// VCAP Client auf 1&1 Instanzen
-
+		
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		}
 
@@ -288,7 +330,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		client.unbindService(appName, serviceName);
 		return "finish";
 	}
-
+	/**
+	 * createAppservice Methode erstellt ein neues Service (Es hat leider nicht funktioniert)
+	 */
 	public void createAppservice(String serviceName, String vendor/*
 																 * , String
 																 * tier, String
@@ -296,14 +340,14 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 																 */) {
 
 		System.out.println("hai test create app");
-		// VCAP Client auf 1&1 Instanzen
+		
 
 		CloudFoundryClient client = null;
 		try {
 			client = new CloudFoundryClient(email, password, amazonCloudcontrollerURL);
 
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+			
 
 			e.printStackTrace();
 		}
@@ -318,7 +362,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	// Autor Kim Rohner Mailto: rohner.kim at gmail.com
+	/**
+	 *  Autor Kim Rohner Mailto: rohner.kim at gmail.com
+	 */
 
 	public String getAwsInfo(String i){
 			
@@ -360,8 +406,16 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 	}
 	
 	
-	// Klasseninterne Methode zur Initialisierung eines EC2-Client Objektes und
-	// RunInstance Aufrufs
+	/**
+	 *  Klasseninterne Methode zur Initialisierung eines EC2-Client Objektes und
+	 * @param userData
+	 * @return
+	 */
+	/**
+	 *  RunInstance Aufrufs
+	 * @param userData
+	 * @return 
+	 */
 	private List<Instance> handleStartAws(String userData) {
 		AWSCredentials credentials;
 		try {
@@ -403,7 +457,10 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return null;
 	}
 
-	// getter and setter für ElasticIP
+	/**
+	 *  getter and setter für ElasticIP
+	 * @return
+	 */
 	public String getElasticIp() {
 		return elasticIp;
 	}
@@ -414,24 +471,32 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return "Magic in progress...Now START the Cloud Controller to continue";
 	}
 
-	// Starten einer CloudController und Rest Instanz auf Amazon
-	// Instanz sollte bestehen, bevor andere Nodes gestartet werden
+	/**
+	 *  Starten einer CloudController und Rest Instanz auf Amazon
+	 */
+	/**
+	 * Instanz sollte bestehen, bevor andere Nodes gestartet werden
+	 */
 	public String startAmazonCloudController(String c) {
-		/*
+		/**
 		 * Ablauf: Instanz wird gestartet, Warten bis gestartet, Elastic IP übergeben, 
 		 * , reboot
 		 */
 
 		handleStartAws("rest");
 
-		//Nimm dir alle ids der Instanzen, die gerade gestartet werden
+		/**
+		 * Nimm dir alle ids der Instanzen, die gerade gestartet werden
+		 */
 		String instanceIDS = null;
 		for(Instance inst : instanceIds){
 			instanceIDS = inst.getInstanceId(); 
 		}
 		
-		// Status der Instanzen wird abgefragt, so lange bis Instanzen gestartet
-		// sind
+		/**
+		 *  Status der Instanzen wird abgefragt, so lange bis Instanzen gestartet sind
+		 */
+		
 		DescribeInstanceStatusRequest describeInstanceStatusRequest = new DescribeInstanceStatusRequest()
 				.withInstanceIds(instanceIDS);
 		DescribeInstanceStatusResult describeInstanceStatusResult = ec2
@@ -439,13 +504,17 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		List<InstanceStatus> instanceStatus = describeInstanceStatusResult
 				.getInstanceStatuses();
 		while (instanceStatus.size() < 1) {
-			// Status Aktualiserung
+			/**
+			 *  Status Aktualiserung
+			 */
 			describeInstanceStatusResult = ec2
 					.describeInstanceStatus(describeInstanceStatusRequest);
 			instanceStatus = describeInstanceStatusResult.getInstanceStatuses();
 		}
 
-		//Zuordnung Elastic IP
+		/**
+		 * Zuordnung Elastic IP
+		 */
 		AssociateAddressRequest associateAddressReq = new AssociateAddressRequest();
 		String instanceId = null;
 		for (Instance instance : instanceIds) {
@@ -471,7 +540,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	// Startet DEA Instanz und gibt InstanzID in DialogBox zurück
+	/**
+	 * tartet DEA Instanz und gibt InstanzID in DialogBox zurück
+	 */
 	public String startAmazonDEA() {
 		handleStartAws("dea");
 		String inst = null;
@@ -484,7 +555,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	// Startet Mongodb Instanz und gibt InstanzID in DialogBox zurück
+	/**
+	 * tartet Mongodb Instanz und gibt InstanzID in DialogBox zurück
+	 */
 	public String startAmazonMongoDB() {
 		handleStartAws("mongodb0");
 		String inst = null;
@@ -496,7 +569,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return result;
 	}
 
-	// Stoppt alle Amazon Instanzen
+	/**
+	 * toppt alle Amazon Instanzen
+	 */
 	public String stopAmazonInstances(String command) {
 		System.out.println(command);
 		AWSCredentials credentials;
@@ -536,12 +611,17 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return "Error";
 	}
 
-	// Interne Funktion zum Umgang mit der 1und1 API
+	/**
+	 * Interne Funktion zum Umgang mit der 1und1 API
+	 * @param command
+	 */
 	private void handle1und1(String command) {
 		String[] server;
 		try {
 			server = EinsundEinsServer.getAllvmIDs();
-			// Startet alle Server
+			/**
+			 *  Startet alle Server
+			 */
 			for (int i = 0; i < server.length; i++) {
 				EinsundEinsServer kim = new EinsundEinsServer(server[i]);
 				if (command == STOP)
@@ -570,7 +650,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 
 	}
 
-	// Function handlers
+	/**
+	 *  Function handlers
+	 */
 	public String start1und1() {
 		handle1und1(START);
 		return "1und1-Instanzen gestartet";
@@ -596,7 +678,9 @@ public class CloudInfoServiceImpl extends RemoteServiceServlet implements
 		return "1und1-Instanzen ausgeschaltet";
 	}
 
-	// Übergibt im Frontend definierte Hardware-Werte an 1und1 Server
+	/**
+	 *  Übergibt im Frontend definierte Hardware-Werte an 1und1 Server
+	 */
 	public String handle1und1Hardware(String cpu, String HDD, String ram) {
 
 		String[] server;

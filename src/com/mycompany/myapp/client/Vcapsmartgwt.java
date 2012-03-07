@@ -58,14 +58,18 @@ public class Vcapsmartgwt implements EntryPoint {
 	
 	public void onModuleLoad() {
 
-		// Tabset Definition
+		/**
+		 *  Tabset Definition
+		 */
 		final TabSet topTabset = new TabSet();
 		topTabset.setTabBarPosition(Side.TOP);
 		topTabset.setWidth(600);
 		topTabset.setHeight(600);
 		
 
-		// Overview Tab
+		/**
+		 *  Overview Tab
+		 */
 		Tab tTab1 = new Tab("Overview");
 		Canvas tabPane1 = new Canvas();
 		tabPane1.setWidth100();
@@ -73,13 +77,15 @@ public class Vcapsmartgwt implements EntryPoint {
 		tabPane1.addChild(getOverview());
 		tTab1.setPane(tabPane1);
 
-		/*
+		/**
 		 * Vorlage für appgrid mit JSON Daten:
 		 * http://www.smartclient.com/smartgwt
 		 * /showcase/#json_integration_category_simple
 		 */
 
-		// Choose Provider Tab
+		/**
+		 *  Choose Provider Tab
+		 */
 		Tab tTab2 = new Tab("Cloud Configuration");
 		Canvas tabPane2 = new Canvas();
 		tabPane2.setWidth100();
@@ -87,7 +93,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		tabPane2.addChild(getProviderTab());
 		tTab2.setPane(tabPane2);
 
-		// Benchmarking Tab
+		/**
+		 *  Benchmarking Tab
+		 */
 		Tab tTab3 = new Tab("Benchmarking");
 		Canvas tabPane3 = new Canvas();
 		tabPane3.setWidth100();
@@ -99,25 +107,18 @@ public class Vcapsmartgwt implements EntryPoint {
 		topTabset.addTab(tTab2);
 		topTabset.addTab(tTab3);
 
-		/*
-		 * HLayout buttons = new HLayout(); buttons.setMembersMargin(15);
-		 */
 
 		topTabset.draw();
 
 	}
 
-	//Overview and VCAP 
+	/**
+	 * Overview and VCAP 
+	 * @return
+	 */
 	
 	@SuppressWarnings("deprecation")
 	private Widget getOverview() {
-
-		// Tab Overview: 
-
-		//final DecoratedTabPanel tabPanel = new DecoratedTabPanel();
-		//tabPanel.setWidth("800px");
-		//tabPanel.setAnimationEnabled(true);
-
 		
 		final VerticalPanel vPanel0 = new VerticalPanel();
 		vPanel0.setSpacing(15);
@@ -130,7 +131,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		serverResponseLabel.setWidth("550px");
 		serverResponseLabel.setHeight("450px");
 
-		//RPC zum Abruf von AWS Informationen
+		/**
+		 * RPC zum Abruf von AWS Informationen
+		 */
 		final Button refreshAwsAppInfoButton = new Button("AWS App Info");
 		refreshAwsAppInfoButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -138,7 +141,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -151,7 +153,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 		
-		//RPC zum Abruf von AWS Informationen
+		/**
+		 * RPC zum Abruf von AWS Informationen
+		 */
 		final Button refreshAwsButton = new Button("AWS Instance-Info");
 		refreshAwsButton.addClickHandler(new ClickHandler() {
 			
@@ -211,7 +215,7 @@ public class Vcapsmartgwt implements EntryPoint {
 		serverResponseLabel.setWidth("550px");
 		serverResponseLabel.setHeight("450px");
 				
-		//VCAP
+		//VCAP Management Tool
 		
 		final DialogBox appResponseBox = new DialogBox();
 		appResponseBox.setText("Response");
@@ -296,7 +300,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		hPanel16.setSpacing(15);
 		hPanel16.setWidth("100px");
 		
-		//start Button
+		/**
+		 * start Button ruft die Methode startApp auf
+		 */
 		
 		final HTML inputName = new HTML ("<b>App Name</b>");
 		final TextBox inputAppName = new TextBox();
@@ -312,7 +318,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -327,7 +332,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		});
 
 		
-		//stop Button
+		/**
+		 * stop Button ruft die Methode stopApp auf 
+		 */
 		
 		final Button stopButton = new Button("Stop");
 		stopButton.addClickHandler(new ClickHandler() {
@@ -337,7 +344,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -350,7 +356,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 				
-		//updateMemory Button
+		/**
+		 * updateMemory Button ruft die Methode updateAppmemory auf
+		 */
 		
 		final HTML appMemory = new HTML("<b>Memory</b>");
 		final IntegerBox inputMemory = new IntegerBox();
@@ -365,7 +373,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -378,7 +385,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 				
-		//updateInstance Button
+		/**
+		 * updateInstance Button ruft die Methode updateAppinstance auf
+		 */
 		
 		final HTML instances = new HTML("<b>Instances</b>");
 		final IntegerBox inputInstance = new IntegerBox();
@@ -392,8 +401,7 @@ public class Vcapsmartgwt implements EntryPoint {
 				cloudinfoSvc.updateAppinstance(appName, instances, new AsyncCallback<String>() {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
-
-						// serverResponseLabel.setHTML(SERVER_ERROR);
+			
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -406,7 +414,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 		
-		//Delete Button
+		/**
+		 * Delete Button ruft die Methode deleteApp auf
+		 */
 		
 		final Button deleteButton = new Button("Delete");
 		deleteButton.addClickHandler(new ClickHandler() {
@@ -417,7 +427,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -431,7 +440,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		});
 		
 		
-		//restart Button
+		/**
+		 * restart Button ruft die Methode restartApp auf
+		 */
 		
 		final Button restartButton = new Button("Restart");
 		restartButton.addClickHandler(new ClickHandler() {
@@ -441,7 +452,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -455,7 +465,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		});
 		
 		
-		//bingdingService Button
+		/**
+		 * bingdingService Button ruft die Methode bindingAppservice auf
+		 */
 		
 		final HTML service = new HTML ("<b>Service</b>");
 		final TextBox inputServiceName = new TextBox();
@@ -470,7 +482,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -484,7 +495,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			});
 		
 		
-		//unbindingService Button
+		/**
+		 * unbindingService Button ruft die Methode unbindingAppservice auf
+		 */
 		
 		final Button unbindingserviceButton = new Button("unbinding Service");
 		unbindingserviceButton.addClickHandler(new ClickHandler(){
@@ -495,7 +508,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -508,7 +520,9 @@ public class Vcapsmartgwt implements EntryPoint {
 				}
 			});
 		
-		// create Service Button
+		/**
+		 *  create Service Button ruft die Methode createAppservice (diese Methode funktioniert nicht)auf
+		 */
 		final HTML vendor = new HTML ("<b>Vendor</b>");
 		final TextBox inputVendor= new TextBox();
 		inputVendor.setText("Enter Servicename here!");
@@ -522,7 +536,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -534,7 +547,9 @@ public class Vcapsmartgwt implements EntryPoint {
 				}
 			});
 		
-		// createApp Button
+		/**
+		 *  createApp Button ruft die Methode createApp auf 
+		 */
 		
 		final HTML inputCreateName = new HTML ("<b>App Name</b>");
 		final TextBox inputCreateApp = new TextBox();
@@ -570,7 +585,6 @@ public class Vcapsmartgwt implements EntryPoint {
 					public void onFailure(Throwable caught) {
 						// TODO Auto-generated method stub
 
-						// serverResponseLabel.setHTML(SERVER_ERROR);
 						serverResponseLabel.setContents(SERVER_ERROR);
 					}
 
@@ -582,7 +596,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 		
-		//closeTab Button
+		/**
+		 * closeTab Button schließt den angezeigten Fenster zu und weiter arbeiten
+		 */
 		 final Button closeTabButton = new Button("Close Tab");  
 		    closeTabButton.addClickHandler(new ClickHandler() {  
 		            public void onClick(ClickEvent event) {  
@@ -591,7 +607,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		            }  
 		        });  
 		
-		// Add Button - new Tab
+		/**
+		 * Add Button - new Tab
+		 */
 		final Button addtabButton = new Button("Create App");
 		addtabButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
@@ -622,7 +640,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 		
-		//Darstellung der Fontend
+		/**
+		 * Darstellung des Fontends
+		 */
 		final HTML annahme = new HTML ("Annahme: </br>email =***** </br>password = ****</br> amazonCloudcontrollerURL = http://api.railwaytoheaven.de</br>einsundeinsCloudcontrollerURL = http://api.railwaytoheaven.com");
 		hPanel14.add(annahme);
 		
@@ -662,8 +682,12 @@ public class Vcapsmartgwt implements EntryPoint {
 
 		tabPanel.add(vPanel1, "VCAP");
 		
-		// Provider Button
-		// 1&1 Cloud Server
+		/**
+		 *  Provider Button
+		 */
+		/**
+		 * 1&1 Cloud Server
+		 */
 		VerticalPanel links = new VerticalPanel();
 		links.setSpacing(15);
 		links.setHeight("600");
@@ -677,7 +701,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		
 		final HTML ueberschriftVpanel = new HTML("<b>Instance Control</b>");
 
-		// Erstelle Buttons
+		/**
+		 *  Erstelle Buttons
+		 */
 		Button start1und1Button = new Button("Start 1und1 Instances");
 		start1und1Button.setAutoFit(true);
 
@@ -693,7 +719,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		Button powerOff1und1Button = new Button("Power Off 1und1 Instances");
 		powerOff1und1Button.setAutoFit(true);
 
-		// Erstelle Popup DialogBox für Infos
+		/**
+		 *  Erstelle Popup DialogBox für Infos
+		 */
 		final DialogBox annahmenEinsundEins = new DialogBox();
 		annahmenEinsundEins.setText("Implied Assumptions");
 		annahmenEinsundEins.setAnimationEnabled(true);
@@ -723,8 +751,12 @@ public class Vcapsmartgwt implements EntryPoint {
 		});
 		annahmenEinsundEins.setWidget(dialogPanel);
 
-		// ClickHandler der 1&1 - Buttons
-		// Startet Instanzen auf 1&1 - Button - ClickHandler und RPC
+		/**
+		 *  ClickHandler der 1&1 - Buttons
+		 */
+		/**
+		 * Startet Instanzen auf 1&1 - Button - ClickHandler und RPC
+		 */
 		start1und1Button.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -743,7 +775,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 
-		// Stoppt Instanzen auf 1&1 - Button - ClickHandler und RPC
+		/**
+		 * Stoppt Instanzen auf 1&1 - Button - ClickHandler und RPC
+		 */
 		stop1und1Button.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				cloudinfoSvc.stop1und1(new AsyncCallback<String>() {
@@ -761,7 +795,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 
-		// Restartet Instanzen auf 1&1 - Button - ClickHandler und RPC
+		/**
+		 *  Restartet Instanzen auf 1&1 - Button - ClickHandler und RPC
+		 */
 		restart1und1Button.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				cloudinfoSvc.restart1und1(new AsyncCallback<String>() {
@@ -779,7 +815,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 
-		// Suspends Instanzen auf 1&1 - Button - ClickHandler und RPC
+		/**
+		 *  Suspends Instanzen auf 1&1 - Button - ClickHandler und RPC
+		 */
 		suspend1und1Button.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				cloudinfoSvc.suspend1und1(new AsyncCallback<String>() {
@@ -797,7 +835,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 
-		// Schaltet Instanzen auf 1&1 ab - Button - ClickHandler und RPC
+		/**
+		 * Schaltet Instanzen auf 1&1 ab - Button - ClickHandler und RPC
+		 */
 		powerOff1und1Button.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
 				cloudinfoSvc.poweroff1und1(new AsyncCallback<String>() {
@@ -815,7 +855,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 
-		// Feld zur Eingabe von Hardware - Konfigs
+		/**
+		 * Feld zur Eingabe von Hardware - Konfigs
+		 */
 		final HTML configureLabel = new HTML(
 				"<b>Configure 1und1-Instance Hardware:</b><br/>");
 		HTML cpuConfigLabel = new HTML("Change CPU");
@@ -830,7 +872,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		
 
 		final Button configButton = new Button("Configure Hardware");
-		//ClickHandler für cpuConfigButton - mit RPC
+		/**
+		 * ClickHandler für cpuConfigButton - mit RPC
+		 */
 		
 		configButton.addClickHandler(new ClickHandler() {
 			
@@ -852,7 +896,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		});
 		
 
-		// Fügt Elemente zum VPanel hinzu
+		/**
+		 *  Fügt Elemente zum VPanel hinzu
+		 */
 	
 		links.add(einsUndeinsResponseLabel);
 		links.add(ueberschriftVpanel);
@@ -862,7 +908,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		links.add(suspend1und1Button);
 		links.add(powerOff1und1Button);
 		
-		//Fügt Elemente zum vPanel2 hinzu
+		/**
+		 * Fügt Elemente zum vPanel2 hinzu
+		 */
 		rechts.add(configureLabel);
 		rechts.add(cpuConfigLabel);
 		rechts.add(inputCpuConfig);
@@ -870,13 +918,17 @@ public class Vcapsmartgwt implements EntryPoint {
 		rechts.add(inputRamConfig);
 		rechts.add(configButton);
 
-		// Fügt Elemente zum hPanel hinzu
+		/**
+		 *  Fügt Elemente zum hPanel hinzu
+		 */
 		hPanel11.add(links);
 		hPanel11.add(rechts);
 		
 		tabPanel.add(hPanel11, "1&1 Cloud Server");
 
-		// Amazon Web Service
+		/**
+		 * Amazon Web Service
+		 */
 		VerticalPanel awsLinks = new VerticalPanel();
 		awsLinks.setSpacing(15);
 		awsLinks.setHeight("600");
@@ -884,7 +936,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		HorizontalPanel hPanel12 = new HorizontalPanel();
 		VerticalPanel awsRechts = new VerticalPanel();
 		
-		//Erstelle Amazon Buttons und Anzeigeelemente
+		/**
+		 * Erstelle Amazon Buttons und Anzeigeelemente
+		 */
 		final HTML ueberschriftLinks = new HTML("<b>Instance control:</b>");
 		final HTML ueberschriftRechts = new HTML("<b>Enter Elastic IP:</b>");
 		final TextBox elasticIp = new TextBox();
@@ -901,7 +955,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		awsResponseLabel.setWidth("400");
 		awsResponseLabel.setHeight("450");
 		
-		//Erstelle DialogBox um Server-Antwort anzuzeigen
+		/**
+		 * Erstelle DialogBox um Server-Antwort anzuzeigen
+		 */
 		final DialogBox awsResponseBox = new DialogBox();
 		awsResponseBox.setText("AWS Server Response: ");
 		awsResponseBox.setAnimationEnabled(true);
@@ -920,7 +976,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		awsResponseBox.setWidget(dialogAwsPanel);
 		
 
-		// Cloud Controller Button- ClickHandler mit RPC
+		/**
+		 *  Cloud Controller Button- ClickHandler mit RPC
+		 */
 		cloudControllerButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -1026,7 +1084,9 @@ public class Vcapsmartgwt implements EntryPoint {
 			}
 		});
 
-		//Hinzufügen Elemente zu Panel links
+		/**
+		 * Hinzufügen Elemente zu Panel links
+		 */
 		awsLinks.add(awsResponseLabel);
 		awsLinks.add(ueberschriftLinks);
 		awsLinks.add(cloudControllerButton);
@@ -1035,18 +1095,24 @@ public class Vcapsmartgwt implements EntryPoint {
 		awsLinks.add(stoppInstancesButton);
 		awsLinks.add(terminateInstancesButton);
 		
-		//HInzufügen der Elemente zu rechtem Panel
+		/**
+		 * HInzufügen der Elemente zu rechtem Panel
+		 */
 		awsRechts.add(ueberschriftRechts);
 		awsRechts.add(elasticIp);
 		awsRechts.add(setElasticIp);
 		
-		//Hinzufügen der Panels zu HPanel
+		/**
+		 * Hinzufügen der Panels zu HPanel
+		 */
 		hPanel12.add(awsLinks);
 		hPanel12.add(awsRechts);
 		
 		tabPanel.add(hPanel12, "Amazon Web Service");
 
-		// Return the content
+		/**
+		 *  Return the content
+		 */
 		tabPanel.selectTab(0);
 		tabPanel.ensureDebugId("cwTabPanel");
 		return tabPanel;
@@ -1057,7 +1123,9 @@ public class Vcapsmartgwt implements EntryPoint {
 		tabPanel.setWidth("580px");
 		tabPanel.setAnimationEnabled(true);
 
-		// RAINTOOLS Functions
+		/**
+		 *  RAINTOOLS Functions
+		 */
 
 		VerticalPanel vPanel1 = new VerticalPanel();
 		vPanel1.setSpacing(15);
@@ -1070,7 +1138,9 @@ public class Vcapsmartgwt implements EntryPoint {
 
 		tabPanel.add(vPanel1, "RAIN Tool");
 
-		// Choose best configurations
+		/**
+		 * Choose best configurations
+		 */
 		VerticalPanel vPanel2 = new VerticalPanel();
 		vPanel2.setSpacing(15);
 		vPanel2.setHeight("500px");
@@ -1099,7 +1169,9 @@ public class Vcapsmartgwt implements EntryPoint {
 
 		vPanel2.add(bestConfigGrid);
 
-		// Choose cheapest configurations
+		/**
+		 *  Choose cheapest configurations
+		 */
 		VerticalPanel vPanel3 = new VerticalPanel();
 		vPanel3.setSpacing(15);
 		vPanel3.setHeight("500px");
@@ -1129,7 +1201,9 @@ public class Vcapsmartgwt implements EntryPoint {
 
 		vPanel3.add(cheapestConfigGrid);
 
-		// Return the content
+		/**
+		 *  Return the content
+		 */
 		tabPanel.selectTab(0);
 		tabPanel.ensureDebugId("cwTabPanel");
 		return tabPanel;
